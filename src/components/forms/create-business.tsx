@@ -52,7 +52,7 @@ export default function CreateBusinessForm() {
   };
   const [state, dispatch] = useFormState(createBusiness, initalState);
   return (
-    <div className='w-full space-y-5 p-11 flex flex-col justify-center items-center'>
+    <div className='w-full space-y-5 py-11 px-6 md:p-11 flex flex-col justify-center items-center'>
       <Image
         src='/logo/etegram-business-logo.svg'
         alt='etegram business logo'

@@ -335,46 +335,46 @@ export async function createBusiness(
 // }
 
 // LOGOIT ACTION
-// export async function logout(prevState: PrevStateProps | undefined) {
-//   let refreshToken = { refreshToken: cookies().get('refresh_token')?.value };
-//   try {
-//     const response = await http('/auth/logout', {
-//       method: 'POST',
-//       body: JSON.stringify(refreshToken),
-//     });
+export async function logout() {
+  let refreshToken = { refreshToken: cookies().get('refresh_token')?.value };
+  try {
+    // const response = await http('/auth/logout', {
+    //   method: 'POST',
+    //   body: JSON.stringify(refreshToken),
+    // });
 
-//     const data = await response.json();
+    // const data = await response.json();
 
-//     if (!response.ok) {
-//       return { message: data?.message, status: 'failed' };
-//     }
+    // if (!response.ok) {
+    //   return { message: data?.message, status: 'failed' };
+    // }
 
-//     cookies().delete('access_token');
-//     cookies().delete('refresh_token');
-//     cookies().delete('provider_id');
+    cookies().delete('access_token');
+    cookies().delete('refresh_token');
+    cookies().delete('provider_id');
 
-//     // return { message: data?.message, status: "success" }
-//   } catch (error: any) {
-//     if (error) {
-//       // if (data === 'User not found!') {
-//       //   redirect('/auth/sign-in');
-//       // }
-//       cookies().delete('access_token');
-//       cookies().delete('refresh_token');
-//       cookies().delete('provider_id');
-//       redirect('/auth/sign-in');
+    // return { message: data?.message, status: "success" }
+  } catch (error: any) {
+    if (error) {
+      // if (data === 'User not found!') {
+      //   redirect('/auth/sign-in');
+      // }
+      cookies().delete('access_token');
+      cookies().delete('refresh_token');
+      cookies().delete('provider_id');
+      redirect('/auth/sign-in');
 
-//       // return {
-//       //   message: 'Failed to logout. Please try again',
-//       //   status: 'failed',
-//       // };
-//     }
-//   }
+      // return {
+      //   message: 'Failed to logout. Please try again',
+      //   status: 'failed',
+      // };
+    }
+  }
 
-//   revalidateTag('user');
-//   revalidatePath('/dashboard', 'layout');
-//   redirect('/auth/sign-in');
-// }
+  // revalidateTag('user');
+  // revalidatePath('/dashboard', 'layout');
+  redirect('/auth/sign-in');
+}
 
 //SELECT PROVIDER ACTION
 // export async function handleSelectProviderAction(

@@ -42,7 +42,7 @@ export default function SignInForm() {
   };
   const [state, dispatch] = useFormState(login, initalState);
   return (
-    <div className='w-full space-y-5 p-11 flex flex-col justify-center items-center'>
+    <div className='w-full space-y-5 py-11 px-6 md:p-11 flex flex-col justify-center items-center'>
       <div>
         <Image
           src='/logo/etegram-business-logo.svg'
