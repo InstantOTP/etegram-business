@@ -141,11 +141,11 @@ export const DashboardHeader = ({ user }: { user: User }) => {
           {/* <SheetOverlay className='md:hidden' /> */}
           <SheetContent
             side={'left'}
-            className='lg:hidden bg-background px-0 pt-0 max-w-[250px]'
+            className='lg:hidden bg-background px-0 pt-0 pb-0 max-w-[250px]'
           >
             {/* <CustomSheetClose /> */}
-            <div className='flex flex-col gap-y-4 overflow-y-auto'>
-              <div className='px-3 py-4 border-y border-border'>
+            <div className='flex flex-col gap-y-4 h-full overflow-y-auto'>
+              <div className='px-3 pb-4 border-y border-border sticky top-0 left-0 bg-background z-10'>
                 <div className='sticky top-0 left-0 z-10 bg-white flex justify-between items-center gap-x-4'>
                   <Logo />
                   <button
@@ -156,7 +156,7 @@ export const DashboardHeader = ({ user }: { user: User }) => {
                   </button>
                 </div>
               </div>
-              <ul className='m2-6 grid gap-y-8 font-eudoxusSans'>
+              <ul className='mb-6 grid gap-y-8 font-eudoxusSans '>
                 {sidebarLinks.map((item, index) => {
                   return (
                     <li
