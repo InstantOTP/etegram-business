@@ -144,7 +144,7 @@ export const DashboardHeader = ({ user }: { user: User }) => {
             className='lg:hidden bg-background px-0 pt-0 max-w-[250px]'
           >
             {/* <CustomSheetClose /> */}
-            <div className='flex flex-col gap-y-4'>
+            <div className='flex flex-col gap-y-4 overflow-y-auto'>
               <div className='px-3 py-4 border-y border-border'>
                 <div className='sticky top-0 left-0 z-10 bg-white flex justify-between items-center gap-x-4'>
                   <Logo />

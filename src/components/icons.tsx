@@ -479,7 +479,7 @@ export const Icons = {
           />
         </clipPath>
       </defs>
-      <g clip-path='url(#a)'>
+      <g clipPath='url(#a)'>
         <path
           d='M135.149,448.064a7.093,7.093,0,0,0,13.009,0Z'
           transform='translate(-126.144 -418.209)'
