@@ -12,7 +12,7 @@ export default function MainLayout({
       <DashboardSidebar />
       <section className='relative flex-1 w-full'>
         <DashboardHeader user={fakeUsers} />
-        <main className='w-full lg:h-[84.1svh] overflow-y-auto px-5'>
+        <main className='w-full lg:h-[84.1svh] overflow-y-auto pt-28 px-5 pb-5 lg:p-5'>
           {children}
         </main>
       </section>

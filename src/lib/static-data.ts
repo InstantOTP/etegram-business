@@ -143,3 +143,39 @@ export const fakeUsers: User = {
   referralCode: 'ete001',
   isPINset: 'yes',
 };
+
+export const chartData = [
+  { month: 'January', amount: 18600 },
+  { month: 'February', amount: 30500 },
+  { month: 'March', amount: 23700 },
+  { month: 'April', amount: 7300 },
+  { month: 'May', amount: 20900 },
+  { month: 'June', amount: 21400 },
+];
+
+export const tableData = [
+  {
+    id: 1,
+    customer: 'emmaokon44@gmail.com',
+    amount: 58000,
+    channel: 'Bank Transfer',
+    date: '02 Dec, 11:34am',
+    status: 'pending',
+  },
+  {
+    id: 2,
+    customer: 'emmanuel7@gmail.com',
+    amount: 10250,
+    channel: 'Card',
+    date: '02 Dec, 11:34am',
+    status: 'successful',
+  },
+  {
+    id: 3,
+    customer: 'buluskasuwa@gmail.com',
+    amount: 2500,
+    channel: 'USSD',
+    date: '30 Nov, 11:34am',
+    status: 'successful',
+  },
+];

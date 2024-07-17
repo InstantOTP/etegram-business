@@ -9,7 +9,7 @@ export const formatter = (currency = 'NGN', fractiondigit = 2) =>
   new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: currency,
-    currencyDisplay: 'narrowSymbol',
+    // currencyDisplay: 'narrowSymbol',
     maximumFractionDigits: fractiondigit,
   });
 
@@ -74,4 +74,13 @@ export function generateSlug(str: string) {
     .replace(/\-\-+/g, '-') // Replace multiple hyphens with a single hyphen
     .replace(/^-+/, '') // Remove leading hyphen
     .replace(/-+$/, ''); // Remove trailing hyphen
+}
+
+export function kConverter(num: number) {
+  if (num < 1000) {
+    return num.toFixed(0); // assuming an integer
+  } else {
+    const s = (0.1 * Math.floor(num / 100)).toFixed(1);
+    return s.replace('.0', '') + 'k';
+  }
 }
