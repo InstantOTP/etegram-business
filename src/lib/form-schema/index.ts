@@ -57,3 +57,19 @@ export const UserComplianceSchema = z.object({
   documentType: z.string().min(1, { message: 'Document Type is required' }),
   documentUrl: z.string().min(1, { message: 'Please upload document' }),
 });
+
+export const BusinessComplianceSchema = z.object({
+  businessRegistrationType: z
+    .string()
+    .min(1, { message: 'Business Registraction Type is required' }),
+  businessRegistrationNumber: z
+    .string()
+    .min(1, { message: 'Business Registraction Number is required' }),
+  cacUrl: z.string().min(1, { message: 'Please upload document' }),
+  directorBvn: z
+    .string()
+    .min(11, { message: 'BVN must be 11 digits' })
+    .max(11, { message: 'BVN must be 11 digits' }),
+  documentType: z.string().min(1, { message: 'Document Type is required' }),
+  documentUrl: z.string().min(1, { message: 'Please upload document' }),
+});

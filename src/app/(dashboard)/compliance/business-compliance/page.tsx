@@ -1,10 +1,10 @@
-import UserComplianceForm from '@/components/forms/user-compliance';
+import BusinessComplianceForm from '@/components/forms/business-compliance';
 
 export default function BusinessCompliancePage() {
   return (
     <section>
       <div className='max-w-2xl mx-auto rounded-3xl'>
-        <UserComplianceForm />
+        <BusinessComplianceForm />
       </div>
     </section>
   );
