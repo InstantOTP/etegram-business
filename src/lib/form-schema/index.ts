@@ -48,3 +48,12 @@ export const CreateBusinessSchema = z.object({
     .string({ required_error: 'Click on the checkbox to proceed' })
     .includes('on', { message: 'Click on the checkbox to proceed' }),
 });
+
+export const UserComplianceSchema = z.object({
+  bvn: z
+    .string()
+    .min(11, { message: 'BVN must be 11 digits' })
+    .max(11, { message: 'BVN must be 11 digits' }),
+  documentType: z.string().min(1, { message: 'Document Type is required' }),
+  documentUrl: z.string().min(1, { message: 'Please upload document' }),
+});

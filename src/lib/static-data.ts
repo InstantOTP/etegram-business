@@ -40,6 +40,12 @@ export const sidebarLinks: sidebarLinks[] = [
         label: 'Overview',
         path: '/',
       },
+      {
+        icon: Icons.overview,
+        label: 'Compliance',
+        path: '/compliance',
+        soon: true,
+      },
     ],
   },
   {
@@ -142,6 +148,8 @@ export const fakeUsers: User = {
   rentedNumbers: 1,
   referralCode: 'ete001',
   isPINset: 'yes',
+  hasBusiness: false,
+  isBusinessVerified: false,
 };
 
 export const chartData = [

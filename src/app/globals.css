@@ -183,3 +183,30 @@ input::-ms-reveal {
 .dashboard-icon.white path {
   fill: hsl(0, 0%, 100%) !important;
 }
+
+.dashed-border::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 4px);
+  transform: translateY(-50%);
+  background-image: linear-gradient(to right, #001842 50%, transparent 50%);
+  background-size: 16px;
+  z-index: 0;
+  border-radius: 0.5rem;
+}
+.dashed-border::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: calc(100% + 4px);
+  transform: translateX(-50%);
+  background-image: linear-gradient(to bottom, #001842 50%, transparent 50%);
+  background-size: 4px 16px;
+  z-index: 1;
+  border-radius: 0.5rem;
+}

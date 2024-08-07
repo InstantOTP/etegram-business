@@ -4,25 +4,27 @@ import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { formatter } from '@/lib/utils';
 import DataTable from '@/components/ui/table';
-import { tableData } from '@/lib/static-data';
+import { fakeUsers, tableData } from '@/lib/static-data';
 import Link from 'next/link';
 
 export default function Home() {
   return (
     <section className='space-y-12'>
-      <div className='bg-[#fff8dd] text-sm md:text-base text-foreground flex flex-col md:flex-row md:items-center py-4 px-2 rounded-xl md:divide-x-2 md:divide-foreground '>
-        <p className='md:pr-4 '>
-          Hi {'johndoe'}, You are yet to complete setting up your business
-          account
-        </p>
+      {!fakeUsers.isVerified && (
+        <div className='bg-[#fff8dd] text-sm md:text-sm text-foreground flex flex-col md:flex-row md:items-center py-3 px-4 rounded-xl md:divide-x-2 md:divide-foreground max-w-fit'>
+          <p className='md:pr-4 '>
+            Hi {'johndoe'}, You are yet to complete setting up your business
+            account
+          </p>
 
-        <Link
-          href={'/settings'}
-          className='md:pl-2 font-semibold text-primary hover:underline'
-        >
-          Click to update account
-        </Link>
-      </div>
+          <Link
+            href={'/settings'}
+            className='md:pl-2 font-semibold text-primary hover:underline'
+          >
+            Click to update account
+          </Link>
+        </div>
+      )}
       <div className='section-grid gap-6'>
         <div className='card-sm text-primary-foreground min-h-[230px] bg-primary-light overflow-clip relative'>
           <div className=' absolute top-0 left-0 p-5 w-full  z-50'>

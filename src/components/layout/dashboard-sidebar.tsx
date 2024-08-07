@@ -1,6 +1,6 @@
 'use client';
 
-import { sidebarLinks } from '@/lib/static-data';
+import { sidebarLinks, fakeUsers } from '@/lib/static-data';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -25,36 +25,49 @@ const DashboardSidebar = () => {
                 {item.heading}
               </span>
               <ul className='space-y-4'>
-                {item.links.map((item, index) => {
-                  const { icon: Icon } = item;
+                {item.links.map((link, index) => {
+                  const { icon: Icon } = link;
 
                   return (
                     <li
                       key={index}
                       className={cn(
                         'relative before:w-1.5 before:rounded-r-sm before:h-5 before:absolute before:top-0 before:left-0 before:bg-transparent',
-                        { 'before:bg-primary': pathname === item.path }
+                        { 'before:bg-primary': pathname === link.path }
                       )}
                     >
                       <Link
-                        href={item.path}
-                        className='transition-colors  flex space-x-4 items-center mt-2.5 text-sm pl-5'
+                        href={link.path}
+                        className='transition-colors flex space-x-4 items-center mt-2.5 text-sm pl-5'
                       >
                         <Icon
                           className={cn('dashboard-icon', {
-                            active: pathname === item.path,
+                            active: pathname === link.path,
                           })}
                         />
                         <span
                           className={cn('text-[#909090] font-medium', {
-                            'text-primary': pathname === item.path,
+                            'text-primary': pathname === link.path,
                           })}
                         >
-                          {item.label}
+                          {link.label}
                         </span>
-                        {item?.soon && (
+                        {link?.soon && item.heading !== 'Home' && (
                           <span className='text-[10px] font-semibold bg-accent px-0.5 rounded-md'>
                             Coming soon
+                          </span>
+                        )}
+                        {link?.soon && item.heading === 'Home' && (
+                          <span
+                            className={cn(
+                              'text-[10px] font-semibold bg-accent px-0.5 rounded-md',
+                              {
+                                'bg-destructive text-destructive-foreground':
+                                  !fakeUsers.isVerified,
+                              }
+                            )}
+                          >
+                            Not verified
                           </span>
                         )}
                       </Link>

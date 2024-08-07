@@ -15,6 +15,7 @@ export interface PrevStateProps {
   message?: string;
   status?: string;
 }
+
 export interface SignupState extends PrevStateProps {
   errors?: {
     firstName?: string[];

@@ -46,6 +46,8 @@ export interface User {
   rentedNumbers: number;
   referralCode: string;
   isPINset: string;
+  hasBusiness: boolean;
+  isBusinessVerified: boolean;
 }
 
 const PageTitle = ({ username }: { username: string }) => {
