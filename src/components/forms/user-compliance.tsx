@@ -1,16 +1,6 @@
 'use client';
 
-import Image from 'next/image';
-import { Input, PasswordInput } from '../ui/input';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { Checkbox } from '../ui/checkbox';
-import { useFormState, useFormStatus } from 'react-dom';
-import { Button, buttonVariants } from '../ui/button';
-import { LucideLoader2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { login } from '@/app/apis/actions/auth';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { userCompliance } from '@/app/apis/actions/compliance';
 import {
   Select,
   SelectContent,
@@ -18,8 +8,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+import { LucideLoader2 } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
+import { Button, buttonVariants } from '../ui/button';
 import CustomDropZone from '../ui/dropzone';
-import { userCompliance } from '@/app/apis/actions/compliance';
+import { Input } from '../ui/input';
 import { useToast } from '../ui/use-toast';
 
 function SubmitButton({ isImageUploaded }: { isImageUploaded: string }) {
@@ -41,7 +38,6 @@ function SubmitButton({ isImageUploaded }: { isImageUploaded: string }) {
 }
 
 export default function UserComplianceForm() {
-  const searchParams = useSearchParams();
   const { toast } = useToast();
   const { replace } = useRouter();
   const [uploadedImage, setUploadedImage] = useState('');
