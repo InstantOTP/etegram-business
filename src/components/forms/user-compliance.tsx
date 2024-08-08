@@ -97,7 +97,7 @@ export default function UserComplianceForm() {
           <label htmlFor='documentType'>
             Document Type{' '}
             <span className='text-[#909090]'>
-              (NIN, National Passport, Drivers License, Voter's card)
+              (NIN, National Passport, Drivers License, Voter&apos;s card)
             </span>
           </label>
           <Select name='documentType'>

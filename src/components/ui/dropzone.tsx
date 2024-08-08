@@ -66,7 +66,7 @@ export default function CustomDropZone({
                 height={40}
               />
               <p className='text-sm'>
-                Drag 'n' drop some files here, or{' '}
+                Drag &apos;n&apos; drop some files here, or{' '}
                 <span className='font-bold text-primary'>browse</span>
               </p>
               <p className='text-[#909090] text-sm'>Max file size = 5MB</p>

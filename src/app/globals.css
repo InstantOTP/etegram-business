@@ -91,7 +91,7 @@ textarea {
     @apply border-border;
   }
   body {
-    @apply bg-background text-primary/90 font-eudoxusSans;
+    @apply bg-background text-primary/90 font-eudoxusSans antialiased;
   }
   h1,
   h2,
@@ -130,10 +130,13 @@ textarea {
     @apply w-full space-y-0.5;
   }
   .form-control label {
-    @apply text-sm text-foreground;
+    @apply text-xs font-medium text-foreground;
   }
   .form-control .error {
     @apply mt-2 text-red-500 text-xs;
+  }
+  .form-control .desc {
+    @apply !mt-2 text-[#909090] text-xs;
   }
 
   /* DASHBOARD */
