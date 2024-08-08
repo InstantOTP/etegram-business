@@ -175,7 +175,7 @@ export default function BusinessComplianceForm() {
           <label htmlFor='documentType'>
             Director&apos;s Proof of Identity{' '}
             <span className='text-[#909090] text-xs'>
-              (NIN, National Passport, Drivers License, Voter's card)
+              (NIN, National Passport, Drivers License, Voter&apos;s card)
             </span>
           </label>
           <Select name='documentType'>
