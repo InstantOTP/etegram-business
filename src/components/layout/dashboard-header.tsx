@@ -12,20 +12,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn, findUpper } from '@/lib/utils';
-import { SendHorizonal } from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Suspense, useMemo, useState } from 'react';
-import { Sheet, SheetContent } from '../ui/sheet';
-import Logo from '../common/logo';
 import { X } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Suspense, useState } from 'react';
+import Logo from '../common/logo';
+import { Sheet, SheetContent } from '../ui/sheet';
 // import { Notification } from 'iconsax-react';
 // import { ModeToggle } from '../ui/toggle-theme';
 // import { Setting2, Login } from 'iconsax-react';
 import { logout } from '@/app/apis/actions/auth';
 import { useFormState, useFormStatus } from 'react-dom';
-import { useEffect } from 'react';
 import { useToast } from '../ui/use-toast';
 // import Logout from '../common/buttons/logout';
 import { sidebarLinks } from '@/lib/static-data';
@@ -73,6 +71,7 @@ function LogoutButton() {
   return (
     <button
       type='submit'
+      className='pl-3 text-destructive'
       disabled={pending}
     >
       Log out
@@ -286,11 +285,16 @@ export const DashboardHeader = ({ user }: { user: User }) => {
                 <Link href={'/dashboard/settings'}>Settings</Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuItem
-              asChild
-              className='text-destructive-foreground'
-            >
-              {/* <Logout position='header' /> */}
+            <DropdownMenuItem asChild>
+              <form action={dispatch}>
+                <Button
+                  variant={'ghost'}
+                  type='submit'
+                  className='text-destructive hover:!text-destructive w-full justify-start'
+                >
+                  Logout
+                </Button>
+              </form>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

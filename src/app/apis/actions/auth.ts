@@ -128,7 +128,7 @@ export async function login(
       };
     }
   }
-  redirect(`/`);
+  redirect(`/onboarding/select-business`);
 }
 
 // SIGN UP ACTION
@@ -291,7 +291,7 @@ export async function createBusiness(
       status: 'failed',
     };
   }
-  redirect(`/`);
+  redirect(`/onboarding/select-business`);
 }
 // FORGOT PASSWORD ACTION
 // export async function forgotPassword(
@@ -338,6 +338,7 @@ export async function createBusiness(
 // LOGOIT ACTION
 export async function logout() {
   let refreshToken = { refreshToken: cookies().get('refresh_token')?.value };
+
   try {
     // const response = await http('/auth/logout', {
     //   method: 'POST',

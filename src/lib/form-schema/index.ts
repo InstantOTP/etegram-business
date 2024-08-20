@@ -73,3 +73,8 @@ export const BusinessComplianceSchema = z.object({
   documentType: z.string().min(1, { message: 'Document Type is required' }),
   documentUrl: z.string().min(1, { message: 'Please upload document' }),
 });
+
+export const CreateProjectSchema = z.object({
+  projectName: z.string().min(1, { message: 'Project Name is required' }),
+  projectDescription: z.string(),
+});
