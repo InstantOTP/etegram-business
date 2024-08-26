@@ -135,22 +135,22 @@ export const sidebarLinks: sidebarLinks[] = [
   },
 ];
 
-export const fakeUsers: User = {
-  userID: 'ete001',
-  username: 'John Doe',
-  email: 'johndoe@mail.com',
-  isVerified: true,
-  phone: '08012345678',
-  status: 'active',
-  totalTransactions: 2,
-  wallet: 100000,
-  pushedNumbers: 1,
-  rentedNumbers: 1,
-  referralCode: 'ete001',
-  isPINset: 'yes',
-  hasBusiness: false,
-  isBusinessVerified: false,
-};
+// export const fakeUsers: User = {
+//   userID: 'ete001',
+//   username: 'John Doe',
+//   email: 'johndoe@mail.com',
+//   isVerified: true,
+//   phone: '08012345678',
+//   status: 'active',
+//   totalTransactions: 2,
+//   wallet: 100000,
+//   pushedNumbers: 1,
+//   rentedNumbers: 1,
+//   referralCode: 'ete001',
+//   isPINset: 'yes',
+//   hasBusiness: false,
+//   isBusinessVerified: false,
+// };
 
 export const chartData = [
   { month: 'January', amount: 18600 },

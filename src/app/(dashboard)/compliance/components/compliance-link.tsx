@@ -14,19 +14,19 @@ export default function ComplianceLinks({ user }: { user: User }) {
         title: 'Personal Information',
         subtitle: 'Please Tell us more about yourself',
         link: '/compliance/user-compliance',
-        verified: user.isVerified,
+        verified: user?.kycApprovalStatus === 'pending',
       },
       {
         title: 'Business Information',
         subtitle: 'Please Tell us more about your business',
         link: '/compliance/business-info',
-        verified: user.isBusinessVerified,
+        verified: user?.kycApprovalStatus === 'pending',
       },
       {
         title: 'Business Information',
         subtitle: 'Please provide legal documents based on business type',
         link: '/compliance/business-compliance',
-        verified: user.isBusinessVerified,
+        verified: user?.kycApprovalStatus === 'pending',
       },
     ];
   }, [user]);

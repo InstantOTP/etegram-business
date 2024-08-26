@@ -1,4 +1,4 @@
-import { LogoutButton } from '@/components/common/buttons/logout';
+import Logout from '@/components/common/buttons/logout';
 
 export default function RemittancesPage() {
   return (
@@ -6,7 +6,7 @@ export default function RemittancesPage() {
       <h1>Maintainence</h1>
       <p>Remittances page</p>
       <p>We will be back shortly.</p>
-      <LogoutButton />
+      <Logout />
     </main>
   );
 }

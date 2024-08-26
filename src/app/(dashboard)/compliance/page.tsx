@@ -1,11 +1,14 @@
 import DataTable from '@/components/ui/table';
-import { fakeUsers, tableData } from '@/lib/static-data';
+import { tableData } from '@/lib/static-data';
 import ComplianceLinks from './components/compliance-link';
+import { getUser } from '@/app/apis/data/user';
+import { User } from '@/components/layout/dashboard-header';
 
-export default function ComplianceHome() {
+export default async function ComplianceHome() {
+  const user: User = await getUser();
   return (
     <section className='space-y-8'>
-      <ComplianceLinks user={fakeUsers} />
+      <ComplianceLinks user={user} />
       <div>
         <DataTable
           title='Recent Transactions'

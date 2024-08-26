@@ -5,7 +5,9 @@ import {
   UserComplianceSchema,
 } from '@/lib/form-schema';
 import { PrevStateProps } from './auth';
+import { fetchWithAuth } from '@/lib/http-config';
 import { redirect } from 'next/navigation';
+import { revalidateTag } from 'next/cache';
 // import { http } from '../../lib/httpConfig';
 
 export interface UserComplianceState extends PrevStateProps {
@@ -37,7 +39,7 @@ export async function userCompliance(
 
   if (!validatedFields.success) {
     return {
-      message: 'Missing fields. Login Failed.',
+      message: 'Missing fields.',
       errors: validatedFields.error.flatten().fieldErrors,
       status: 'failed',
     };
@@ -45,32 +47,30 @@ export async function userCompliance(
 
   //data to submit to database
   const dataToSubmit = validatedFields.data;
+  const dataToSend = {
+    BVN: dataToSubmit.bvn,
+    type: dataToSubmit.documentType,
+    document: dataToSubmit.documentUrl,
+  };
 
   try {
-    console.log(dataToSubmit);
+    console.log(dataToSend);
 
-    // const response = await http('/auth/login', {
-    //   method: 'POST',
-    //   body: JSON.stringify(dataToSubmit),
-    // });
-    // // console.log(response.body);
-    // const data = await response.json();
-    // // console.log(data);
-    // if (!response.ok) {
-    //   return { ...prevState, message: data, status: 'failed' };
-    // }
-    return {
-      ...prevState,
-      message: 'Submitted. Waiting approval...',
-      status: 'success',
-    };
-
-    // return { ...prevState, message: 'Login Successful', status: 'success' };
+    const response = await fetchWithAuth('/account/kyc', {
+      method: 'POST',
+      body: JSON.stringify(dataToSend),
+    });
+    // console.log(response);
+    const data = await response.json();
+    // console.log(data);
+    if (!response.ok) {
+      return { ...prevState, message: data, status: 'failed' };
+    }
+    revalidateTag('user');
   } catch (error) {
     if (error) {
       return {
-        ...prevState,
-        message: 'Login failed',
+        message: 'Failed to update compliance',
         status: 'failed',
       };
     }
@@ -96,19 +96,28 @@ export async function businessCompliance(
   //data to submit to database
   const dataToSubmit = validatedFields.data;
 
-  try {
-    console.log(dataToSubmit);
+  const dataToSend = {
+    registrationType: dataToSubmit.businessRegistrationType, //["BN", "RC", "Nepza"]
+    registrationNumber: dataToSubmit.businessRegistrationNumber,
+    registrationCertificate: dataToSubmit.cacUrl,
+    BVN: dataToSubmit.directorBvn,
+    directorIdentityType: dataToSubmit.documentType, //["NIN", "international-passport", "driving-license", "voters-card"]
+    directorIdentityDocument: dataToSubmit.documentUrl,
+  };
 
-    // const response = await http('/auth/login', {
-    //   method: 'POST',
-    //   body: JSON.stringify(dataToSubmit),
-    // });
-    // // console.log(response.body);
-    // const data = await response.json();
-    // // console.log(data);
-    // if (!response.ok) {
-    //   return { ...prevState, message: data, status: 'failed' };
-    // }
+  try {
+    console.log(dataToSend);
+
+    const response = await fetchWithAuth('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(dataToSubmit),
+    });
+    // console.log(response.body);
+    const data = await response.json();
+    // console.log(data);
+    if (!response.ok) {
+      return { ...prevState, message: data, status: 'failed' };
+    }
     return {
       ...prevState,
       message: 'Submitted. Waiting approval...',

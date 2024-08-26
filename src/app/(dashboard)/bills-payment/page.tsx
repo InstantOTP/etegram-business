@@ -1,4 +1,4 @@
-import { LogoutButton } from '@/components/common/buttons/logout';
+import Logout from '@/components/common/buttons/logout';
 
 export default function BillsPaymentPage() {
   return (
@@ -6,7 +6,7 @@ export default function BillsPaymentPage() {
       <h1>Maintainence</h1>
       <p>Bills payment page</p>
       <p>We will be back shortly.</p>
-      <LogoutButton />
+      <Logout />
     </main>
   );
 }

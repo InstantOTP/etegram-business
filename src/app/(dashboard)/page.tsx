@@ -4,17 +4,20 @@ import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { formatter } from '@/lib/utils';
 import DataTable from '@/components/ui/table';
-import { fakeUsers, tableData } from '@/lib/static-data';
+import { tableData } from '@/lib/static-data';
 import Link from 'next/link';
+import { getUser } from '../apis/data/user';
+import { User } from '@/components/layout/dashboard-header';
 
-export default function Home() {
+export default async function Home() {
+  const user: User = await getUser();
   return (
     <section className='space-y-12'>
-      {!fakeUsers.isVerified && (
+      {user?.kycApprovalStatus === 'pending' && (
         <div className='bg-[#fff8dd] text-sm md:text-sm text-foreground flex flex-col md:flex-row md:items-center py-3 px-4 rounded-xl md:divide-x-2 md:divide-foreground max-w-fit'>
           <p className='md:pr-4 '>
-            Hi {'johndoe'}, You are yet to complete setting up your business
-            account
+            Hi {user?.firstname}, You are yet to complete setting up your
+            business account
           </p>
 
           <Link

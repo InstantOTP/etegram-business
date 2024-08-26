@@ -1,13 +1,15 @@
 'use client';
 
-import { sidebarLinks, fakeUsers } from '@/lib/static-data';
+import { sidebarLinks } from '@/lib/static-data';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from '../common/logo';
+import { User } from './dashboard-header';
 
-const DashboardSidebar = () => {
+const DashboardSidebar = ({ user }: { user: User }) => {
   const pathname = usePathname();
+  // console.log(user);
   return (
     <aside className='hidden lg:block w-full max-w-[15.625rem] h-svh shadow-md bg-background overflow-y-auto pb-8  border-r styled-scrollbar'>
       <div className='px-5 sticky top-0 left-0 bg-white z-10 pt-3'>
@@ -63,7 +65,7 @@ const DashboardSidebar = () => {
                               'text-[10px] font-semibold bg-accent px-0.5 rounded-md',
                               {
                                 'bg-destructive text-destructive-foreground':
-                                  !fakeUsers.isVerified,
+                                  user?.kycApprovalStatus === 'pending',
                               }
                             )}
                           >

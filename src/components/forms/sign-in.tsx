@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Input, PasswordInput } from '../ui/input';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Checkbox } from '../ui/checkbox';
 import { useFormState, useFormStatus } from 'react-dom';
@@ -11,6 +11,7 @@ import { LucideLoader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { login } from '@/app/apis/actions/auth';
 import { useSearchParams } from 'next/navigation';
+import { useToast } from '../ui/use-toast';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -41,6 +42,16 @@ export default function SignInForm() {
     redirectUrl: searchParams.get('redirectUrl') || '',
   };
   const [state, dispatch] = useFormState(login, initalState);
+  const { toast } = useToast();
+  useEffect(() => {
+    if (state?.message && state.status) {
+      toast({
+        description: state.message,
+        variant: state.status !== 'success' ? 'destructive' : 'default',
+      });
+    }
+  }, [state]);
+
   return (
     <div className='w-full space-y-5 py-11 px-6 md:p-11 flex flex-col justify-center items-center'>
       <div>

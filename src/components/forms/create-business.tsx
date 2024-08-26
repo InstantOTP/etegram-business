@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Input, PasswordInput } from '../ui/input';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Checkbox } from '../ui/checkbox';
 import { useFormState, useFormStatus } from 'react-dom';
@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { etegramUses } from '@/lib/static-data';
+import { useToast } from '../ui/use-toast';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -51,6 +52,15 @@ export default function CreateBusinessForm() {
     redirectUrl: searchParams.get('redirectUrl') || '',
   };
   const [state, dispatch] = useFormState(createBusiness, initalState);
+  const { toast } = useToast();
+  useEffect(() => {
+    if (state?.message && state.status) {
+      toast({
+        description: state.message,
+        variant: state.status !== 'success' ? 'destructive' : 'default',
+      });
+    }
+  }, [state]);
   return (
     <div className='w-full space-y-5 py-11 px-6 md:p-11 flex flex-col justify-center items-center'>
       <Image
@@ -120,7 +130,7 @@ export default function CreateBusinessForm() {
           >
             <div className='flex items-center space-x-2 p-2 rounded-[0.625rem] border-[1.5px] border-transparent bg-[#F3F8FF]  hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'>
               <RadioGroupItem
-                value='starter business'
+                value='starter'
                 id='starter business'
                 className='flex-shrink-0'
               />
@@ -134,7 +144,7 @@ export default function CreateBusinessForm() {
 
             <div className='flex items-center space-x-2 p-2 rounded-[0.625rem] border-[1.5px] border-transparent bg-[#F3F8FF]  hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'>
               <RadioGroupItem
-                value='registered business'
+                value='registered'
                 id='registered business'
                 className='flex-shrink-0'
               />

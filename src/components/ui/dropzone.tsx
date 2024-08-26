@@ -51,7 +51,7 @@ export default function CustomDropZone({
               {/* This input sends the url of the image kit uploaded image to the backend */}
               <input
                 name={name}
-                value={value}
+                defaultValue={value}
                 hidden
                 type='text'
               />

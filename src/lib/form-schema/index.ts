@@ -78,3 +78,24 @@ export const CreateProjectSchema = z.object({
   projectName: z.string().min(1, { message: 'Project Name is required' }),
   projectDescription: z.string(),
 });
+
+export const ForgotpasswordSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: 'Email is required' })
+    .email({ message: 'Invalid email' }),
+});
+
+export const ResetpasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, { message: 'Password must be 8 or more character' }),
+    confirmPassword: z
+      .string()
+      .min(6, { message: 'Password must be 8 or more character' }),
+  })
+  .refine(({ confirmPassword, password }) => confirmPassword === password, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });

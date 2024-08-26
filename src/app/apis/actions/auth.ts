@@ -4,11 +4,13 @@ import { redirect } from 'next/navigation';
 import { revalidateTag, revalidatePath } from 'next/cache';
 import {
   CreateBusinessSchema,
+  ForgotpasswordSchema,
   LoginSchema,
+  ResetpasswordSchema,
   SignUpSchema,
   VerifyEmailSchema,
 } from '@/lib/form-schema';
-// import { http } from '../../lib/httpConfig';
+import { fetchWithAuth } from '@/lib/http-config';
 import { cookies } from 'next/headers';
 
 export interface PrevStateProps {
@@ -41,6 +43,7 @@ export interface VerifyEmailState extends PrevStateProps {
     otp?: string[];
   };
   email?: string;
+  from?: string;
 }
 
 export interface CreateBusinessState extends PrevStateProps {
@@ -96,30 +99,30 @@ export async function login(
     ? `?redirectUrl=${prevState.redirectUrl}`
     : '';
   try {
-    console.log(dataToSubmit);
+    // console.log(dataToSubmit);
 
-    // const response = await http('/auth/login', {
-    //   method: 'POST',
-    //   body: JSON.stringify(dataToSubmit),
-    // });
-    // // console.log(response.body);
-    // const data = await response.json();
-    // // console.log(data);
-    // if (!response.ok) {
-    //   return { ...prevState, message: data, status: 'failed' };
-    // }
+    const response = await fetchWithAuth('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(dataToSubmit),
+    });
+    // console.log(response);
+    const data = await response.json();
+    // console.log(data);
+    if (!response.ok) {
+      return { ...prevState, message: data, status: 'failed' };
+    }
+
     cookies().set({
       name: 'access_token',
-      value: 'access',
+      value: data?.accessToken,
       expires: expiresIn6hrs,
     });
 
     cookies().set({
       name: 'refresh_token',
-      value: 'refresh',
+      value: data?.refreshToken,
       expires: expiresIn1day,
     });
-    // return { ...prevState, message: 'Login Successful', status: 'success' };
   } catch (error) {
     if (error) {
       return {
@@ -128,7 +131,7 @@ export async function login(
       };
     }
   }
-  redirect(`/onboarding/select-business`);
+  redirect(`/auth/verify-email?email=${dataToSubmit.email}&from=sign-in`);
 }
 
 // SIGN UP ACTION
@@ -148,39 +151,37 @@ export async function signup(
     };
   }
 
-  const referral = prevState?.referral ? prevState.referral : '';
-
   //data to submit to database
   const dataToSubmit = validatedFields.data;
-  // const dataToSend = {
-  //   username: dataToSubmit.username,
-  //   email: dataToSubmit.email,
-  //   phone: dataToSubmit.phone,
-  //   password: dataToSubmit.password,
-  //   referral,
-  // };
+  const dataToSend = {
+    firstname: dataToSubmit.firstName,
+    lastname: dataToSubmit.lastName,
+    email: dataToSubmit.email,
+    phone: dataToSubmit.phone,
+    password: dataToSubmit.password,
+  };
   try {
-    console.log(dataToSubmit);
-    // const response = await http('/auth', {
-    //   method: 'POST',
-    //   body: JSON.stringify(dataToSend),
-    // });
-    // // console.log(response);
-    // const data = await response.json();
-    // // console.log(data);
-    // if (!response.ok) {
-    //   return { ...prevState, message: data, status: 'failed' };
-    // }
+    // console.log(dataToSend);
+    const response = await fetchWithAuth('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(dataToSend),
+    });
+    // console.log(response);
+    const data = await response.json();
+    console.log(data);
+    if (!response.ok) {
+      return { ...prevState, message: data, status: 'failed' };
+    }
 
     cookies().set({
       name: 'access_token',
-      value: 'access',
+      value: data?.accessToken,
       expires: expiresIn6hrs,
     });
 
     cookies().set({
       name: 'refresh_token',
-      value: 'refresh',
+      value: data?.refreshToken,
       expires: expiresIn1day,
     });
   } catch (error) {
@@ -192,7 +193,7 @@ export async function signup(
       status: 'failed',
     };
   }
-  redirect(`/auth/verify-email`);
+  redirect(`/auth/verify-email?email=${dataToSubmit.email}&from=sign-up`);
 }
 
 // VERIFY EMAIL
@@ -214,20 +215,17 @@ export async function verifyEmail(
 
   //data to submit to database
   const dataToSubmit = validatedFields.data;
-  // const dataToSend = {
-  //   username: dataToSubmit.username,
-  //   email: dataToSubmit.email,
-  //   phone: dataToSubmit.phone,
-  //   password: dataToSubmit.password,
-  //   referral,
-  // };
+  const dataToSend = {
+    email: prevState?.email,
+    verificationCode: dataToSubmit.otp,
+  };
   try {
-    console.log(dataToSubmit);
-    // const response = await http('/auth', {
-    //   method: 'POST',
+    console.log(dataToSend);
+    // const response = await fetchWithAuth('/auth/verify-account', {
+    //   method: 'PATCH',
     //   body: JSON.stringify(dataToSend),
     // });
-    // // console.log(response);
+    // console.log(response);
     // const data = await response.json();
     // // console.log(data);
     // if (!response.ok) {
@@ -242,7 +240,15 @@ export async function verifyEmail(
       status: 'failed',
     };
   }
-  redirect(`/auth/create-business`);
+  if (prevState?.from === 'sign-up') {
+    redirect(`/auth/create-business`);
+  } else if (prevState?.from === 'sign-in') {
+    redirect('/onboarding/select-business');
+  } else {
+    redirect(
+      `/auth/reset-password?email=${prevState?.email}&otp=${dataToSubmit.otp}`
+    );
+  }
 }
 
 // VERIFY EMAIL
@@ -267,21 +273,26 @@ export async function createBusiness(
   //data to submit to database
   const dataToSubmit = validatedFields.data;
   const dataToSend = {
-    ...dataToSubmit,
-    reasons,
+    name: dataToSubmit.businessName,
+    username: dataToSubmit.userName,
+    type: dataToSubmit.businessType,
+    useCase: reasons,
+    industry: dataToSubmit.businessIndustry,
+    softwareDeveloper: dataToSubmit.developer === 'yes' ? true : false,
   };
+
   try {
-    console.log(dataToSend);
-    // const response = await http('/auth', {
-    //   method: 'POST',
-    //   body: JSON.stringify(dataToSend),
-    // });
-    // // console.log(response);
-    // const data = await response.json();
-    // // console.log(data);
-    // if (!response.ok) {
-    //   return { ...prevState, message: data, status: 'failed' };
-    // }
+    // console.log(dataToSend);
+    const response = await fetchWithAuth('/business', {
+      method: 'POST',
+      body: JSON.stringify(dataToSend),
+    });
+    // console.log(response);
+    const data = await response.json();
+    // console.log(data);
+    if (!response.ok) {
+      return { ...prevState, message: data, status: 'failed' };
+    }
   } catch (error) {
     console.error(error);
     // If a database error occurs, return a more specific error.
@@ -294,149 +305,125 @@ export async function createBusiness(
   redirect(`/onboarding/select-business`);
 }
 // FORGOT PASSWORD ACTION
-// export async function forgotPassword(
-//   prevState: ForgotPasswordState | undefined,
-//   formData: FormData
-// ) {
-//   const data = Object.fromEntries(formData.entries());
-//   const validatedFields = ForgotpasswordSchema.safeParse(data);
+export async function forgotPassword(
+  prevState: ForgotPasswordState | undefined,
+  formData: FormData
+) {
+  const data = Object.fromEntries(formData.entries());
+  const validatedFields = ForgotpasswordSchema.safeParse(data);
 
-//   if (!validatedFields.success) {
-//     return {
-//       message: 'Missing fields. Login Failed.',
-//       errors: validatedFields.error.flatten().fieldErrors,
-//     };
-//   }
+  if (!validatedFields.success) {
+    return {
+      message: 'Missing fields. Login Failed.',
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
 
-//   //data to submit to database
-//   const dataToSubmit = validatedFields.data;
-//   try {
-//     const response = await http('/auth/forgot-password', {
-//       method: 'PATCH',
-//       body: JSON.stringify(dataToSubmit),
-//     });
-//     // console.log(response);
-//     const data = await response.json();
-//     // console.log(data);
-//     if (!response.ok) {
-//       return { ...prevState, message: data, status: 'failed' };
-//     }
-//     return {
-//       ...prevState,
-//       message: data,
-//       status: 'success',
-//     };
-//   } catch (error) {
-//     return {
-//       message: 'Something happened. Try again!',
-//       status: 'failed',
-//     };
-//   }
-//   // redirect('/auth/sign-in');
-// }
+  //data to submit to database
+  const dataToSubmit = validatedFields.data;
+  try {
+    const response = await fetchWithAuth('/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify(dataToSubmit),
+    });
+    // console.log(response);
+    const data = await response.json();
+    // console.log(data);
+    if (!response.ok) {
+      return { ...prevState, message: data, status: 'failed' };
+    }
+    // return {
+    //   ...prevState,
+    //   message: data,
+    //   status: 'success',
+    // };
+  } catch (error) {
+    return {
+      message: 'Something happened. Try again!',
+      status: 'failed',
+    };
+  }
+  redirect(
+    `/auth/verify-email?email=${dataToSubmit.email}&from=forgot-password`
+  );
+}
 
 // LOGOIT ACTION
 export async function logout() {
   let refreshToken = { refreshToken: cookies().get('refresh_token')?.value };
 
   try {
-    // const response = await http('/auth/logout', {
-    //   method: 'POST',
-    //   body: JSON.stringify(refreshToken),
-    // });
+    const response = await fetchWithAuth('/auth/logout', {
+      method: 'DELETE',
+      body: JSON.stringify(refreshToken),
+    });
+    // console.log(response);
+    const data = await response.json();
+    // console.log(data);
 
-    // const data = await response.json();
-
-    // if (!response.ok) {
-    //   return { message: data?.message, status: 'failed' };
-    // }
+    if (!response.ok) {
+      return { message: data?.message, status: 'failed' };
+    }
 
     cookies().delete('access_token');
     cookies().delete('refresh_token');
-    cookies().delete('provider_id');
-
-    // return { message: data?.message, status: "success" }
   } catch (error: any) {
     if (error) {
-      // if (data === 'User not found!') {
-      //   redirect('/auth/sign-in');
-      // }
       cookies().delete('access_token');
       cookies().delete('refresh_token');
-      cookies().delete('provider_id');
       redirect('/auth/sign-in');
-
-      // return {
-      //   message: 'Failed to logout. Please try again',
-      //   status: 'failed',
-      // };
     }
   }
 
-  // revalidateTag('user');
-  // revalidatePath('/dashboard', 'layout');
+  revalidateTag('user');
+  revalidatePath('/dashboard', 'layout');
   redirect('/auth/sign-in');
 }
 
-//SELECT PROVIDER ACTION
-// export async function handleSelectProviderAction(
-//   providerID: string,
-//   providerName: string,
-//   changeRoute = true
-// ) {
-//   cookies().set('provider_id', providerID);
-//   cookies().set('provider_name', providerName);
-//   revalidateTag('countries');
-//   revalidateTag('services');
-//   if (changeRoute) {
-//     redirect('/dashboard');
-//   }
-// }
+export async function resetPassword(
+  prevState: ResetPasswordState | undefined,
+  formData: FormData
+) {
+  const data = Object.fromEntries(formData.entries());
+  const validatedFields = ResetpasswordSchema.safeParse(data);
+  // console.log(prevState);
 
-// export async function resetPassword(
-//   prevState: ResetPasswordState | undefined,
-//   formData: FormData
-// ) {
-//   const data = Object.fromEntries(formData.entries());
-//   const validatedFields = ResetPasswordSchema.safeParse(data);
-//   // console.log(prevState);
+  if (!validatedFields.success) {
+    return {
+      ...prevState,
+      message: 'Missing fields. Please, Try again.',
+      errors: validatedFields.error.flatten().fieldErrors,
+      status: 'failed',
+    };
+  }
 
-//   if (!validatedFields.success) {
-//     return {
-//       ...prevState,
-//       message: 'Missing fields. Please, Try again.',
-//       errors: validatedFields.error.flatten().fieldErrors,
-//       status: 'failed',
-//     };
-//   }
+  //data to submit to database
+  const dataToSubmit = validatedFields.data;
 
-//   //data to submit to database
-//   const dataToSubmit = validatedFields.data;
-
-//   let dataToSend = {
-//     password: dataToSubmit.password,
-//     email: prevState?.email,
-//     token: prevState?.token,
-//   };
-//   try {
-//     const response = await http('/auth/reset-password', {
-//       method: 'PATCH',
-//       body: JSON.stringify(dataToSend),
-//     });
-//     // console.log(response);
-//     const data = await response.json();
-//     // console.log(data);
-//     if (!response.ok) {
-//       return { ...prevState, message: data, status: 'failed' };
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     // If a database error occurs, return a more specific error.
-//     return {
-//       ...prevState,
-//       message: 'failed',
-//       status: 'failed',
-//     };
-//   }
-//   redirect(`/auth/sign-in`);
-// }
+  let dataToSend = {
+    password: dataToSubmit.password,
+    email: prevState?.email,
+    token: prevState?.token,
+  };
+  try {
+    const response = await fetchWithAuth('/auth/reset-password', {
+      method: 'PATCH',
+      body: JSON.stringify(dataToSend),
+    });
+    // console.log(response);
+    const data = await response.json();
+    // console.log(data);
+    if (!response.ok) {
+      return { ...prevState, message: data, status: 'failed' };
+    }
+  } catch (error) {
+    console.error(error);
+    // If a database error occurs, return a more specific error.
+    return {
+      ...prevState,
+      message: 'failed',
+      status: 'failed',
+    };
+  }
+  redirect(`/auth/sign-in`);
+}

@@ -29,23 +29,36 @@ import { useToast } from '../ui/use-toast';
 import { sidebarLinks } from '@/lib/static-data';
 import SearchTransactions from '../common/search-transactions';
 import { Icons } from '../icons';
+import Logout from '../common/buttons/logout';
 // import { SwitchProvider } from '../switch-provider';
 
+// export interface User {
+//   userID: string;
+//   username: string;
+//   email: string;
+//   isVerified: boolean;
+//   phone: string;
+//   status: string;
+//   totalTransactions: number;
+//   wallet: number;
+//   pushedNumbers: number;
+//   rentedNumbers: number;
+//   referralCode: string;
+//   isPINset: string;
+//   hasBusiness: boolean;
+//   isBusinessVerified: boolean;
+// }
 export interface User {
-  userID: string;
-  username: string;
-  email: string;
-  isVerified: boolean;
+  firstname: string;
+  lastname: string;
   phone: string;
-  status: string;
-  totalTransactions: number;
-  wallet: number;
-  pushedNumbers: number;
-  rentedNumbers: number;
-  referralCode: string;
-  isPINset: string;
-  hasBusiness: boolean;
-  isBusinessVerified: boolean;
+  email: string;
+  kycApprovalStatus: 'pending' | 'approved';
+  status: 'pending' | 'active';
+  business: any[];
+  createdAt: string;
+  updatedAt: string;
+  id: string;
 }
 
 const PageTitle = ({ username }: { username: string }) => {
@@ -79,22 +92,16 @@ function LogoutButton() {
   );
 }
 
-export const DashboardHeader = ({ user }: { user: User }) => {
+export const DashboardHeader = ({
+  user,
+  business,
+}: {
+  user: User;
+  business: bussinessType;
+}) => {
   const pathname = usePathname();
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [state, dispatch] = useFormState(logout, undefined);
   const [isOpen, setIsOpen] = useState(false);
-
-  const { toast } = useToast();
-
-  //   useEffect(() => {
-  //     if (state && state?.message) {
-  //       toast({
-  //         description: state?.message || 'Logged out successfully',
-  //         variant: state?.status !== 'failed' ? 'default' : 'destructive',
-  //       });
-  //     }
-  //   }, [state, toast]);
 
   // const pageTitle = useMemo(() => {
   //   return sidebarLinks.find((item) => item.path === pathname)?.label;
@@ -223,10 +230,18 @@ export const DashboardHeader = ({ user }: { user: User }) => {
         </Suspense>
 
         <div className='flex items-center space-x-2 bg-[#f5f9ff] p-2 rounded-md'>
-          <p className='text-sm text-[#ffc001]'>Pending</p>
+          <p
+            className={cn('text-sm text-[#ffc001] capitalize', {
+              'text-green-500': business?.status === 'active',
+            })}
+          >
+            {business?.status}
+          </p>
           <div
             aria-hidden
-            className='w-2.5 h-2.5 bg-[#ffc001] rounded-full'
+            className={cn('w-2.5 h-2.5 bg-[#ffc001] rounded-full', {
+              'text-green-500': business?.status === 'active',
+            })}
           />
         </div>
 
@@ -249,15 +264,15 @@ export const DashboardHeader = ({ user }: { user: User }) => {
               <Avatar className='h-8 w-8 mr-1.5'>
                 <AvatarImage
                   src='/profile-pic.jpg'
-                  alt={`@${user?.username}`}
+                  alt={`@${user?.firstname}`}
                   className='object-cover'
                 />
                 <AvatarFallback>
-                  {user ? findUpper(user.username) : 'U'}
+                  {user ? findUpper(`${user.firstname} ${user.lastname}`) : 'U'}
                 </AvatarFallback>
               </Avatar>
               <div className=''>
-                <h6>Korner Limited</h6>
+                <h6>{business?.name}</h6>
                 <p className='text-left text-[#909090] text-[13px]'>
                   ETN123456
                 </p>
@@ -272,7 +287,7 @@ export const DashboardHeader = ({ user }: { user: User }) => {
             <DropdownMenuLabel className='font-normal'>
               <div className='flex flex-col space-y-1'>
                 <p className='text-sm font-medium leading-none'>
-                  {user?.username}
+                  {user?.firstname} {user?.lastname}
                 </p>
                 <p className='text-xs leading-none text-muted-foreground'>
                   {user?.email}
@@ -286,15 +301,7 @@ export const DashboardHeader = ({ user }: { user: User }) => {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <form action={dispatch}>
-                <Button
-                  variant={'ghost'}
-                  type='submit'
-                  className='text-destructive hover:!text-destructive w-full justify-start'
-                >
-                  Logout
-                </Button>
-              </form>
+              <Logout />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

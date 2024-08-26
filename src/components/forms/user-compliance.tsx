@@ -105,11 +105,11 @@ export default function UserComplianceForm() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='NIN'>NIN</SelectItem>
-              <SelectItem value='National Passport'>
-                National Passport
+              <SelectItem value='international-passport'>
+                International Passport
               </SelectItem>
-              <SelectItem value='Drivers License'>Drivers License</SelectItem>
-              <SelectItem value={`Voters card`}>Voters License</SelectItem>
+              <SelectItem value='driving-license'>Drivers License</SelectItem>
+              <SelectItem value={`voters-card`}>Voters License</SelectItem>
             </SelectContent>
           </Select>
           {state?.errors?.documentType ? (

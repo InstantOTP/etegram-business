@@ -33,11 +33,12 @@ export async function middleware(request: NextRequest) {
   }
   let token = null;
   if (!isAuth && refresh_token) {
-    await fetch(`${process.env.API_BASE_URL}/auth/get-access-token`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken: refresh_token }),
-    })
+    await fetch(
+      `${process.env.API_BASE_URL}/auth/access-token?refreshToken=${refresh_token}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+      }
+    )
       .then((response) => {
         // console.log(response);
         if (response.ok) {
@@ -48,7 +49,7 @@ export async function middleware(request: NextRequest) {
       .then((data) => {
         // console.log(data);
         if (data) {
-          token = data?.accesstoken;
+          token = data?.accessToken;
         }
       })
       .catch((error) => {

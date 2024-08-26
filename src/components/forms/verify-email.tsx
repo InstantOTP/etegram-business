@@ -32,13 +32,13 @@ function SubmitButton() {
 
 export default function VerifyEmailForm() {
   const searchParams = useSearchParams();
-  const initalState = {
+  const [state, dispatch] = useFormState(verifyEmail, {
     message: '',
     errors: {},
     status: '',
-    email: '',
-  };
-  const [state, dispatch] = useFormState(verifyEmail, initalState);
+    email: searchParams.get('email') || '',
+    from: searchParams.get('from') || '',
+  });
   return (
     <div className='w-full space-y-5 py-11 px-6 md:p-11 flex flex-col justify-center items-center'>
       <Image
