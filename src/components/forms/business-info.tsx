@@ -22,6 +22,7 @@ import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { useToast } from '../ui/use-toast';
 import { State, IState, ICity, City } from 'country-state-city';
+import { uploadImageToImagekit } from '@/app/apis/actions/upload';
 
 function SubmitButton({
   isImageUploaded,
@@ -70,12 +71,17 @@ export default function BusinessInfoForm() {
     return City.getCitiesOfState('NG', selectedState);
   }, [selectedState]);
 
-  function uploadImage() {
+  async function uploadImage() {
     if (acceptedFiles.length === 0) {
       toast({ description: 'Please select a file', variant: 'destructive' });
       return;
     }
-    setUploadedLogo(URL.createObjectURL(acceptedFiles[0]));
+    const data = await uploadImageToImagekit(
+      acceptedFiles[0],
+      acceptedFiles[0]?.name
+    );
+    console.log(data);
+    // setUploadedLogo(URL.createObjectURL(acceptedFiles[0]));
   }
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { cn } from '@/lib/utils';
 import { useToast } from './use-toast';
+import { uploadImageToImagekit } from '@/app/apis/actions/upload';
 
 interface CustomDropZoneProps {
   value: string;
@@ -29,12 +30,14 @@ export default function CustomDropZone({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  function uploadImage() {
+  async function uploadImage() {
     if (acceptedFiles.length === 0) {
       toast({ description: 'Please select a file', variant: 'destructive' });
       return;
     }
-    setValue(URL.createObjectURL(acceptedFiles[0]));
+    let fileToSend = acceptedFiles[0];
+    const data = await uploadImageToImagekit(fileToSend, fileToSend.name);
+    setValue(data?.url);
   }
   return (
     <div>

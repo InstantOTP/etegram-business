@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest) {
   let token = null;
   if (!isAuth && refresh_token) {
     await fetch(
-      `${process.env.API_BASE_URL}/auth/access-token?refreshToken=${refresh_token}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/access-token?refreshToken=${refresh_token}`,
       {
         headers: { 'Content-Type': 'application/json' },
       }

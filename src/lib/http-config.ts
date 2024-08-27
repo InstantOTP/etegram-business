@@ -16,7 +16,7 @@ export async function getTokens(): Promise<{
   );
 }
 
-export const BACKEND_URL = process.env.API_BASE_URL;
+export const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 //CUSTOM FETCH REQUEST WITH ACCESS TOKEN INCLUDED IF AVAILABLE
 export async function fetchWithAuth(url: string, options: RequestInit = {}) {
@@ -30,5 +30,8 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
   headers.set('Content-Type', 'application/json');
   headers.set('Accept', 'application/json');
 
-  return fetch(`${process.env.API_BASE_URL}${url}`, { ...options, headers });
+  return fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
+    ...options,
+    headers,
+  });
 }

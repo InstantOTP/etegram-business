@@ -8,6 +8,7 @@ import { PrevStateProps } from './auth';
 import { fetchWithAuth } from '@/lib/http-config';
 import { redirect } from 'next/navigation';
 import { revalidateTag } from 'next/cache';
+import { cookies } from 'next/headers';
 // import { http } from '../../lib/httpConfig';
 
 export interface UserComplianceState extends PrevStateProps {
@@ -82,6 +83,7 @@ export async function businessCompliance(
   prevState: BusinessComplianceState | undefined,
   formData: FormData
 ) {
+  const businessID = cookies().get('businessId')?.value;
   const data = Object.fromEntries(formData.entries());
   const validatedFields = BusinessComplianceSchema.safeParse(data);
 
@@ -108,9 +110,9 @@ export async function businessCompliance(
   try {
     console.log(dataToSend);
 
-    const response = await fetchWithAuth('/auth/login', {
+    const response = await fetchWithAuth(`/business/kyc/${businessID}`, {
       method: 'POST',
-      body: JSON.stringify(dataToSubmit),
+      body: JSON.stringify(dataToSend),
     });
     // console.log(response.body);
     const data = await response.json();
