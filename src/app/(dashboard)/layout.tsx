@@ -3,14 +3,16 @@ import { DashboardSidebar } from '@/components/layout/dashboard-sidebar';
 import { getUser } from '../apis/data/user';
 import { getCurrentBusiness } from '../apis/data/business';
 
+export const dynamic = 'force-dynamic';
+
 export default async function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const [user, business] = await Promise.all([getUser(), getCurrentBusiness()]);
-  console.log(business);
-  console.log(user);
+  // console.log(business);
+  // console.log(user);
   return (
     <section className='bg-[#ecf4fb] flex w-full min-h-svh overflow-y-hidden'>
       <DashboardSidebar user={user} />
