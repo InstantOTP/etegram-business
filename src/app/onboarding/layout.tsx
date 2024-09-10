@@ -1,8 +1,10 @@
+import Logout from '@/components/common/buttons/logout';
 import Logo from '@/components/common/logo';
 import { buttonVariants } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
 export default function OnBoardingLayout({
   children,
 }: {
@@ -12,13 +14,12 @@ export default function OnBoardingLayout({
     <div className='min-h-svh'>
       <div className='container flex justify-between items-center'>
         <Logo />
-        <Link
-          href={'/auth/login'}
-          className={buttonVariants({ variant: 'outline' })}
-        >
-          <ArrowLeft />
-          <span> Return to Login</span>
-        </Link>
+        <Logout
+          className={buttonVariants({
+            variant: 'outline',
+            className: 'text-primary',
+          })}
+        />
       </div>
       {children}
     </div>

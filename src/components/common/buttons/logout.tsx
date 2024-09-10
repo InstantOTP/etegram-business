@@ -34,7 +34,7 @@ function LogoutButton() {
   );
 }
 
-export default function Logout() {
+export default function Logout({ className }: { className?: string }) {
   const [state, dispatch] = useFormState(logout, undefined);
 
   // const { toast } = useToast();
@@ -51,7 +51,9 @@ export default function Logout() {
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <p className='text-sm text-destructive px-2 pb-1'>Logout</p>
+        <p className={cn('text-sm text-destructive px-2 pb-1', className)}>
+          Logout
+        </p>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

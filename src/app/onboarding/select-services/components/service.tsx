@@ -7,7 +7,17 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { selectService } from '@/app/apis/actions/business';
 
-export default function ServicesList() {
+export type selectServicesType = {
+  name: string;
+  description: string;
+  id: string;
+};
+
+export default function ServicesList({
+  services,
+}: {
+  services: selectServicesType[];
+}) {
   const [value, setValue] = useState('');
   return (
     <div>
@@ -18,60 +28,35 @@ export default function ServicesList() {
         value={value}
         onValueChange={setValue}
       >
-        <div className='flex justify-between space-x-3 p-4 items-center  rounded-[0.625rem] border-[1.5px] border-border w-full  peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'>
-          <label
-            htmlFor='collect payment'
-            className='max-w-[25rem] flex space-x-6 items-center'
+        {services.map((item) => (
+          <div
+            key={item.id}
+            className='flex justify-between space-x-3 p-4 items-center  rounded-[0.625rem] border-[1.5px] border-border w-full  peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'
           >
-            <div className='flex justify-center items-center bg-accent p-2 rounded-full w-[60px] h-[60px] flex-shrink-0'>
-              <Image
-                src={'/assets/icons/sidebar/bill-payment.svg'}
-                alt='Invoice'
-                width={25}
-                height={25}
-              />
-            </div>
-            <div className='space-y-1'>
-              <p className='text-base font-medium'>Collect Payment</p>
-              <p className='text-primary/50 text-sm'>
-                Vorem ipsum dolor sit amet, cectetur adipiscing elitunc
-                vulputate ipsum.
-              </p>
-            </div>
-          </label>
-          <RadioGroupItem
-            value='collect payment'
-            id='collect payment'
-            className='flex-shrink-0'
-          />
-        </div>
-        <div className='flex justify-between space-x-3 p-4 items-center  rounded-[0.625rem] border-[1.5px] border-border w-full  peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'>
-          <label
-            htmlFor='generate invoice'
-            className='max-w-[25rem] flex space-x-6 items-center'
-          >
-            <div className='flex justify-center items-center bg-accent p-2 rounded-full w-[60px] h-[60px] flex-shrink-0'>
-              <Image
-                src={'/assets/icons/sidebar/bill-payment.svg'}
-                alt='Invoice'
-                width={25}
-                height={25}
-              />
-            </div>
-            <div className='space-y-1'>
-              <p className='text-base font-medium'>Generate Invoice</p>
-              <p className='text-primary/50 text-sm'>
-                Vorem ipsum dolor sit amet, cectetur adipiscing elitunc
-                vulputate ipsum.
-              </p>
-            </div>
-          </label>
-          <RadioGroupItem
-            value='Generate Invoice'
-            id='generate invoice'
-            className='flex-shrink-0'
-          />
-        </div>
+            <label
+              htmlFor={item.name}
+              className='max-w-[25rem] flex space-x-6 items-center'
+            >
+              <div className='flex justify-center items-center bg-accent p-2 rounded-full w-[60px] h-[60px] flex-shrink-0'>
+                <Image
+                  src={'/assets/icons/sidebar/bill-payment.svg'}
+                  alt='Invoice'
+                  width={25}
+                  height={25}
+                />
+              </div>
+              <div className='space-y-1'>
+                <p className='text-base font-medium'>{item.name}</p>
+                <p className='text-primary/50 text-sm'>{item.description}</p>
+              </div>
+            </label>
+            <RadioGroupItem
+              value={item.id}
+              id={item.name}
+              className='flex-shrink-0'
+            />
+          </div>
+        ))}
       </RadioGroup>
 
       <Button

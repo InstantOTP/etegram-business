@@ -1,15 +1,17 @@
 'use client';
 
-import { verifyEmail } from '@/app/apis/actions/auth';
+import { sendVerificationCode, verifyEmail } from '@/app/apis/actions/auth';
 import { cn } from '@/lib/utils';
 import { LucideLoader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { useToast } from '../ui/use-toast';
+import useCountdown from '@/hooks/useCountdown';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -32,6 +34,8 @@ function SubmitButton() {
 
 export default function VerifyEmailForm() {
   const searchParams = useSearchParams();
+  const { toast } = useToast();
+  const email = searchParams.get('email') || '';
   const [state, dispatch] = useFormState(verifyEmail, {
     message: '',
     errors: {},
@@ -39,6 +43,22 @@ export default function VerifyEmailForm() {
     email: searchParams.get('email') || '',
     from: searchParams.get('from') || '',
   });
+  const { countdown, setCountdown } = useCountdown();
+  const [resending, setResending] = useState(false);
+
+  async function sendCode() {
+    setResending(true);
+    const data = await sendVerificationCode(email);
+    toast({
+      description: data?.message,
+      variant: data?.status === 'success' ? 'default' : 'destructive',
+    });
+    if (data?.status === 'success') {
+      setCountdown(60);
+    }
+    setResending(false);
+  }
+
   return (
     <div className='w-full space-y-5 py-11 px-6 md:p-11 flex flex-col justify-center items-center'>
       <Image
@@ -106,12 +126,16 @@ export default function VerifyEmailForm() {
 
         <div className='text-center text-sm'>
           <span>Didn&apos;t get a code?</span>{' '}
-          <Link
-            href={`/auth/sign-up`}
-            className='font-semibold hover:underline'
+          <button
+            type='button'
+            className='font-semibold hover:underline disabled:opacity-65'
+            disabled={Number(countdown) > 0 || resending}
+            onClick={sendCode}
           >
-            Click to resend
-          </Link>
+            {Number(countdown) > 0
+              ? `Resend in ${countdown} Secs`
+              : 'Click to Resend'}
+          </button>
         </div>
       </form>
     </div>

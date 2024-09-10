@@ -131,7 +131,8 @@ export async function login(
       };
     }
   }
-  redirect(`/auth/verify-email?email=${dataToSubmit.email}&from=sign-in`);
+  redirect('/onboarding/select-business');
+  // redirect(`/auth/verify-email?email=${dataToSubmit.email}&from=sign-in`);
 }
 
 // SIGN UP ACTION
@@ -248,6 +249,27 @@ export async function verifyEmail(
     redirect(
       `/auth/reset-password?email=${prevState?.email}&otp=${dataToSubmit.otp}`
     );
+  }
+}
+
+export async function sendVerificationCode(email: string) {
+  try {
+    const response = await fetchWithAuth('/auth/request-verification', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      return { message: data, status: 'failed' };
+    }
+    return { message: data, status: 'success' };
+  } catch (e) {
+    console.error(e);
+    // If a database error occurs, return a more specific error.
+    return {
+      message: 'Failed to send Code. Try again',
+      status: 'failed',
+    };
   }
 }
 

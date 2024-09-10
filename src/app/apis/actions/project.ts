@@ -3,6 +3,7 @@ import { CreateProjectSchema } from '@/lib/form-schema';
 import { PrevStateProps } from './auth';
 import { fetchWithAuth } from '@/lib/http-config';
 import { cookies } from 'next/headers';
+import { revalidateTag } from 'next/cache';
 
 interface CreateProjectState extends PrevStateProps {}
 
@@ -30,7 +31,7 @@ export async function createProject(
   const dataToSend = {
     name: dataToSubmit.projectName,
     description: dataToSubmit.projectDescription,
-    useCase: '66c5b76f2fc6017398fb5c59',
+    useCase: servicesID,
   };
 
   try {
@@ -45,7 +46,7 @@ export async function createProject(
     if (!response.ok) {
       return { ...prevState, message: data, status: 'failed' };
     }
-
+    revalidateTag(`business-projects-${businessID}`);
     return { ...prevState, message: 'Project Created', status: 'success' };
   } catch (error) {
     if (error) {

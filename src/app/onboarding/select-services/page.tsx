@@ -11,7 +11,7 @@ export default async function SelectBusiness() {
           What will you like to do with Etegram today?
         </p>
 
-        <ServicesList />
+        <ServicesList services={services} />
       </div>
     </main>
   );

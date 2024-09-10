@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export default async function SelectProject() {
   const projects = await getBusinessProjects();
-  console.log(projects);
+  // console.log(projects);
   return (
     <main className='flex justify-center items-center min-h-[60svh] w-full'>
       <div className='space-y-5 w-full max-w-[23.188rem] mx-auto'>
@@ -16,7 +16,7 @@ export default async function SelectProject() {
           <CreateProject />
         </div>
         {projects?.totalDocuments > 0 ? (
-          <ul className='flex space-y-3 w-full'>
+          <ul className='flex flex-col space-y-3 w-full'>
             {projects?.data?.map((item: any) => (
               <li
                 key={item.id}
@@ -39,7 +39,7 @@ export default async function SelectProject() {
 
                   <div>
                     <h6 className='font-medium'>{item?.name}</h6>
-                    {/* <p>Project ID: 232323</p> */}
+                    <p className='text-xs'>Project ID: 232323</p>
                   </div>
                 </Link>
               </li>
