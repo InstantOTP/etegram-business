@@ -185,6 +185,8 @@ export async function signup(
       value: data?.refreshToken,
       expires: expiresIn1day,
     });
+
+    await sendVerificationCode(dataToSubmit?.email);
   } catch (error) {
     console.error(error);
     // If a database error occurs, return a more specific error.

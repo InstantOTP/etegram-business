@@ -4,6 +4,7 @@ import { PrevStateProps } from './auth';
 import { fetchWithAuth } from '@/lib/http-config';
 import { cookies } from 'next/headers';
 import { revalidateTag } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 interface CreateProjectState extends PrevStateProps {}
 
@@ -56,4 +57,9 @@ export async function createProject(
       };
     }
   }
+}
+
+export async function selectProject(projectId: any) {
+  cookies().set('projectId', projectId);
+  redirect('/');
 }

@@ -13,41 +13,18 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn, findUpper } from '@/lib/utils';
 import { X } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Suspense, useState } from 'react';
 import Logo from '../common/logo';
 import { Sheet, SheetContent } from '../ui/sheet';
-// import { Notification } from 'iconsax-react';
-// import { ModeToggle } from '../ui/toggle-theme';
-// import { Setting2, Login } from 'iconsax-react';
-import { logout } from '@/app/apis/actions/auth';
-import { useFormState, useFormStatus } from 'react-dom';
-import { useToast } from '../ui/use-toast';
-// import Logout from '../common/buttons/logout';
 import { sidebarLinks } from '@/lib/static-data';
+import Logout from '../common/buttons/logout';
 import SearchTransactions from '../common/search-transactions';
 import { Icons } from '../icons';
-import Logout from '../common/buttons/logout';
-// import { SwitchProvider } from '../switch-provider';
+import SwitchBusiness from '../modals/switch-business';
+import SwitchProject from '../modals/switch-project';
 
-// export interface User {
-//   userID: string;
-//   username: string;
-//   email: string;
-//   isVerified: boolean;
-//   phone: string;
-//   status: string;
-//   totalTransactions: number;
-//   wallet: number;
-//   pushedNumbers: number;
-//   rentedNumbers: number;
-//   referralCode: string;
-//   isPINset: string;
-//   hasBusiness: boolean;
-//   isBusinessVerified: boolean;
-// }
 export interface User {
   firstname: string;
   lastname: string;
@@ -60,52 +37,20 @@ export interface User {
   updatedAt: string;
   id: string;
 }
-
-const PageTitle = ({ username }: { username: string }) => {
-  return (
-    <div className='flex space-x-2 items-center'>
-      <h2 className='text-gradient font-semibold font-manrope text-xl lg:text-2xl'>
-        Hi, {username || 'User'}
-      </h2>
-      <div>
-        <Image
-          src={'/hand.png'}
-          alt='welcome'
-          width={24}
-          height={24}
-        />
-      </div>
-    </div>
-  );
-};
-
-function LogoutButton() {
-  const { pending } = useFormStatus();
-  return (
-    <button
-      type='submit'
-      className='pl-3 text-destructive'
-      disabled={pending}
-    >
-      Log out
-    </button>
-  );
-}
-
 export const DashboardHeader = ({
   user,
   business,
+  businesses,
+  projects,
 }: {
   user: User;
   business: bussinessType;
+  businesses: { business: bussinessType }[];
+  projects: any;
 }) => {
   const pathname = usePathname();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
-  // const pageTitle = useMemo(() => {
-  //   return sidebarLinks.find((item) => item.path === pathname)?.label;
-  // }, [pathname, sidebarLinks]);
 
   return (
     <header className='bg-background p-5 flex w-full fixed lg:sticky top-0 left-0 border-b justify-between items-center gap-x-3 z-50'>
@@ -297,12 +242,24 @@ export const DashboardHeader = ({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
+                <SwitchBusiness
+                  currentBusiness={business}
+                  businesses={businesses}
+                />
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <SwitchProject projects={projects} />
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </DropdownMenuGroup>
+            <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
                 <Link href={'/dashboard/settings'}>Settings</Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Logout />
+              </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuItem asChild>
-              <Logout />
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
