@@ -105,7 +105,7 @@ export async function login(
       method: 'POST',
       body: JSON.stringify(dataToSubmit),
     });
-    // console.log(response);
+    console.log(response);
     const data = await response.json();
     // console.log(data);
     if (!response.ok) {

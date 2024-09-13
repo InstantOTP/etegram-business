@@ -45,7 +45,7 @@ export default function SwitchBusiness({
         </DialogHeader>
 
         <ul className='grid grid-cols-2 gap-3'>
-          {businesses.map((item, index) => (
+          {businesses?.map((item, index) => (
             <li key={index}>
               <button
                 disabled={currentBusiness?.id === item?.business?.id}

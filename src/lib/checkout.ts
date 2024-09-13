@@ -1,7 +1,52 @@
-export function payWithEtegram(values: any) {
+interface InitializeProps {
+  projectID: string;
+  amount: string;
+  reference: string;
+  phone: string;
+  email: string;
+}
+
+async function initialize(transaction: InitializeProps) {
+  let dataToSend = {
+    reference: 'tyrhndjhaa',
+    amount: 1000,
+    phone: '09012121212',
+    email: 'jessesamuel84@gmail.com',
+  };
+  console.log(transaction.projectID);
+  // console.log(dataToSend);
+  try {
+    const response = await fetch(
+      `https://dev-checkout.instanttempmail.com/api/transaction/initialize/${transaction.projectID}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer pk_test-ddb4b9d02ec34fee95659b728b57672b`,
+        },
+        body: JSON.stringify(dataToSend),
+        cache: 'no-store',
+      }
+    );
+    console.log(response);
+    const data = await response.json();
+    console.log(data);
+    if (!response.ok) {
+      return { message: 'Failed' };
+      // throw new Error(`Response failed`);
+    }
+    return data;
+  } catch (e) {
+    throw new Error('Failed to initialize');
+  }
+}
+
+export async function payWithEtegram(projectID: string, values: any) {
   var json = values;
   var useId = makeid(10);
-  var public_key = values.public_key;
+  var public_key =
+    'pk_test_d295f383ec44d78ad48df4644f4ab397d295f383ec44d78ad48df4644f4ab397-BIZ';
   var et_ref = values.et_ref;
   var redirect_url = values.redirect_url;
   var meta = values.meta;
@@ -10,14 +55,25 @@ export function payWithEtegram(values: any) {
   var customer = values.customer;
   var customizations = values.customizations;
 
+  let trans_data = {
+    projectID,
+    reference: 'tyrhndjyyd',
+    amount: '1000',
+    phone: '08111111111',
+    email: 'johndoe@gmail.com',
+  };
+
+  const url = await initialize(trans_data);
+  // console.log(url);
+  if (url?.message !== 'Authorization URL created') {
+    return;
+  }
   var jsonString = JSON.stringify(json);
 
   // URL-encode the JSON string
   var encodedJsonString = encodeURIComponent(jsonString);
 
-  var iframLink =
-    'https://appapi.etegram.com/checkout/check_setup_pay?json=' +
-    encodedJsonString;
+  var iframLink = url?.data?.authorization_url;
 
   // var iframLink = meta;
   //  building this ifram to cover the page
