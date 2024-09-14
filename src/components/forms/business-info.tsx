@@ -1,6 +1,7 @@
 'use client';
 
-import { businessCompliance } from '@/app/apis/actions/compliance';
+import { updateBusinessInfo } from '@/app/apis/actions/business';
+import { uploadImageToImagekit } from '@/app/apis/actions/upload';
 import {
   Select,
   SelectContent,
@@ -9,6 +10,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
+import { City, ICity, IState, State } from 'country-state-city';
 import { LucideLoader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -17,26 +19,17 @@ import { useEffect, useMemo, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { useDropzone } from 'react-dropzone';
 import { Button, buttonVariants } from '../ui/button';
-import CustomDropZone from '../ui/dropzone';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { useToast } from '../ui/use-toast';
-import { State, IState, ICity, City } from 'country-state-city';
-import { uploadImageToImagekit } from '@/app/apis/actions/upload';
 
-function SubmitButton({
-  isImageUploaded,
-  isCacUploaded,
-}: {
-  isImageUploaded: string;
-  isCacUploaded: string;
-}) {
+function SubmitButton({ isImageUploaded }: { isImageUploaded: string }) {
   const { pending } = useFormStatus();
 
   return (
     <Button
       type='submit'
-      disabled={pending || !isImageUploaded || !isCacUploaded}
+      disabled={pending || !isImageUploaded}
     >
       <LucideLoader2
         className={cn('animate-spin mr-1 w-[22px] h-[22px] hidden', {
@@ -48,23 +41,25 @@ function SubmitButton({
   );
 }
 
-export default function BusinessInfoForm() {
+export default function BusinessInfoForm({
+  business,
+}: {
+  business?: bussinessType;
+}) {
   const { toast } = useToast();
   const { replace } = useRouter();
   const { acceptedFiles, getInputProps, getRootProps, open } = useDropzone({
     noClick: true,
     noKeyboard: true,
   });
-  const [uploadedImage, setUploadedImage] = useState('');
   const [uploadedLogo, setUploadedLogo] = useState('');
-  const [cacImage, setCacImage] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const initalState = {
     message: '',
     errors: {},
     status: '',
   };
-  const [state, dispatch] = useFormState(businessCompliance, initalState);
+  const [state, dispatch] = useFormState(updateBusinessInfo, initalState);
   const states: IState[] = State.getStatesOfCountry('NG');
 
   const cities: ICity[] = useMemo(() => {
@@ -80,8 +75,8 @@ export default function BusinessInfoForm() {
       acceptedFiles[0],
       acceptedFiles[0]?.name
     );
-    console.log(data);
-    // setUploadedLogo(URL.createObjectURL(acceptedFiles[0]));
+    // console.log(data);
+    setUploadedLogo(data?.url);
   }
 
   useEffect(() => {
@@ -91,10 +86,11 @@ export default function BusinessInfoForm() {
         variant: state.status !== 'success' ? 'destructive' : 'default',
       });
     }
-    if (state?.status === 'success') {
+    if (state?.status === 'success' && !business) {
       replace('/compliance');
     }
   }, [state]);
+
   return (
     <div className='w-full bg-background rounded-3xl space-y-2 py-11 px-6 md:p-11 flex flex-col justify-center items-center'>
       <h2>Business Information</h2>
@@ -154,6 +150,12 @@ export default function BusinessInfoForm() {
               Delete{' '}
             </Button>
           </div>
+          <input
+            type='hidden'
+            name='logo'
+            id='logo'
+            value={uploadedLogo}
+          />
         </div>
 
         <p className='text-xs text-gray-400'>
@@ -162,20 +164,99 @@ export default function BusinessInfoForm() {
         </p>
 
         <div className='form-control'>
-          <label htmlFor='businessDescription'>Business Description</label>
+          <label htmlFor='businessName'>Business Name</label>
+          <Input
+            id='name'
+            name='name'
+            type='text'
+            defaultValue={business?.name}
+            placeholder='e.g Kebsly Enterprise'
+          />
+          {state?.errors?.name ? (
+            <div
+              id='name-error'
+              aria-live='polite'
+              className='error'
+            >
+              <p>{state.errors.name[0]}</p>
+            </div>
+          ) : null}
+        </div>
+
+        <div className='flex justify-between items-center gap-x-5'>
+          <div className='form-control'>
+            <label htmlFor='type'>Business Type</label>
+            <Select
+              name='type'
+              defaultValue={business?.type}
+            >
+              <SelectTrigger className='w-full bg-[#F3F8FF]'>
+                <SelectValue
+                  placeholder='Select Type'
+                  className='placeholder:!text-xs'
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value='starter'>Starter</SelectItem>
+                <SelectItem value='registered'>Registered</SelectItem>
+              </SelectContent>
+            </Select>
+            {state?.errors?.type ? (
+              <div
+                id='type-error'
+                aria-live='polite'
+                className='error'
+              >
+                <p>{state.errors.type[0]}</p>
+              </div>
+            ) : null}
+          </div>
+          <div className='form-control'>
+            <label htmlFor='industry'>Business Industry</label>
+            <Select
+              name='industry'
+              defaultValue={business?.industry}
+            >
+              <SelectTrigger className='w-full bg-[#F3F8FF]'>
+                <SelectValue
+                  placeholder='Select Industry'
+                  className='placeholder:!text-xs'
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value='industry 1'>Industry 1</SelectItem>
+                <SelectItem value='industry 2'>Industry 2</SelectItem>
+                <SelectItem value='industry 3'>Industry 3</SelectItem>
+              </SelectContent>
+            </Select>
+            {state?.errors?.industry ? (
+              <div
+                id='businessIndustry-error'
+                aria-live='polite'
+                className='error'
+              >
+                <p>{state.errors.industry[0]}</p>
+              </div>
+            ) : null}
+          </div>
+        </div>
+
+        <div className='form-control'>
+          <label htmlFor='description'>Business Description</label>
           <Textarea
-            name='businessDescription'
-            id='businessDescription'
+            name='description'
+            id='description'
             className='min-h-[150px]'
+            defaultValue={business?.description}
             placeholder='eg. Kolhmer is a business that do and that'
           />
-          {state?.errors?.directorBvn ? (
+          {state?.errors?.description ? (
             <div
               id='email-error'
               aria-live='polite'
               className='error'
             >
-              <p>{state.errors.directorBvn[0]}</p>
+              <p>{state.errors.description[0]}</p>
             </div>
           ) : null}
 
@@ -190,17 +271,18 @@ export default function BusinessInfoForm() {
             <label htmlFor='contactEmail'>Contact Email</label>
             <Input
               id='contactEmail'
-              name='contantEmail'
+              name='contactEmail'
               type='email'
               placeholder='contact@yourdomain.com'
+              defaultValue={business?.contactEmail}
             />
-            {state?.errors?.directorBvn ? (
+            {state?.errors?.contactEmail ? (
               <div
-                id='email-error'
+                id='contact-email-error'
                 aria-live='polite'
                 className='error'
               >
-                <p>{state.errors.directorBvn[0]}</p>
+                <p>{state.errors.contactEmail[0]}</p>
               </div>
             ) : null}
 
@@ -213,14 +295,15 @@ export default function BusinessInfoForm() {
               name='supportEmail'
               type='email'
               placeholder='support@yourdomain.com'
+              defaultValue={business?.supportEmail}
             />
-            {state?.errors?.directorBvn ? (
+            {state?.errors?.supportEmail ? (
               <div
-                id='email-error'
+                id='support-email-error'
                 aria-live='polite'
                 className='error'
               >
-                <p>{state.errors.directorBvn[0]}</p>
+                <p>{state.errors.supportEmail[0]}</p>
               </div>
             ) : null}
 
@@ -238,14 +321,15 @@ export default function BusinessInfoForm() {
               name='phone'
               type='tel'
               placeholder='Enter Phone number'
+              defaultValue={business?.phone}
             />
-            {state?.errors?.directorBvn ? (
+            {state?.errors?.phone ? (
               <div
                 id='email-error'
                 aria-live='polite'
                 className='error'
               >
-                <p>{state.errors.directorBvn[0]}</p>
+                <p>{state.errors.phone[0]}</p>
               </div>
             ) : null}
           </div>
@@ -255,6 +339,7 @@ export default function BusinessInfoForm() {
               name='state'
               value={selectedState}
               onValueChange={setSelectedState}
+              defaultValue={business?.address?.state}
             >
               <SelectTrigger className='w-full bg-[#F3F8FF]'>
                 <SelectValue
@@ -273,13 +358,13 @@ export default function BusinessInfoForm() {
                 ))}
               </SelectContent>
             </Select>
-            {state?.errors?.businessRegistrationType ? (
+            {state?.errors?.state ? (
               <div
                 id='businessIndustry-error'
                 aria-live='polite'
                 className='error'
               >
-                <p>{state.errors.businessRegistrationType[0]}</p>
+                <p>{state.errors.state[0]}</p>
               </div>
             ) : null}
           </div>
@@ -288,7 +373,10 @@ export default function BusinessInfoForm() {
         <div className='flex w-full justify-between gap-x-5'>
           <div className='form-control'>
             <label htmlFor='supportEmail'>Town or City</label>
-            <Select name='city'>
+            <Select
+              name='city'
+              defaultValue={business?.address?.city}
+            >
               <SelectTrigger className='w-full bg-[#F3F8FF]'>
                 <SelectValue
                   placeholder='Select City or Town'
@@ -306,13 +394,13 @@ export default function BusinessInfoForm() {
                 ))}
               </SelectContent>
             </Select>
-            {state?.errors?.businessRegistrationType ? (
+            {state?.errors?.city ? (
               <div
-                id='businessIndustry-error'
+                id='city-error'
                 aria-live='polite'
                 className='error'
               >
-                <p>{state.errors.businessRegistrationType[0]}</p>
+                <p>{state.errors.city[0]}</p>
               </div>
             ) : null}
           </div>
@@ -323,14 +411,15 @@ export default function BusinessInfoForm() {
               name='address'
               type='text'
               placeholder='eg 7b Housing Estate'
+              defaultValue={business?.address?.address}
             />
-            {state?.errors?.directorBvn ? (
+            {state?.errors?.address ? (
               <div
-                id='email-error'
+                id='address-error'
                 aria-live='polite'
                 className='error'
               >
-                <p>{state.errors.directorBvn[0]}</p>
+                <p>{state.errors.address[0]}</p>
               </div>
             ) : null}
           </div>
@@ -340,37 +429,30 @@ export default function BusinessInfoForm() {
           <div className='form-control'>
             <label htmlFor='address'>Business Website Link (Optional)</label>
             <Input
-              id='businessUrl'
-              name='businessUrl'
+              id='website'
+              name='website'
               type='url'
               placeholder='eg.yourdomain.com'
+              defaultValue={business?.website}
             />
-            {state?.errors?.directorBvn ? (
-              <div
-                id='email-error'
-                aria-live='polite'
-                className='error'
-              >
-                <p>{state.errors.directorBvn[0]}</p>
-              </div>
-            ) : null}
           </div>
           <div className='form-control'>
             <p className='text-xs inline-block text-foreground font-medium'>
               Business Social Links(Optional)
             </p>
 
-            <div>
+            <div className='space-y-2'>
               <div className='flex'>
                 <label className='bg-primary-light flex items-center !text-primary-light-foreground rounded-lg px-3 z-10'>
                   Facebook
                 </label>
                 <Input
-                  id='facebookUrl'
-                  name='facebookUrl'
+                  id='facebook'
+                  name='facebook'
                   type='url'
                   placeholder='https://www.facebook.com/'
-                  className='rounded-l-none -ml-1.5'
+                  className='rounded-l-none -ml-1.5 text-xs placeholder:text-xs'
+                  defaultValue={business?.socialLinks?.facebook}
                 />
               </div>
               <div className='flex'>
@@ -378,11 +460,12 @@ export default function BusinessInfoForm() {
                   Instagram
                 </label>
                 <Input
-                  id='instagramUrl'
-                  name='instagramUrl'
+                  id='instagram'
+                  name='instagram'
                   type='url'
                   placeholder='https://www.instagram.com/'
-                  className='rounded-l-none -ml-1.5'
+                  className='rounded-l-none -ml-1.5 text-xs placeholder:text-xs'
+                  defaultValue={business?.socialLinks?.instagram}
                 />
               </div>
               <div className='flex'>
@@ -390,11 +473,12 @@ export default function BusinessInfoForm() {
                   Twitter
                 </label>
                 <Input
-                  id='xUrl'
-                  name='xUrl'
+                  id='twitter'
+                  name='twitter'
                   type='url'
                   placeholder='https://www.x.com/com'
-                  className='rounded-l-none -ml-1.5'
+                  className='rounded-l-none -ml-1.5 text-xs placeholder:text-xs'
+                  defaultValue={business?.socialLinks?.twitter}
                 />
               </div>
             </div>
@@ -408,10 +492,7 @@ export default function BusinessInfoForm() {
           >
             Back
           </Link>
-          <SubmitButton
-            isImageUploaded={uploadedImage}
-            isCacUploaded={cacImage}
-          />
+          <SubmitButton isImageUploaded={uploadedLogo} />
         </div>
       </form>
     </div>

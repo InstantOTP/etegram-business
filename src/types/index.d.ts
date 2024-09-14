@@ -10,4 +10,19 @@ type bussinessType = {
   createdAt: string;
   updatedAt: string;
   id: string;
+  description: string;
+  contactEmail: string;
+  supportEmail: string;
+  phone: string;
+  address: {
+    state: string;
+    city: string;
+    address: string;
+  };
+  website: string;
+  socialLinks: {
+    facebook: string;
+    instagram: string;
+    twitter: string;
+  };
 };

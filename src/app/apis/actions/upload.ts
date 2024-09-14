@@ -3,7 +3,7 @@ import Cookie from 'js-cookie';
 const getSignature = async () => {
   const access_token = Cookie.get('access_token') ?? '';
   const response = await fetch(
-    `http://18.207.235.74/api/account/image-upload-signature`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/account/image-upload-signature`,
     {
       headers: {
         Authorization: `Bearer ${access_token}`,
@@ -13,7 +13,7 @@ const getSignature = async () => {
     }
   )
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       return response.json();
     })
     .catch((err) => console.error(err));
@@ -51,6 +51,7 @@ export async function uploadImageToImagekit(file: File, fileName: string) {
 
     if (response.ok) {
       const data = await response.json();
+      // console.log(data);
       return data;
     }
   } catch (error) {

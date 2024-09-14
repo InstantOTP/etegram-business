@@ -8,25 +8,24 @@ interface InitializeProps {
 
 async function initialize(transaction: InitializeProps) {
   let dataToSend = {
-    reference: 'tyrhndjhaa',
+    reference: 'tyrhndjhfd',
     amount: 1000,
     phone: '09012121212',
-    email: 'jessesamuel84@gmail.com',
+    email: 'Gamezone 001',
   };
   console.log(transaction.projectID);
   // console.log(dataToSend);
   try {
     const response = await fetch(
-      `https://dev-checkout.instanttempmail.com/api/transaction/initialize/${transaction.projectID}`,
+      `https://dev-checkout.instanttempmail.com/api/transaction/initialize/66cc9f4ad602e72ea995b728`,
       {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
-          Accept: 'application/json',
           Authorization: `Bearer pk_test-ddb4b9d02ec34fee95659b728b57672b`,
         },
         body: JSON.stringify(dataToSend),
-        cache: 'no-store',
+        // cache: 'no-store',
       }
     );
     console.log(response);
@@ -64,7 +63,7 @@ export async function payWithEtegram(projectID: string, values: any) {
   };
 
   const url = await initialize(trans_data);
-  // console.log(url);
+  console.log(url);
   if (url?.message !== 'Authorization URL created') {
     return;
   }

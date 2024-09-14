@@ -9,6 +9,7 @@ export default function ProjectList({
 }: {
   projects: { totalDocuments: number; data: any[] };
 }) {
+  console.log(projects);
   return (
     <>
       {projects?.totalDocuments > 0 ? (
