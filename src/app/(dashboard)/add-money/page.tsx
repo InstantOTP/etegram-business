@@ -7,14 +7,14 @@ import Cookies from 'js-cookie';
 
 export default function AddMoneyPage() {
   const projectID = Cookies.get('projectId') as string;
-  console.log(projectID);
+  // console.log(projectID);
 
   return (
     <main className='flex min-h-screen flex-col items-center justify-center'>
       <h1>Maintainence</h1>
       <p>Add money page</p>
       <p>We will be back shortly.</p>
-      <Button onClick={() => payWithEtegram(projectID, '')}>Test</Button>
+      <Button onClick={() => payWithEtegram({})}>Test</Button>
       <Logout />
     </main>
   );
