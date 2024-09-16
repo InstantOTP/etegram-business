@@ -6,6 +6,8 @@ import PersonalSection from './tab-contents/personal';
 import BusinessSection from './tab-contents/business';
 import ComplianceSection from './tab-contents/compliance';
 import PaymentSection from './tab-contents/payment';
+import APIKeysSection from './tab-contents/api-keys';
+import AccountSection from './tab-contents/account';
 export default function SettingsPage() {
   return (
     <section className='flex items-center justify-center'>
@@ -32,6 +34,12 @@ export default function SettingsPage() {
         </TabsContent>
         <TabsContent value='payment'>
           <PaymentSection />
+        </TabsContent>
+        <TabsContent value='api-keys'>
+          <APIKeysSection />
+        </TabsContent>
+        <TabsContent value='account'>
+          <AccountSection />
         </TabsContent>
       </Tabs>
     </section>
