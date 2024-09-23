@@ -3,6 +3,7 @@ import Logo from '@/components/common/logo';
 import { buttonVariants } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import LayoutButton from './layout-button';
 
 export const dynamic = 'force-dynamic';
 export default function OnBoardingLayout({
@@ -11,15 +12,10 @@ export default function OnBoardingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className='min-h-svh'>
-      <div className='container flex justify-between items-center'>
+    <div className='min-h-svh auth-bg'>
+      <div className='container flex justify-between items-center bg-white sticky top-0 left-0'>
         <Logo />
-        <Logout
-          className={buttonVariants({
-            variant: 'outline',
-            className: 'text-primary',
-          })}
-        />
+        <LayoutButton />
       </div>
       {children}
     </div>

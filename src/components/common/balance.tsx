@@ -9,7 +9,7 @@ export function Balance() {
     <div className='flex  w-full justify-between'>
       <div>
         <h2 className='text-primary-foreground text-3xl z-[50]'>
-          {view ? formatter().format(150000) : '*******'}
+          {view ? formatter().format(0) : '*******'}
         </h2>
         <p className='text-xs mt-1'>Total Balance</p>
       </div>

@@ -14,7 +14,7 @@ import {
 import { cn, findUpper } from '@/lib/utils';
 import { X } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Suspense, useState } from 'react';
 import Logo from '../common/logo';
 import { Sheet, SheetContent } from '../ui/sheet';
@@ -24,6 +24,9 @@ import SearchTransactions from '../common/search-transactions';
 import { Icons } from '../icons';
 import SwitchBusiness from '../modals/switch-business';
 import SwitchProject from '../modals/switch-project';
+import { Switch } from '../ui/switch';
+import { useToast } from '../ui/use-toast';
+import { set } from 'zod';
 
 export interface User {
   firstname: string;
@@ -49,8 +52,14 @@ export const DashboardHeader = ({
   projects: any;
 }) => {
   const pathname = usePathname();
+  const { push } = useRouter();
+  const { toast } = useToast();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLive, setIsLive] = useState<'yes' | 'no'>('no');
+
+  // console.log(business);
+  // const Check = business?.kycApprovalStatus === 'pending' ? Link : div;
 
   return (
     <header className='bg-background p-5 flex w-full fixed lg:sticky top-0 left-0 border-b justify-between items-center gap-x-3 z-50'>
@@ -174,7 +183,7 @@ export const DashboardHeader = ({
           <SearchTransactions placeholder='Search for transaction or customer' />
         </Suspense>
 
-        <div className='flex items-center space-x-2 bg-[#f5f9ff] p-2 rounded-md'>
+        {/* <div className='flex items-center space-x-2 bg-[#f5f9ff] p-2 rounded-md'>
           <p
             className={cn('text-sm text-[#ffc001] capitalize', {
               'text-green-500': business?.status === 'active',
@@ -188,6 +197,29 @@ export const DashboardHeader = ({
               'text-green-500': business?.status === 'active',
             })}
           />
+        </div> */}
+        <div className='flex items-center space-x-2 bg-[#f5f9ff] p-2 rounded-md'>
+          <Switch
+            className='data-[state=checked]:bg-green-500'
+            checked={isLive === 'yes'}
+            onCheckedChange={() => {
+              if (business?.kycApprovalStatus === 'pending') {
+                toast({
+                  description: 'Complete business compliance to go Live',
+                  variant: 'destructive',
+                });
+                push('/compliance/business-compliance');
+                return;
+              } else {
+                if (isLive === 'no') {
+                  setIsLive('yes');
+                } else {
+                  setIsLive('no');
+                }
+              }
+            }}
+          />
+          <span className='text-sm font-bold'>Test</span>
         </div>
 
         {/* <SwitchProvider /> */}

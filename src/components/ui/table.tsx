@@ -220,15 +220,15 @@ export default function DataTable({
           : null}
       </div> */}
       {data?.length === 0 && (
-        <div className='w-full h-[350px] flex flex-col gap-y-9 justify-center items-center mt-3'>
-          <div>
+        <div className='w-full h-[200px] flex flex-col gap-y-9 justify-center items-center mt-3'>
+          {/* <div>
             <Image
               src={'/empty-table.svg'}
               alt='empty table'
               width={80}
               height={80}
             />
-          </div>
+          </div> */}
 
           <p className='opacity-65'>No data to show </p>
           {/* <div className='flex flex-col md:flex-row gap-3 lg:gap-10'>

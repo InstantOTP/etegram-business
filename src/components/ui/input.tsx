@@ -12,7 +12,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         type={type}
         className={cn(
-          'flex h-10 w-full text-secondary-foreground/90 rounded-[0.625rem] border border-input bg-[#F3F8FF] px-3 py-[22px] text-xs ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+          'flex h-10 w-full text-secondary-foreground/90 rounded-[0.625rem] bg-[#F3F8FF] px-3 py-[22px] text-xs ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
           className
         )}
         ref={ref}
@@ -36,7 +36,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
         <input
           type={view ? 'text' : 'password'}
           className={cn(
-            'flex h-10 w-full bg-[#F3F8FF] text-secondary-foreground/90 rounded-[0.625rem] border border-input px-3 py-[22px] text-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent disabled:cursor-not-allowed disabled:opacity-50',
+            'flex h-10 w-full bg-[#F3F8FF] text-secondary-foreground/90 rounded-[0.625rem] px-3 py-[22px] text-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent disabled:cursor-not-allowed disabled:opacity-50',
             className
           )}
           ref={ref}

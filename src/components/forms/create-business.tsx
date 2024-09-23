@@ -36,7 +36,7 @@ function SubmitButton() {
           'inline-block': pending,
         })}
       />
-      <span>Create Account</span>
+      <span>Add Business</span>
     </Button>
   );
 }
@@ -290,7 +290,7 @@ export default function CreateBusinessForm() {
           <SubmitButton />
         </div>
 
-        <div className='text-center text-sm'>
+        {/* <div className='text-center text-sm'>
           <span>Already have an account?</span>{' '}
           <Link
             href={`/auth/sign-in`}
@@ -298,7 +298,7 @@ export default function CreateBusinessForm() {
           >
             Sign In
           </Link>
-        </div>
+        </div> */}
       </form>
     </div>
   );

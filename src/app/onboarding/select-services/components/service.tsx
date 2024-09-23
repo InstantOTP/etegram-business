@@ -28,7 +28,7 @@ export default function ServicesList({
         value={value}
         onValueChange={setValue}
       >
-        {services.map((item) => (
+        {services?.map((item) => (
           <div
             key={item.id}
             className='flex justify-between space-x-3 p-4 items-center  rounded-[0.625rem] border-[1.5px] border-border w-full  peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'
