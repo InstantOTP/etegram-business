@@ -105,7 +105,7 @@ export async function login(
       method: 'POST',
       body: JSON.stringify(dataToSubmit),
     });
-    console.log(response);
+    // console.log(response);
     const data = await response.json();
     // console.log(data);
     if (!response.ok) {
@@ -169,7 +169,7 @@ export async function signup(
     });
     // console.log(response);
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     if (!response.ok) {
       return { ...prevState, message: data, status: 'failed' };
     }
@@ -223,7 +223,7 @@ export async function verifyEmail(
     verificationCode: dataToSubmit.otp,
   };
   try {
-    console.log(dataToSend);
+    // console.log(dataToSend);
     // const response = await fetchWithAuth('/auth/verify-account', {
     //   method: 'PATCH',
     //   body: JSON.stringify(dataToSend),

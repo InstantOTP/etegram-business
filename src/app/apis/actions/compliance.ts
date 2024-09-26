@@ -55,7 +55,7 @@ export async function userCompliance(
   };
 
   try {
-    console.log(dataToSend);
+    // console.log(dataToSend);
 
     const response = await fetchWithAuth('/account/kyc', {
       method: 'POST',

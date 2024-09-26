@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const formatter = (currency = 'NGN', fractiondigit = 2) =>
-  new Intl.NumberFormat('en-US', {
+  new Intl.NumberFormat('en-NG', {
     style: 'currency',
     currency: currency,
     // currencyDisplay: 'narrowSymbol',
@@ -84,3 +84,42 @@ export function kConverter(num: number) {
     return s.replace('.0', '') + 'k';
   }
 }
+
+export const formatDate = (str: string) => {
+  return new Date(str).toLocaleDateString('en-us', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+  });
+};
+
+export const formatDateNumeric = (str: string) => {
+  return new Date(str).toLocaleDateString('en-ca', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+};
+
+export const formatDateTimeNumeric = (str: string) => {
+  return new Date(str).toLocaleDateString('en-ca', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+};
+
+export const formatDateWithTime = (str: string) => {
+  return new Date(str).toLocaleDateString('en-us', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    // hour12: false,
+  });
+};

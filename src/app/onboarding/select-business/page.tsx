@@ -11,7 +11,7 @@ export default async function SelectBusiness() {
   // console.log(businesses);
   return (
     <main className='flex justify-center items-center min-h-[60svh] w-full'>
-      <div className='space-y-5 w-full max-w-[30rem] mx-auto bg-background mt-12 rounded-3xl p-6'>
+      <div className='space-y-5 w-full max-w-[30rem] mx-auto bg-background mt-12 rounded-3xl p-10'>
         <div className='flex w-full justify-between items-center'>
           <p>Select a Business</p>
 

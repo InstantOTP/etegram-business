@@ -9,7 +9,7 @@ import {
 import { ChevronDown, CircleEllipsis, Ellipsis, Plus } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
-import { cn, formatter } from '@/lib/utils';
+import { cn, formatDateWithTime, formatter } from '@/lib/utils';
 import Pagination from './pagination';
 import Image from 'next/image';
 import React from 'react';
@@ -73,7 +73,7 @@ export default function DataTable({
         </DropdownMenu>
       </div> */}
 
-      <div className='grid grid-cols-1 overflow-auto whitespace-normal styled-scrollbar'>
+      <div className='grid w-full grid-cols-1 overflow-auto whitespace-normal styled-scrollbar'>
         <table className='w-full mt-1 text-left rtl:text-right'>
           <thead className='border-y border-gray-300'>
             <tr>
@@ -97,7 +97,7 @@ export default function DataTable({
           </thead>
 
           {data?.length > 0 ? (
-            <tbody className=''>
+            <tbody className='divide-y'>
               {data.map((item, idx) => (
                 <tr
                   key={idx}
@@ -120,9 +120,11 @@ export default function DataTable({
                       return (
                         <td
                           key={idx}
-                          className='text-sm py-3 px-4'
+                          className='py-3 px-4'
                         >
-                          {formatter('NGN', 0).format(item?.amount)}
+                          <span className='text-sm font-inter font-bold'>
+                            {formatter('NGN', 0).format(item?.amount)}
+                          </span>
                         </td>
                       );
                     }
@@ -136,6 +138,17 @@ export default function DataTable({
                           {item?.phoneNumber
                             ? ` +${item.phoneNumber}`
                             : 'No Number'}
+                        </td>
+                      );
+                    }
+
+                    if (key === 'createdAt') {
+                      return (
+                        <td
+                          key={idx}
+                          className='text-sm py-3 px-4'
+                        >
+                          <span>{formatDateWithTime(item?.createdAt)}</span>
                         </td>
                       );
                     }
@@ -164,7 +177,7 @@ export default function DataTable({
                     return (
                       <td
                         key={idx}
-                        className='text-sm py-3 px-4'
+                        className='text-sm py-3 px-4 capitalize'
                       >
                         {item[key]}
                       </td>
@@ -181,44 +194,15 @@ export default function DataTable({
             </tbody>
           ) : null}
         </table>
+        {totalPages > 0 && (
+          <div className='flex justify-end w-full mt-5'>
+            <Pagination totalPages={totalPages} />
+          </div>
+        )}
       </div>
 
       {/* MOBILE Table */}
 
-      {/* <div className='divide-y block md:hidden'>
-        {data?.length > 0
-          ? data.map((item, index) => (
-              <div
-                key={index}
-                className='flex justify-between py-4'
-              >
-                <div className='flex flex-col space-y-1'>
-                  <p>{item.countryID}</p>
-                  <p>{item.applicationID}</p>
-                </div>
-                <div className='flex flex-col space-y-1 justify-end'>
-                  <p>
-                    {item.phoneNumber ? `+${item.phoneNumber}` : 'No number'}
-                  </p>
-                  <span
-                    className={cn(
-                      'px-2.5 py-1 rounded-2xl capitalize text-xs text-center',
-                      {
-                        'text-green-500 bg-green-50':
-                          item.status === 'successful',
-                        'text-yellow-300 bg-yellow-50':
-                          item.status === 'pending',
-                        'text-rose-400 bg-rose-50': item.status === 'failed',
-                      }
-                    )}
-                  >
-                    {item.status}
-                  </span>
-                </div>
-              </div>
-            ))
-          : null}
-      </div> */}
       {data?.length === 0 && (
         <div className='w-full h-[200px] flex flex-col gap-y-9 justify-center items-center mt-3'>
           {/* <div>
@@ -231,28 +215,8 @@ export default function DataTable({
           </div> */}
 
           <p className='opacity-65'>No data to show </p>
-          {/* <div className='flex flex-col md:flex-row gap-3 lg:gap-10'>
-            <Link
-              href='/dashboard/rent-a-number'
-              className={buttonVariants({
-                size: 'lg',
-                variant: 'outline',
-                className: 'h-12',
-              })}
-            >
-              Rent a Number
-            </Link>
-
-            <Link
-              href='/dashboard/rent-a-number'
-              className={buttonVariants({ size: 'lg', className: 'h-12' })}
-            >
-              Rent a Number
-            </Link>
-          </div> */}
         </div>
       )}
-      {/* {totalPages > 0 ? <Pagination totalPages={totalPages} /> : null} */}
     </div>
   );
 }

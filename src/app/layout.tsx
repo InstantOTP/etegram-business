@@ -4,7 +4,7 @@ import localfont from 'next/font/local';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 const eudoxusSans = localfont({
   src: [
@@ -39,7 +39,7 @@ const eudoxusSans = localfont({
       style: 'normal',
     },
   ],
-  variable: '--eudoxusSans',
+  variable: '--font-eudoxusSans',
 });
 
 export const metadata: Metadata = {
@@ -54,7 +54,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${inter.className} ${eudoxusSans.className}`}>
+      <body className={`${inter.variable} ${eudoxusSans.variable}`}>
         {children}
         <Toaster />
       </body>

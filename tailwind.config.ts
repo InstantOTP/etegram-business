@@ -17,6 +17,7 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
+        inter: ['var(--font-inter)'],
         eudoxusSans: ['var(--font-eudoxusSans)'],
       },
       colors: {

@@ -19,7 +19,10 @@ export default function LayoutButton() {
           })}
         />
       ) : (
-        <Button onClick={back}>
+        <Button
+          onClick={back}
+          className='bg-[#005DFF] hover:bg-[#005DFF]'
+        >
           <ArrowLeft className='mr-1.5' />
           <span>Go Back</span>
         </Button>

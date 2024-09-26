@@ -13,8 +13,8 @@ export default function OnBoardingLayout({
 }) {
   return (
     <div className='min-h-svh auth-bg'>
-      <div className='container flex justify-between items-center bg-white sticky top-0 left-0'>
-        <Logo />
+      <div className='container flex justify-between items-center  sticky top-0 left-0'>
+        <Logo white />
         <LayoutButton />
       </div>
       {children}

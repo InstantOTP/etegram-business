@@ -8,12 +8,17 @@ import { tableData } from '@/lib/static-data';
 import Link from 'next/link';
 import { getUser } from '../apis/data/user';
 import { User } from '@/components/layout/dashboard-header';
+import { getCreditTransactionStats } from '../apis/data/transactions';
+import Transactions from '../components/transactions';
+import { Suspense } from 'react';
+import LoadingTransactions from '@/components/loading/transaction-table';
 
 export default async function Home() {
-  const user: User = await getUser();
+  // const user: User = await getUser();
+
   return (
     <section className='space-y-12'>
-      {user?.kycApprovalStatus === 'pending' && (
+      {/* {user?.kycApprovalStatus === 'pending' && (
         <div className='bg-[#fff8dd] text-sm md:text-sm text-foreground flex flex-col md:flex-row md:items-center py-3 px-4 rounded-xl md:divide-x-2 md:divide-foreground max-w-fit'>
           <p className='md:pr-4 '>
             Hi {user?.firstname}, You are yet to complete setting up your
@@ -27,7 +32,7 @@ export default async function Home() {
             Click to update account
           </Link>
         </div>
-      )}
+      )} */}
       <div className='section-grid gap-10'>
         <div className='card-sm text-primary-foreground min-h-[230px] bg-primary-light overflow-clip relative'>
           <div className=' absolute top-0 left-0 p-5 w-full  z-50'>
@@ -43,21 +48,21 @@ export default async function Home() {
           <div>
             <Icons.expenses className='w-10 h-10' />
             <p className='text-sm'>Expenses</p>
-            <p className='font-semibold tracking-tighter'>
+            <p className='font-semibold tracking-tighter font-inter'>
               {formatter().format(0)}
             </p>
           </div>
           <div>
             <Icons.income className='w-10 h-10' />
             <p className='text-sm'>Income</p>
-            <p className='font-semibold'>{formatter().format(0)}</p>
+            <p className='font-semibold font-inter'>{formatter().format(0)}</p>
           </div>
         </div>
 
         <div className='card-xs space-y-4 flex justify-center flex-col'>
           <p className='font-semibold text-lg'>Ledger Account</p>
           <div>
-            <h2 className='text-xl'>{formatter().format(0)}</h2>
+            <h2 className='text-xl font-inter'>{formatter().format(0)}</h2>
             <p className='text-sm'>Due Tomorrow match 8</p>
           </div>
           <Button className='max-w-[10rem]'>Previous payouts</Button>
@@ -108,16 +113,9 @@ export default async function Home() {
           <TransactionChart />
         </div>
       </div>
-
-      <div>
-        <DataTable
-          title='Recent Transactions'
-          headers={['Customer', 'Amount', 'Channel', 'Date', 'Status']}
-          dataKeys={['customer', 'amount', 'channel', 'date', 'status']}
-          data={tableData || []}
-          totalPages={tableData.length}
-        />
-      </div>
+      <Suspense fallback={<LoadingTransactions />}>
+        <Transactions />
+      </Suspense>
     </section>
   );
 }
