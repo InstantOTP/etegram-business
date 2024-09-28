@@ -22,7 +22,7 @@ import { sidebarLinks } from '@/lib/static-data';
 import Logout from '../common/buttons/logout';
 import SearchTransactions from '../common/search-transactions';
 import { Icons } from '../icons';
-import SwitchBusiness from '../modals/switch-business';
+// import SwitchBusiness from '../modals/switch-business';
 import SwitchProject from '../modals/switch-project';
 import { Switch } from '../ui/switch';
 import { useToast } from '../ui/use-toast';
@@ -238,9 +238,9 @@ export const DashboardHeader = ({
               variant='ghost'
               className='relative h-12 p-2'
             >
-              <Avatar className='h-8 w-8 mr-1.5'>
+              <Avatar className='h-9 w-9 mr-1.5'>
                 <AvatarImage
-                  src='/profile-pic.jpg'
+                  src='/default-profile.png'
                   alt={`@${user?.firstname}`}
                   className='object-cover'
                 />
@@ -257,22 +257,36 @@ export const DashboardHeader = ({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className='w-56'
+            className='w-80 rounded-[20px] py-4'
             align='end'
             forceMount
           >
             <DropdownMenuLabel className='font-normal'>
-              <div className='flex flex-col space-y-1'>
-                <p className='text-sm font-medium leading-none'>
-                  {user?.firstname} {user?.lastname}
-                </p>
-                <p className='text-xs leading-none text-muted-foreground'>
-                  {user?.email}
-                </p>
+              <div className='flex px-3'>
+                <Avatar className='h-9 w-9 mr-1.5'>
+                  <AvatarImage
+                    src='/default-profile.png'
+                    alt={`@${user?.firstname}`}
+                    className='object-cover'
+                  />
+                  <AvatarFallback>
+                    {user
+                      ? findUpper(`${user.firstname} ${user.lastname}`)
+                      : 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <div className='flex flex-col space-y-1'>
+                  <p className='text-sm font-medium leading-none'>
+                    {user?.firstname} {user?.lastname}
+                  </p>
+                  <p className='text-xs leading-none text-muted-foreground'>
+                    {user?.email}
+                  </p>
+                </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+            {/* <DropdownMenuGroup>
               <DropdownMenuItem asChild>
                 <SwitchBusiness
                   currentBusiness={business}
@@ -283,12 +297,21 @@ export const DashboardHeader = ({
                 <SwitchProject projects={projects} />
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-            </DropdownMenuGroup>
+            </DropdownMenuGroup> */}
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href={'/dashboard/settings'}>Settings</Link>
+                <Link
+                  href={'/dashboard/settings'}
+                  className='px-4 text-muted-foreground'
+                >
+                  Settings
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                asChild
+                className='px-4'
+              >
                 <Logout />
               </DropdownMenuItem>
             </DropdownMenuGroup>

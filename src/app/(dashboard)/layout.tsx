@@ -21,7 +21,10 @@ export default async function MainLayout({
   // console.log(projects);
   return (
     <section className='bg-[#ecf4fb] flex w-full min-h-svh overflow-y-hidden'>
-      <DashboardSidebar user={user} />
+      <DashboardSidebar
+        user={user}
+        businesses={businesses}
+      />
       <section className='relative flex-1 w-full'>
         <DashboardHeader
           user={user}

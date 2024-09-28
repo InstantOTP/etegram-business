@@ -6,17 +6,38 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from '../common/logo';
 import { User } from './dashboard-header';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useState } from 'react';
+import { Button } from '../ui/button';
+import { ArrowBigLeft, ChevronRight } from 'lucide-react';
+import { selectBusiness } from '@/app/apis/actions/business';
+import { Icons } from '../icons';
 
-const DashboardSidebar = ({ user }: { user: User }) => {
+const DashboardSidebar = ({
+  user,
+  businesses,
+}: {
+  user: User;
+  businesses: { business: bussinessType }[];
+}) => {
   const pathname = usePathname();
+  const [switchBusiness, setSwitchBusiness] = useState(false);
   // console.log(user);
   return (
-    <aside className='hidden lg:block w-full max-w-[15.625rem] h-svh shadow-md bg-background overflow-y-auto pb-8  border-r styled-scrollbar'>
-      <div className='px-5 sticky top-0 left-0 bg-white z-10 pt-3'>
+    <aside className='relative hidden lg:flex flex-col justify-between w-full max-w-[15.625rem] h-svh shadow-md bg-background overflow-y-auto  border-r '>
+      <div className='px-5 bg-white pt-3'>
         <Logo />
       </div>
 
-      <ul className='mt-6 grid gap-y-8 font-eudoxusSans'>
+      <ul className='grid gap-y-8 font-eudoxusSans h-[70svh] styled-scrollbar overflow-y-auto pb-4'>
         {sidebarLinks.map((item, index) => {
           return (
             <li
@@ -81,6 +102,54 @@ const DashboardSidebar = ({ user }: { user: User }) => {
           );
         })}
       </ul>
+
+      <div className='px-5  bg-white z-10 py-3 w-full border-y'>
+        <DropdownMenu
+          open={switchBusiness}
+          onOpenChange={setSwitchBusiness}
+        >
+          <DropdownMenuTrigger className='flex w-full items-center justify-between'>
+            <Icons.arrowsCircle />
+            <span>Switch Business</span>
+            <ChevronRight />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className='w-[14.5rem] rounded-[20px] p-0 bg-accent'
+            align='end'
+            forceMount
+          >
+            <DropdownMenuLabel className='font-normal text-[#001943] text-sm px-1.5 py-3'>
+              Your Business
+            </DropdownMenuLabel>
+            {/* <DropdownMenuSeparator /> */}
+            <DropdownMenuGroup className='w-full bg-white pb-2'>
+              <ul className='divide-y'>
+                {businesses?.map((item, key) => (
+                  <li key={key}>
+                    <button
+                      className='text-xs w-full hover:bg-accent py-2.5 inline-flex items-center justify-between px-2'
+                      onClick={() => selectBusiness(item?.business?.id)}
+                    >
+                      <span>{item.business.name}</span>
+                      <ChevronRight className='w-4 h-4' />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              {/* <DropdownMenuItem asChild>
+                <SwitchBusiness
+                  currentBusiness={business}
+                  businesses={businesses}
+                />
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <SwitchProject projects={projects} />
+              </DropdownMenuItem> */}
+              {/* <DropdownMenuSeparator /> */}
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </aside>
   );
 };

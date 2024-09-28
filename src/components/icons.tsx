@@ -635,4 +635,43 @@ export const Icons = {
       </g>
     </svg>
   ),
+  arrowsCircle: (props: IconProps) => (
+    <svg
+      width='18'
+      height='18'
+      viewBox='0 0 18 18'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      {...props}
+    >
+      <path
+        d='M12.3867 7.01123H15.7617V3.63623'
+        stroke='#001943'
+        stroke-width='2'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+      />
+      <path
+        d='M4.62476 4.62478C5.19932 4.05021 5.88142 3.59445 6.63213 3.2835C7.38283 2.97254 8.18743 2.8125 8.99998 2.8125C9.81253 2.8125 10.6171 2.97254 11.3678 3.2835C12.1185 3.59445 12.8006 4.05021 13.3752 4.62478L15.7617 7.01126'
+        stroke='#001943'
+        stroke-width='2'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+      />
+      <path
+        d='M5.61325 10.9888H2.23825V14.3638'
+        stroke='#001943'
+        stroke-width='2'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+      />
+      <path
+        d='M13.3752 13.3753C12.8007 13.9498 12.1185 14.4056 11.3678 14.7165C10.6171 15.0275 9.81254 15.1875 8.99999 15.1875C8.18744 15.1875 7.38284 15.0275 6.63214 14.7165C5.88143 14.4056 5.19933 13.9498 4.62477 13.3753L2.23828 10.9888'
+        stroke='#001943'
+        stroke-width='2'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+      />
+    </svg>
+  ),
 };

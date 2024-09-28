@@ -25,4 +25,5 @@ type bussinessType = {
     instagram: string;
     twitter: string;
   };
+  logo: string;
 };

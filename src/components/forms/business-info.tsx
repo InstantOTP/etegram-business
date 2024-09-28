@@ -46,14 +46,21 @@ export default function BusinessInfoForm({
 }: {
   business?: bussinessType;
 }) {
+  // console.log(business);
   const { toast } = useToast();
   const { replace } = useRouter();
   const { acceptedFiles, getInputProps, getRootProps, open } = useDropzone({
     noClick: true,
     noKeyboard: true,
+    accept: {
+      'image/jpeg': ['.jpeg'],
+      'image/png': ['.jpg'],
+      'image/svg+xml': ['.svg'],
+    },
   });
   const [uploadedLogo, setUploadedLogo] = useState('');
   const [selectedState, setSelectedState] = useState('');
+  const [uploading, setUploading] = useState(false);
   const initalState = {
     message: '',
     errors: {},
@@ -71,12 +78,14 @@ export default function BusinessInfoForm({
       toast({ description: 'Please select a file', variant: 'destructive' });
       return;
     }
+    setUploading(true);
     const data = await uploadImageToImagekit(
       acceptedFiles[0],
       acceptedFiles[0]?.name
     );
     // console.log(data);
     setUploadedLogo(data?.url);
+    setUploading(false);
   }
 
   useEffect(() => {
@@ -108,18 +117,25 @@ export default function BusinessInfoForm({
         >
           <div className='flex justify-between items-center  lg:max-w-[80%]'>
             <div className='w-[60px] h-[60px] relative'>
-              <Image
-                src={
-                  acceptedFiles.length > 0
-                    ? URL.createObjectURL(acceptedFiles[0])
-                    : '/logo/logomark.svg'
-                }
-                alt='company logo'
-                fill
-                // width={50}
-                // height={50}
-                className='rounded object-cover'
-              />
+              {business?.logo && !acceptedFiles.length ? (
+                <Image
+                  src={business?.logo}
+                  alt='company logo'
+                  fill
+                  className='rounded object-cover'
+                />
+              ) : (
+                <Image
+                  src={
+                    acceptedFiles.length > 0
+                      ? URL.createObjectURL(acceptedFiles[0])
+                      : '/logo/logomark.svg'
+                  }
+                  alt='company logo'
+                  fill
+                  className='rounded object-cover'
+                />
+              )}
             </div>
             {acceptedFiles.length === 0 && !uploadedLogo ? (
               <Button
@@ -136,7 +152,13 @@ export default function BusinessInfoForm({
                 size={'sm'}
                 className='!text-xs'
                 onClick={uploadImage}
+                disabled={uploading}
               >
+                <LucideLoader2
+                  className={cn('animate-spin mr-1 w-[22px] h-[22px] hidden', {
+                    'inline-block': uploading,
+                  })}
+                />
                 Upload New Logo
               </Button>
             )}
@@ -492,7 +514,9 @@ export default function BusinessInfoForm({
           >
             Back
           </Link>
-          <SubmitButton isImageUploaded={uploadedLogo} />
+          <SubmitButton
+            isImageUploaded={uploadedLogo || (business?.logo as string)}
+          />
         </div>
       </form>
     </div>

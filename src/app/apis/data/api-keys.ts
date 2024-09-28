@@ -3,12 +3,12 @@ import { cookies } from 'next/headers';
 import { fetchWithAuth } from '@/lib/http-config';
 import { revalidatePath } from 'next/cache';
 
-export async function generateAPIKey() {
+export async function generateAPIKey(type: string) {
   const businessId = cookies().get('businessId')?.value;
   const projectId = cookies().get('projectId')?.value;
   try {
     const response = await fetchWithAuth(
-      `/business-project/api-key/${businessId}/${projectId}?type=test`,
+      `/business-project/api-key/${businessId}/${projectId}?type=${type}`,
       {
         next: { tags: [`apikey-${businessId}-${projectId}`] },
       }

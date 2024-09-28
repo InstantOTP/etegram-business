@@ -6,7 +6,7 @@ import { useToast } from '../ui/use-toast';
 import { RiFileCopyFill } from 'react-icons/ri';
 import Cookies from 'js-cookie';
 
-export default function ApiKeysForm({ testPublic }: { testPublic?: string }) {
+export function TestApiKeysForm({ testPublic }: { testPublic?: string }) {
   const { toast } = useToast();
   const projectId = Cookies.get('projectId');
   function handleCopy(value: string | undefined) {
@@ -66,6 +66,115 @@ export default function ApiKeysForm({ testPublic }: { testPublic?: string }) {
             </Button>
           </div>
         </div>
+        <div className='form-control'>
+          <label htmlFor='callbackUrl'> Test Callback URL</label>
+          <Input
+            id='callbackUrl'
+            name='callbackUrl'
+            type='text'
+            placeholder='eg: http://testurl/callback'
+            className='disabled:opacity-100'
+          />
+        </div>
+        <div className='form-control'>
+          <label htmlFor='callbackUrl'> Test Webhook URL</label>
+          <Input
+            id='callbackUrl'
+            name='callbackUrl'
+            type='text'
+            placeholder='eg: http://testurl/webhook'
+            className='disabled:opacity-100'
+          />
+        </div>
+
+        <Button type='button'>Update</Button>
+      </form>
+    </div>
+  );
+}
+
+export function LiveApiKeysForm({ livePublic }: { livePublic?: string }) {
+  const { toast } = useToast();
+  const projectId = Cookies.get('projectId');
+  function handleCopy(value: string | undefined) {
+    if (value) {
+      navigator.clipboard.writeText(value);
+      toast({ description: 'Copied to clipboard' });
+    }
+  }
+  return (
+    <div className='w-full'>
+      <form className='w-full space-y-6'>
+        <div className='form-control'>
+          <label htmlFor='testKey'>Live Public Key</label>
+          <div className='flex items-center space-x-3'>
+            <Input
+              id='liveKey'
+              name='liveKey'
+              type='text'
+              placeholder='Click on the button to generate API Key'
+              defaultValue={livePublic}
+              disabled
+              className='disabled:opacity-100'
+            />
+
+            <Button
+              type='button'
+              onClick={() => handleCopy(livePublic)}
+              variant={'outline'}
+              className='w-full max-w-[9rem]'
+            >
+              <RiFileCopyFill className='w-4 h-4 text-primary' />
+              <span>Copy</span>
+            </Button>
+          </div>
+        </div>
+        <div className='form-control'>
+          <label htmlFor='projectID'>Project ID</label>
+          <div className='flex items-center space-x-3'>
+            <Input
+              id='projectID'
+              name='projectID'
+              type='text'
+              placeholder='projectID'
+              defaultValue={projectId}
+              disabled
+              className='disabled:opacity-100'
+            />
+
+            <Button
+              type='button'
+              onClick={() => handleCopy(projectId)}
+              variant={'outline'}
+              className='w-full max-w-[9rem]'
+            >
+              <RiFileCopyFill className='w-4 h-4 text-primary' />
+              <span>Copy</span>
+            </Button>
+          </div>
+        </div>
+        <div className='form-control'>
+          <label htmlFor='callbackUrl'> Test Callback URL</label>
+          <Input
+            id='callbackUrl'
+            name='callbackUrl'
+            type='text'
+            placeholder='eg: http://liveurl/callback'
+            className='disabled:opacity-100'
+          />
+        </div>
+        <div className='form-control'>
+          <label htmlFor='callbackUrl'> Test Webhook URL</label>
+          <Input
+            id='callbackUrl'
+            name='callbackUrl'
+            type='text'
+            placeholder='eg: http://liveurl/webhook'
+            className='disabled:opacity-100'
+          />
+        </div>
+
+        <Button type='button'>Update</Button>
       </form>
     </div>
   );
