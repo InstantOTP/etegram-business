@@ -301,7 +301,7 @@ export const DashboardHeader = ({
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
                 <Link
-                  href={'/dashboard/settings'}
+                  href={'/settings'}
                   className='px-4 text-muted-foreground'
                 >
                   Settings
