@@ -1,25 +1,22 @@
 'use client';
 
-import { sidebarLinks } from '@/lib/static-data';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import Logo from '../common/logo';
-import { User } from './dashboard-header';
+import { selectBusiness } from '@/app/apis/actions/business';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { sidebarLinks } from '@/lib/static-data';
+import { cn } from '@/lib/utils';
+import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { Button } from '../ui/button';
-import { ArrowBigLeft, ChevronRight } from 'lucide-react';
-import { selectBusiness } from '@/app/apis/actions/business';
+import Logo from '../common/logo';
 import { Icons } from '../icons';
+import { User } from './dashboard-header';
 
 const DashboardSidebar = ({
   user,
@@ -124,17 +121,18 @@ const DashboardSidebar = ({
             {/* <DropdownMenuSeparator /> */}
             <DropdownMenuGroup className='w-full bg-white pb-2'>
               <ul className='divide-y'>
-                {businesses?.map((item, key) => (
-                  <li key={key}>
-                    <button
-                      className='text-xs w-full hover:bg-accent py-2.5 inline-flex items-center justify-between px-2'
-                      onClick={() => selectBusiness(item?.business?.id)}
-                    >
-                      <span>{item.business.name}</span>
-                      <ChevronRight className='w-4 h-4' />
-                    </button>
-                  </li>
-                ))}
+                {businesses?.length > 0 &&
+                  businesses?.map((item, key) => (
+                    <li key={key}>
+                      <button
+                        className='text-xs w-full hover:bg-accent py-2.5 inline-flex items-center justify-between px-2'
+                        onClick={() => selectBusiness(item?.business?.id)}
+                      >
+                        <span>{item.business.name}</span>
+                        <ChevronRight className='w-4 h-4' />
+                      </button>
+                    </li>
+                  ))}
               </ul>
               {/* <DropdownMenuItem asChild>
                 <SwitchBusiness

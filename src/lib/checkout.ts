@@ -6,10 +6,10 @@ interface InitializeProps {
   email: string;
 }
 
-async function initialize(transaction: InitializeProps) {
+async function initialize(apiKey: string, transaction: InitializeProps) {
   let dataToSend = {
-    reference: 'tyrhndjhfd',
-    amount: 1000,
+    reference: 'erkfdlfd1',
+    amount: transaction?.amount,
     phone: '09012121212',
     email: 'Gamezone 001',
   };
@@ -17,12 +17,12 @@ async function initialize(transaction: InitializeProps) {
   // console.log(dataToSend);
   try {
     const response = await fetch(
-      `https://dev-checkout.instanttempmail.com/api/transaction/initialize/66cc9f4ad602e72ea995b728`,
+      `https://dev-checkout.instanttempmail.com/api/transaction/initialize/${transaction.projectID}`,
       {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
-          Authorization: `Bearer pk_test-ddb4b9d02ec34fee95659b728b57672b`,
+          Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify(dataToSend),
         // cache: 'no-store',
