@@ -17,24 +17,27 @@ import { useState } from 'react';
 import Logo from '../common/logo';
 import { Icons } from '../icons';
 import { User } from './dashboard-header';
+import { selectProject } from '@/app/apis/actions/project';
 
 const DashboardSidebar = ({
   user,
   businesses,
+  projects,
 }: {
   user: User;
   businesses: { business: bussinessType }[];
+  projects: any;
 }) => {
   const pathname = usePathname();
   const [switchBusiness, setSwitchBusiness] = useState(false);
-  // console.log(user);
+  // console.log(projects);
   return (
     <aside className='relative hidden lg:flex flex-col justify-between w-full max-w-[15.625rem] h-svh shadow-md bg-background overflow-y-auto  border-r '>
       <div className='px-5 bg-white pt-3'>
         <Logo />
       </div>
 
-      <ul className='grid gap-y-8 font-eudoxusSans h-[70svh] styled-scrollbar overflow-y-auto pb-4'>
+      <ul className='flex flex-col gap-y-8 font-eudoxusSans h-[70svh] styled-scrollbar overflow-y-auto pb-4'>
         {sidebarLinks.map((item, index) => {
           return (
             <li
@@ -80,9 +83,9 @@ const DashboardSidebar = ({
                         {link?.soon && item.heading === 'Home' && (
                           <span
                             className={cn(
-                              'text-[10px] font-semibold bg-accent px-0.5 rounded-md',
+                              'text-xs bg-accent px-1.5 py-1 rounded-[1rem] hidden',
                               {
-                                'bg-destructive text-destructive-foreground':
+                                'bg-[#FEF3F2] text-[#F0142F] inline-block':
                                   user?.kycApprovalStatus === 'pending',
                               }
                             )}
@@ -107,7 +110,7 @@ const DashboardSidebar = ({
         >
           <DropdownMenuTrigger className='flex w-full items-center justify-between'>
             <Icons.arrowsCircle />
-            <span>Switch Business</span>
+            <span>Switch Project</span>
             <ChevronRight />
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -116,11 +119,11 @@ const DashboardSidebar = ({
             forceMount
           >
             <DropdownMenuLabel className='font-normal text-[#001943] text-sm px-1.5 py-3'>
-              Your Business
+              Your Projects
             </DropdownMenuLabel>
             {/* <DropdownMenuSeparator /> */}
             <DropdownMenuGroup className='w-full bg-white pb-2'>
-              <ul className='divide-y'>
+              {/* <ul className='divide-y'>
                 {businesses?.length > 0 &&
                   businesses?.map((item, key) => (
                     <li key={key}>
@@ -129,6 +132,20 @@ const DashboardSidebar = ({
                         onClick={() => selectBusiness(item?.business?.id)}
                       >
                         <span>{item.business.name}</span>
+                        <ChevronRight className='w-4 h-4' />
+                      </button>
+                    </li>
+                  ))}
+              </ul> */}
+              <ul className='divide-y'>
+                {projects?.data?.length > 0 &&
+                  projects?.data?.map((item: any, key: number) => (
+                    <li key={key}>
+                      <button
+                        className='text-xs w-full hover:bg-accent py-2.5 inline-flex items-center justify-between px-2'
+                        onClick={() => selectProject(item?.id)}
+                      >
+                        <span>{item.name}</span>
                         <ChevronRight className='w-4 h-4' />
                       </button>
                     </li>

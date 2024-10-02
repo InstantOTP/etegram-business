@@ -56,7 +56,7 @@ export default function UserComplianceForm() {
       });
     }
     if (state?.status === 'success') {
-      replace('/compliance');
+      replace('/compliance/business-info');
     }
   }, [state]);
   return (

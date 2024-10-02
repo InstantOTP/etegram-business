@@ -78,6 +78,15 @@ export const CreateProjectSchema = z.object({
   projectName: z.string().min(1, { message: 'Project Name is required' }),
   projectDescription: z.string(),
 });
+export const CreateBankSchema = z.object({
+  bankName: z.string().min(1, { message: 'Enter Bank Name' }),
+  bankCode: z.string(),
+  accountNumber: z
+    .string()
+    .min(10, { message: 'Enter a Valid Account Number' })
+    .max(10, { message: 'Enter a Valid Account Number' }),
+  accountName: z.string().min(1, { message: 'Enter account Name' }),
+});
 
 export const ForgotpasswordSchema = z.object({
   email: z

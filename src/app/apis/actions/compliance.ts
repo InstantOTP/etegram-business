@@ -68,6 +68,10 @@ export async function userCompliance(
       return { ...prevState, message: data, status: 'failed' };
     }
     revalidateTag('user');
+    return {
+      ...prevState,
+      status: 'success',
+    };
   } catch (error) {
     if (error) {
       return {
@@ -108,7 +112,7 @@ export async function businessCompliance(
   };
 
   try {
-    console.log(dataToSend);
+    // console.log(dataToSend);
 
     const response = await fetchWithAuth(`/business/kyc/${businessID}`, {
       method: 'POST',

@@ -10,7 +10,7 @@ import { Button, buttonVariants } from '../ui/button';
 import { LucideLoader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { login } from '@/app/apis/actions/auth';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import {
   Select,
   SelectContent,
@@ -44,7 +44,7 @@ function SubmitButton({
           'inline-block': pending,
         })}
       />
-      <span>Continue</span>
+      <span>Activate this Business</span>
     </Button>
   );
 }
@@ -52,6 +52,9 @@ function SubmitButton({
 export default function BusinessComplianceForm() {
   const { toast } = useToast();
   const { replace } = useRouter();
+  // const pathname = usePathname();
+  // const isCompliance = pathname === '/compliance/business-compliance';
+
   const [uploadedImage, setUploadedImage] = useState('');
   const [cacImage, setCacImage] = useState('');
   const initalState = {

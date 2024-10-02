@@ -38,6 +38,7 @@ export async function updateBusinessInfo(
   const businessID = cookies().get('businessId')?.value;
   const data = Object.fromEntries(formData.entries());
   const validatedFields = BusinessInfoSchema.safeParse(data);
+  // console.log(data);
 
   if (!validatedFields.success) {
     return {

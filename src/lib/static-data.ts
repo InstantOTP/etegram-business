@@ -12,6 +12,17 @@ type sidebarLinks = {
   }[];
 };
 
+export const industries = [
+  { label: 'Manufacturing', value: 'Manufacturing' },
+  { label: 'Transportation', value: 'Transportation' },
+  { label: 'Education', value: 'Education' },
+  { label: 'Construction & Mining', value: 'Construction & Mining' },
+  { label: 'Retail', value: 'Retail' },
+  { label: 'Health Care', value: 'Health Care' },
+  { label: 'Entertainment', value: 'Entertainment' },
+  { label: 'Agriculture', value: 'Agriculture' },
+];
+
 export const etegramUses = [
   {
     label: 'To create business bank accounts(s) for my business',

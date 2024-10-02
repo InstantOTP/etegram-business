@@ -8,7 +8,7 @@ import {
   ChartTooltipContent,
 } from '../ui/chart';
 import { Bar, BarChart, Rectangle, XAxis, YAxis } from 'recharts';
-import { kConverter } from '@/lib/utils';
+import { formatDateNumeric, kConverter } from '@/lib/utils';
 
 const chartConfig = {
   amount: {
@@ -17,7 +17,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function TransactionChart() {
+export function TransactionChart({ data }: { data: any[] }) {
   return (
     <ChartContainer
       config={chartConfig}
@@ -25,17 +25,17 @@ export function TransactionChart() {
     >
       <BarChart
         accessibilityLayer
-        data={chartData}
+        data={data}
       >
         <XAxis
-          dataKey='month'
+          dataKey='_id'
           tickLine={false}
           tickMargin={10}
           axisLine={false}
-          tickFormatter={(value) => value.slice(0, 3)}
+          tickFormatter={(value) => formatDateNumeric(value)}
         />
         <YAxis
-          dataKey='amount'
+          dataKey='totalAmount'
           tickLine={false}
           tickMargin={10}
           axisLine={false}
@@ -52,7 +52,7 @@ export function TransactionChart() {
           }
         />
         <Bar
-          dataKey={'amount'}
+          dataKey={'totalAmount'}
           fill='var(--color-amount)'
           radius={4}
           barSize={40}

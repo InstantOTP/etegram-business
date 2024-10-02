@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { etegramUses } from '@/lib/static-data';
+import { etegramUses, industries } from '@/lib/static-data';
 import { useToast } from '../ui/use-toast';
 
 function SubmitButton() {
@@ -168,9 +168,14 @@ export default function CreateBusinessForm() {
               />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='industry 1'>Industry 1</SelectItem>
-              <SelectItem value='industry 2'>Industry 2</SelectItem>
-              <SelectItem value='industry 3'>Industry 3</SelectItem>
+              {industries.map((item, index) => (
+                <SelectItem
+                  key={index}
+                  value={item.value}
+                >
+                  {item.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
           {state?.errors?.businessIndustry ? (

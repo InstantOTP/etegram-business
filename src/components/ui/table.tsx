@@ -25,6 +25,7 @@ export default function DataTable({
   setIsOpen,
   setDetails,
   hideViewAll,
+  showPagination = false,
 }: {
   title: string;
   description?: string;
@@ -33,6 +34,7 @@ export default function DataTable({
   dataKeys: string[];
   totalPages: number;
   hideViewAll?: boolean;
+  showPagination?: boolean;
   setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   setDetails?: React.Dispatch<React.SetStateAction<any>>;
   action?: React.ComponentType<{
@@ -146,7 +148,7 @@ export default function DataTable({
                       return (
                         <td
                           key={idx}
-                          className='text-sm py-3 px-4'
+                          className='text-sm py-3 px-4 text-nowrap'
                         >
                           <span>{formatDateWithTime(item?.createdAt)}</span>
                         </td>
@@ -177,7 +179,7 @@ export default function DataTable({
                     return (
                       <td
                         key={idx}
-                        className='text-sm py-3 px-4 capitalize'
+                        className='text-sm py-3 px-4 '
                       >
                         {item[key]}
                       </td>
@@ -194,7 +196,7 @@ export default function DataTable({
             </tbody>
           ) : null}
         </table>
-        {totalPages > 0 && (
+        {totalPages > 0 && !showPagination && (
           <div className='flex justify-end w-full mt-5'>
             <Pagination totalPages={totalPages} />
           </div>

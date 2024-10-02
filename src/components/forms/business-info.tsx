@@ -14,7 +14,7 @@ import { City, ICity, IState, State } from 'country-state-city';
 import { LucideLoader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { useDropzone } from 'react-dropzone';
@@ -49,6 +49,8 @@ export default function BusinessInfoForm({
   // console.log(business);
   const { toast } = useToast();
   const { replace } = useRouter();
+  const pathname = usePathname();
+  const isCompliance = pathname === '/compliance/business-info';
   const { acceptedFiles, getInputProps, getRootProps, open } = useDropzone({
     noClick: true,
     noKeyboard: true,
@@ -95,10 +97,16 @@ export default function BusinessInfoForm({
         variant: state.status !== 'success' ? 'destructive' : 'default',
       });
     }
-    if (state?.status === 'success' && !business) {
-      replace('/compliance');
+    if (state?.status === 'success' && isCompliance) {
+      replace('/compliance/business-compliance');
     }
   }, [state]);
+
+  useEffect(() => {
+    if (business?.logo) {
+      setUploadedLogo(business?.logo);
+    }
+  }, [business]);
 
   return (
     <div className='w-full bg-background rounded-3xl space-y-2 py-11 px-6 md:p-11 flex flex-col justify-center items-center'>
@@ -193,6 +201,7 @@ export default function BusinessInfoForm({
             type='text'
             defaultValue={business?.name}
             placeholder='e.g Kebsly Enterprise'
+            readOnly={business?.name ? true : false}
           />
           {state?.errors?.name ? (
             <div

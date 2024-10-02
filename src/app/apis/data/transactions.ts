@@ -56,3 +56,60 @@ export async function getCreditTransactionStats() {
     return null;
   }
 }
+
+export async function getDebitTransactions() {
+  const projectId = cookies().get('projectId')?.value;
+  const businessId = cookies().get('businessId')?.value;
+
+  try {
+    const response = await fetchWithAuth(
+      `/transaction/debit/${businessId}/${projectId}`,
+      {
+        next: {
+          tags: [`business-transactions-${projectId}-${businessId}-debit`],
+        },
+      }
+    );
+    // console.log(response);
+    const data = await response.json();
+    // console.log(data);
+    if (!response.ok) {
+      return { message: data };
+    }
+    return data;
+  } catch (error) {
+    if (error) {
+      console.error(error);
+    }
+    return null;
+  }
+}
+
+export async function getDebitTransactionStats() {
+  const projectId = cookies().get('projectId')?.value;
+  const businessId = cookies().get('businessId')?.value;
+
+  try {
+    const response = await fetchWithAuth(
+      `/transaction/debit-stats/${businessId}/${projectId}`,
+      {
+        next: {
+          tags: [`business-transaction-stats-${projectId}-${businessId}-debit`],
+        },
+      }
+    );
+    // console.log(response);
+    const data = await response.json();
+    // /transaction/credit-stats/:projectID
+    // console.log(data);
+    if (!response.ok) {
+      return { message: data };
+    }
+    return data;
+  } catch (error) {
+    if (error) {
+      console.error(error);
+    }
+    return null;
+  }
+}

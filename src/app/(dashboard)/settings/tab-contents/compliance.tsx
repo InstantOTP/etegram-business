@@ -2,6 +2,7 @@ import { getCurrentBusiness } from '@/app/apis/data/business';
 import { getUser } from '@/app/apis/data/user';
 import { Icons } from '@/components/icons';
 import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 export default async function ComplianceSection() {
@@ -25,7 +26,12 @@ export default async function ComplianceSection() {
           <p>
             {user?.firstname} {user?.lastname}
           </p>
-          <span className='bg-green-100 text-green-500 rounded-sm text-[10px] py-0.5 px-2.5 capitalize'>
+          <span
+            className={cn(
+              'bg-green-100 text-green-500 rounded-[1rem] text-[10px] py-0.5 px-2.5 capitalize',
+              { 'bg-[#FFC00133] text-[#FFC001]': user?.kycApprovalStatus }
+            )}
+          >
             {user?.kycApprovalStatus}
           </span>
         </div>
@@ -43,7 +49,15 @@ export default async function ComplianceSection() {
           <div className='flex items-center space-x-2.5'>
             <Icons.customers className='text-primary' />
             <p>{business?.name}</p>
-            <span className='bg-green-100 text-green-500 rounded-sm text-[10px] py-0.5 px-2.5 capitalize'>
+            <span
+              className={cn(
+                'bg-green-100 text-green-500 rounded-[1rem] text-[10px] py-0.5 px-2.5 capitalize',
+                {
+                  'bg-[#FFC00133] text-[#FFC001]':
+                    business?.kycApprovalStatus === 'pending',
+                }
+              )}
+            >
               {business?.kycApprovalStatus}
             </span>
           </div>

@@ -35,9 +35,11 @@ export default function CustomDropZone({
       toast({ description: 'Please select a file', variant: 'destructive' });
       return;
     }
+    setIsLoading(true);
     let fileToSend = acceptedFiles[0];
     const data = await uploadImageToImagekit(fileToSend, fileToSend.name);
     setValue(data?.url);
+    setIsLoading(false);
   }
   return (
     <div>

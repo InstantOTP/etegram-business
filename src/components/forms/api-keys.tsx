@@ -5,15 +5,44 @@ import { Button } from '../ui/button';
 import { useToast } from '../ui/use-toast';
 import { RiFileCopyFill } from 'react-icons/ri';
 import Cookies from 'js-cookie';
+import { updateProjectUrl } from '@/app/apis/actions/project';
+import { useState } from 'react';
 
-export function TestApiKeysForm({ testPublic }: { testPublic?: string }) {
+export function TestApiKeysForm({
+  testPublic,
+  projectUrls,
+}: {
+  testPublic?: string;
+  projectUrls: { webhookUrl: { test: string }; callbackUrl: { test: string } };
+}) {
   const { toast } = useToast();
   const projectId = Cookies.get('projectId');
+  const [webhookUrl, setWebHookUrl] = useState(
+    projectUrls?.webhookUrl?.test || ''
+  );
+  // console.log(projectUrls);
+  const [callbackUrl, setCallbackUrl] = useState(
+    projectUrls?.callbackUrl?.test || ''
+  );
   function handleCopy(value: string | undefined) {
     if (value) {
       navigator.clipboard.writeText(value);
       toast({ description: 'Copied to clipboard' });
     }
+  }
+
+  async function handleUpdate() {
+    let formdata = {
+      callbackUrl,
+      webhookUrl,
+      type: 'test',
+    };
+    console.log(formdata);
+    const data = await updateProjectUrl(formdata);
+    toast({
+      description: data?.message,
+      variant: data?.status === 'success' ? 'default' : 'destructive',
+    });
   }
   return (
     <div className='w-full'>
@@ -74,6 +103,8 @@ export function TestApiKeysForm({ testPublic }: { testPublic?: string }) {
             type='text'
             placeholder='eg: http://testurl/callback'
             className='disabled:opacity-100'
+            value={callbackUrl}
+            onChange={(e) => setCallbackUrl(e.target.value)}
           />
         </div>
         <div className='form-control'>
@@ -84,10 +115,17 @@ export function TestApiKeysForm({ testPublic }: { testPublic?: string }) {
             type='text'
             placeholder='eg: http://testurl/webhook'
             className='disabled:opacity-100'
+            value={webhookUrl}
+            onChange={(e) => setWebHookUrl(e.target.value)}
           />
         </div>
 
-        <Button type='button'>Update</Button>
+        <Button
+          type='button'
+          onClick={handleUpdate}
+        >
+          Update
+        </Button>
       </form>
     </div>
   );

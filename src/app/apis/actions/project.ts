@@ -59,6 +59,63 @@ export async function createProject(
   }
 }
 
+export async function updateProjectUrl(formData: {
+  callbackUrl: string;
+  webhookUrl: string;
+  type: 'test' | 'live' | string;
+}) {
+  const businessID = cookies().get('businessId')?.value;
+  const projectID = cookies().get('projectId')?.value;
+
+  let dataToSend;
+
+  if (formData.type === 'test') {
+    dataToSend = {
+      callbackUrl: {
+        test: formData.callbackUrl,
+      },
+      webhookUrl: {
+        test: formData.webhookUrl,
+      },
+    };
+  } else {
+    dataToSend = {
+      callbackUrl: {
+        live: formData.callbackUrl,
+      },
+      webhookUrl: {
+        live: formData.webhookUrl,
+      },
+    };
+  }
+
+  try {
+    // console.log(dataToSend);
+    const response = await fetchWithAuth(
+      `/business-project/${businessID}/${projectID}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(dataToSend),
+      }
+    );
+    // console.log(response);
+    const data = await response.json();
+    // console.log(data);
+    if (!response.ok) {
+      return { message: data, status: 'failed' };
+    }
+    revalidateTag(`business-projects-${businessID}`);
+    return { message: 'Project Updated', status: 'success' };
+  } catch (error) {
+    if (error) {
+      return {
+        message: 'Login failed',
+        status: 'failed',
+      };
+    }
+  }
+}
+
 export async function selectProject(projectId: any) {
   cookies().set('projectId', projectId);
   redirect('/');

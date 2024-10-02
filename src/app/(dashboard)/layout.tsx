@@ -24,6 +24,7 @@ export default async function MainLayout({
       <DashboardSidebar
         user={user}
         businesses={businesses}
+        projects={projects}
       />
       <section className='relative flex-1 w-full'>
         <DashboardHeader
