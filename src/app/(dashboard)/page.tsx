@@ -10,15 +10,17 @@ import { Suspense } from 'react';
 import { getUser } from '../apis/data/user';
 import Transactions from '../components/transactions';
 import { getProjectDashboard } from '../apis/data/projects';
+import { getCurrentBusiness } from '../apis/data/business';
 
 export default async function Home() {
   const user: User = await getUser();
   const dashboard = await getProjectDashboard();
-  // console.log(dashboard);
+  const business = await getCurrentBusiness();
 
   return (
     <section className='space-y-8'>
-      <VerifyBanner user={user} />
+      {(business?.kycApprovalStatus === 'pending' ||
+        user?.kycApprovalStatus === 'pending') && <VerifyBanner user={user} />}
       <div className='section-grid gap-10'>
         <div className='card-sm text-primary-foreground min-h-[230px] bg-primary-light overflow-clip relative'>
           <div className=' absolute top-0 left-0 p-5 w-full  z-50'>

@@ -23,10 +23,12 @@ const DashboardSidebar = ({
   user,
   businesses,
   projects,
+  currentBusiness,
 }: {
   user: User;
   businesses: { business: bussinessType }[];
   projects: any;
+  currentBusiness: any;
 }) => {
   const pathname = usePathname();
   const [switchBusiness, setSwitchBusiness] = useState(false);
@@ -75,22 +77,31 @@ const DashboardSidebar = ({
                         >
                           {link.label}
                         </span>
-                        {link?.soon && item.heading !== 'Home' && (
+                        {/* {link?.soon && item.heading !== 'Home' && (
                           <span className='text-[10px] font-semibold bg-accent px-0.5 rounded-md'>
                             Coming soon
                           </span>
-                        )}
+                        )} */}
                         {link?.soon && item.heading === 'Home' && (
                           <span
                             className={cn(
                               'text-xs bg-accent px-1.5 py-1 rounded-[1rem] hidden',
                               {
                                 'bg-[#FEF3F2] text-[#F0142F] inline-block':
-                                  user?.kycApprovalStatus === 'pending',
+                                  user?.kycApprovalStatus === 'pending' ||
+                                  currentBusiness?.kycApprovalStatus ===
+                                    'pending',
+                                'bg-green-100 text-green-400 inline-block':
+                                  currentBusiness?.kycApprovalStatus ===
+                                    'verified' &&
+                                  user?.kycApprovalStatus === 'approved',
                               }
                             )}
                           >
-                            Not verified
+                            {currentBusiness?.kycApprovalStatus === 'pending' ||
+                            user?.status === 'pending'
+                              ? 'Not verified'
+                              : 'Verified'}
                           </span>
                         )}
                       </Link>

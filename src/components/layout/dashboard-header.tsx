@@ -219,7 +219,9 @@ export const DashboardHeader = ({
               }
             }}
           />
-          <span className='text-sm font-bold'>Test</span>
+          <span className='text-sm font-bold'>
+            {isLive === 'yes' ? 'Live' : 'Test'}
+          </span>
         </div>
 
         {/* <SwitchProvider /> */}
