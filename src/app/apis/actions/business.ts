@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import { PrevStateProps } from './auth';
 import { BusinessInfoSchema } from '@/lib/form-schema/business';
 import { fetchWithAuth } from '@/lib/http-config';
+import { revalidateTag } from 'next/cache';
 
 export interface BusinessInfoState extends PrevStateProps {
   errors?: {
@@ -96,6 +97,42 @@ export async function updateBusinessInfo(
     if (error) {
       return {
         ...prevState,
+        message: 'Failed to update',
+        status: 'failed',
+      };
+    }
+  }
+}
+
+export async function updateLogo(data: { url: string }) {
+  const businessID = cookies().get('businessId')?.value;
+
+  const dataToSend = {
+    logo: data.url,
+  };
+
+  try {
+    // console.log(dataToSend);
+
+    const response = await fetchWithAuth(`/business/${businessID}`, {
+      method: 'PUT',
+      body: JSON.stringify(dataToSend),
+    });
+    const data = await response.json();
+    // console.log(data);
+    if (!response.ok) {
+      return { message: data, status: 'failed' };
+    }
+    revalidateTag('business');
+    return {
+      message: 'Logo was uploaded',
+      status: 'success',
+    };
+
+    // return { ...prevState, message: 'Login Successful', status: 'success' };
+  } catch (error) {
+    if (error) {
+      return {
         message: 'Failed to update',
         status: 'failed',
       };

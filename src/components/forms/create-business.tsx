@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { etegramUses, industries } from '@/lib/static-data';
+import { etegramUses } from '@/lib/static-data';
 import { useToast } from '../ui/use-toast';
 
 function SubmitButton() {
@@ -41,7 +41,11 @@ function SubmitButton() {
   );
 }
 
-export default function CreateBusinessForm() {
+export default function CreateBusinessForm({
+  industries,
+}: {
+  industries: { name: string }[];
+}) {
   const searchParams = useSearchParams();
   const [viewPassword, setViewPassword] = useState(false);
   const [passwordValue, setPasswordValue] = useState<string>('');
@@ -171,9 +175,9 @@ export default function CreateBusinessForm() {
               {industries.map((item, index) => (
                 <SelectItem
                   key={index}
-                  value={item.value}
+                  value={item.name}
                 >
-                  {item.label}
+                  {item.name}
                 </SelectItem>
               ))}
             </SelectContent>

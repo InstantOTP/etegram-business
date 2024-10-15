@@ -131,14 +131,41 @@ export function TestApiKeysForm({
   );
 }
 
-export function LiveApiKeysForm({ livePublic }: { livePublic?: string }) {
+export function LiveApiKeysForm({
+  livePublic,
+  projectUrls,
+}: {
+  livePublic?: string;
+  projectUrls: { webhookUrl: { live: string }; callbackUrl: { live: string } };
+}) {
   const { toast } = useToast();
   const projectId = Cookies.get('projectId');
+  const [webhookUrl, setWebHookUrl] = useState(
+    projectUrls?.webhookUrl?.live || ''
+  );
+  // console.log(projectUrls);
+  const [callbackUrl, setCallbackUrl] = useState(
+    projectUrls?.callbackUrl?.live || ''
+  );
   function handleCopy(value: string | undefined) {
     if (value) {
       navigator.clipboard.writeText(value);
       toast({ description: 'Copied to clipboard' });
     }
+  }
+
+  async function handleUpdate() {
+    let formdata = {
+      callbackUrl,
+      webhookUrl,
+      type: 'live',
+    };
+    // console.log(formdata);
+    const data = await updateProjectUrl(formdata);
+    toast({
+      description: data?.message,
+      variant: data?.status === 'success' ? 'default' : 'destructive',
+    });
   }
   return (
     <div className='w-full'>
@@ -192,27 +219,36 @@ export function LiveApiKeysForm({ livePublic }: { livePublic?: string }) {
           </div>
         </div>
         <div className='form-control'>
-          <label htmlFor='callbackUrl'> Test Callback URL</label>
+          <label htmlFor='callbackUrl'> Live Callback URL</label>
           <Input
             id='callbackUrl'
             name='callbackUrl'
             type='text'
             placeholder='eg: http://liveurl/callback'
             className='disabled:opacity-100'
+            value={callbackUrl}
+            onChange={(e) => setCallbackUrl(e.target.value)}
           />
         </div>
         <div className='form-control'>
-          <label htmlFor='callbackUrl'> Test Webhook URL</label>
+          <label htmlFor='callbackUrl'> Live Webhook URL</label>
           <Input
             id='callbackUrl'
             name='callbackUrl'
             type='text'
             placeholder='eg: http://liveurl/webhook'
             className='disabled:opacity-100'
+            value={webhookUrl}
+            onChange={(e) => setWebHookUrl(e.target.value)}
           />
         </div>
 
-        <Button type='button'>Update</Button>
+        <Button
+          type='button'
+          onClick={handleUpdate}
+        >
+          Update
+        </Button>
       </form>
     </div>
   );

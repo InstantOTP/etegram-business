@@ -89,6 +89,8 @@ export async function updateProjectUrl(formData: {
     };
   }
 
+  // console.log(dataToSend);
+
   try {
     // console.log(dataToSend);
     const response = await fetchWithAuth(

@@ -16,6 +16,7 @@ export default async function Home() {
   const user: User = await getUser();
   const dashboard = await getProjectDashboard();
   const business = await getCurrentBusiness();
+  // console.log(dashboard);
 
   return (
     <section className='space-y-8'>
@@ -25,7 +26,7 @@ export default async function Home() {
         <div className='card-sm text-primary-foreground min-h-[230px] bg-primary-light overflow-clip relative'>
           <div className=' absolute top-0 left-0 p-5 w-full  z-50'>
             <Balance
-              value={dashboard?.walletBalances?.walletBalances?.balance || 0}
+              value={dashboard?.walletBalances?.walletBalances?.available || 0}
             />
           </div>
           <div

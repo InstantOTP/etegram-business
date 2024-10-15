@@ -1,6 +1,6 @@
 'use client';
 
-import { updateBusinessInfo } from '@/app/apis/actions/business';
+import { updateBusinessInfo, updateLogo } from '@/app/apis/actions/business';
 import { uploadImageToImagekit } from '@/app/apis/actions/upload';
 import {
   Select,
@@ -43,8 +43,10 @@ function SubmitButton({ isImageUploaded }: { isImageUploaded: string }) {
 
 export default function BusinessInfoForm({
   business,
+  industries,
 }: {
   business?: bussinessType;
+  industries: { name: string }[];
 }) {
   // console.log(business);
   const { toast } = useToast();
@@ -62,7 +64,9 @@ export default function BusinessInfoForm({
   });
   const [uploadedLogo, setUploadedLogo] = useState('');
   const [selectedState, setSelectedState] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
   const [uploading, setUploading] = useState(false);
+  // const [interests, setInterest] = useState([]);
   const initalState = {
     message: '',
     errors: {},
@@ -72,8 +76,9 @@ export default function BusinessInfoForm({
   const states: IState[] = State.getStatesOfCountry('NG');
 
   const cities: ICity[] = useMemo(() => {
-    return City.getCitiesOfState('NG', selectedState);
-  }, [selectedState]);
+    const state = !selectedState ? business?.address?.state : selectedState;
+    return City.getCitiesOfState('NG', state as string);
+  }, [selectedState, business]);
 
   async function uploadImage() {
     if (acceptedFiles.length === 0) {
@@ -87,6 +92,14 @@ export default function BusinessInfoForm({
     );
     // console.log(data);
     setUploadedLogo(data?.url);
+
+    if (data?.url) {
+      const res = await updateLogo({ url: data?.url });
+      toast({
+        description: res?.message,
+        variant: res?.status !== 'success' ? 'destructive' : 'default',
+      });
+    }
     setUploading(false);
   }
 
@@ -108,6 +121,8 @@ export default function BusinessInfoForm({
     }
   }, [business]);
 
+  // console.log(business);
+
   return (
     <div className='w-full bg-background rounded-3xl space-y-2 py-11 px-6 md:p-11 flex flex-col justify-center items-center'>
       <h2>Business Information</h2>
@@ -124,67 +139,86 @@ export default function BusinessInfoForm({
           className='py-5 bg-accent rounded-lg px-3'
         >
           <div className='flex justify-between items-center  lg:max-w-[80%]'>
-            <div className='w-[60px] h-[60px] relative'>
-              {business?.logo && !acceptedFiles.length ? (
-                <Image
-                  src={business?.logo}
-                  alt='company logo'
-                  fill
-                  className='rounded object-cover'
-                />
+            <div className='flex space-x-10 items-center'>
+              <div className='w-[60px] h-[60px] relative'>
+                {uploadedLogo && !acceptedFiles.length ? (
+                  <Image
+                    src={uploadedLogo}
+                    alt='company logo'
+                    fill
+                    className='rounded object-cover'
+                  />
+                ) : (
+                  <Image
+                    src={
+                      acceptedFiles.length > 0
+                        ? URL.createObjectURL(acceptedFiles[0])
+                        : '/logo/logomark.svg'
+                    }
+                    alt='company logo'
+                    fill
+                    className='rounded object-cover'
+                  />
+                )}
+              </div>
+
+              {acceptedFiles.length === 0 && uploadedLogo ? (
+                <Button
+                  type='button'
+                  size={'sm'}
+                  onClick={open}
+                  className='!text-xs'
+                >
+                  {!uploadedLogo ? 'Click to upload' : 'Update'} Logo
+                </Button>
               ) : (
-                <Image
-                  src={
-                    acceptedFiles.length > 0
-                      ? URL.createObjectURL(acceptedFiles[0])
-                      : '/logo/logomark.svg'
-                  }
-                  alt='company logo'
-                  fill
-                  className='rounded object-cover'
-                />
+                <Button
+                  type='button'
+                  size={'sm'}
+                  className='!text-xs'
+                  onClick={uploadImage}
+                  disabled={uploading}
+                >
+                  <LucideLoader2
+                    className={cn(
+                      'animate-spin mr-1 w-[22px] h-[22px] hidden',
+                      {
+                        'inline-block': uploading,
+                      }
+                    )}
+                  />
+                  Upload New Logo
+                </Button>
               )}
             </div>
-            {acceptedFiles.length === 0 && !uploadedLogo ? (
+
+            {acceptedFiles?.length === 0 && uploadedLogo && (
               <Button
                 type='button'
-                size={'sm'}
-                onClick={open}
+                variant={'outline'}
                 className='!text-xs'
+                onClick={() => setUploadedLogo('')}
               >
-                Select File
-              </Button>
-            ) : (
-              <Button
-                type='button'
-                size={'sm'}
-                className='!text-xs'
-                onClick={uploadImage}
-                disabled={uploading}
-              >
-                <LucideLoader2
-                  className={cn('animate-spin mr-1 w-[22px] h-[22px] hidden', {
-                    'inline-block': uploading,
-                  })}
-                />
-                Upload New Logo
+                Delete Logo
               </Button>
             )}
-
-            <Button
-              type='button'
-              variant={'outline'}
-              className='!text-xs'
-              onClick={() => setUploadedLogo('')}
-            >
-              Delete{' '}
-            </Button>
+            {acceptedFiles?.length > 0 && (
+              <Button
+                type='button'
+                variant={'outline'}
+                className='!text-xs'
+                onClick={open}
+              >
+                Change
+              </Button>
+            )}
           </div>
           <input
             type='hidden'
             name='logo'
             id='logo'
             value={uploadedLogo}
+            // {...getInputProps()}
           />
         </div>
 
@@ -252,12 +286,18 @@ export default function BusinessInfoForm({
                 <SelectValue
                   placeholder='Select Industry'
                   className='placeholder:!text-xs'
+                  defaultValue={business?.industry}
                 />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='industry 1'>Industry 1</SelectItem>
-                <SelectItem value='industry 2'>Industry 2</SelectItem>
-                <SelectItem value='industry 3'>Industry 3</SelectItem>
+                {industries?.map((item, index) => (
+                  <SelectItem
+                    key={index}
+                    value={item?.name}
+                  >
+                    {item?.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             {state?.errors?.industry ? (
@@ -368,9 +408,8 @@ export default function BusinessInfoForm({
             <label htmlFor='state'>State</label>
             <Select
               name='state'
-              value={selectedState}
+              value={!selectedState ? business?.address?.state : selectedState}
               onValueChange={setSelectedState}
-              defaultValue={business?.address?.state}
             >
               <SelectTrigger className='w-full bg-[#F3F8FF]'>
                 <SelectValue
@@ -406,7 +445,8 @@ export default function BusinessInfoForm({
             <label htmlFor='supportEmail'>Town or City</label>
             <Select
               name='city'
-              defaultValue={business?.address?.city}
+              value={!selectedCity ? business?.address?.city : selectedCity}
+              onValueChange={setSelectedCity}
             >
               <SelectTrigger className='w-full bg-[#F3F8FF]'>
                 <SelectValue

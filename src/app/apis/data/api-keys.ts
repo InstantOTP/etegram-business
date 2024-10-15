@@ -19,7 +19,7 @@ export async function generateAPIKey(type: string) {
     if (!response.ok) {
       return { message: data };
     }
-    revalidatePath('/settings');
+    // revalidatePath('/settings');
     return data;
   } catch (error) {
     if (error) {
@@ -31,11 +31,8 @@ export async function generateAPIKey(type: string) {
 }
 
 export async function getAPIKeys() {
-  const storedKey = cookies().get('apiKey')?.value;
+  const storedKey = cookies().get('apiKey')?.value || '';
+  const liveKey = cookies().get('liveKey')?.value || '';
 
-  if (storedKey) {
-    return { testApiKey: storedKey };
-  } else {
-    return { testApiKey: undefined };
-  }
+  return { testApiKey: storedKey, liveApiKey: liveKey };
 }

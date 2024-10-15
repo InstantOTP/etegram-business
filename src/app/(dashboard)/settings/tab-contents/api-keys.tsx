@@ -8,7 +8,7 @@ export default async function APIKeysSection() {
   const data = await getAPIKeys();
   const project = await getSingleBusinessProject();
   const business = await getCurrentBusiness();
-  // console.log(project);
+  // console.log(data);
   return (
     <>
       <section className='border border-primary rounded-[30px] w-full max-w-2xl px-7 py-6 my-20 mx-auto'>
@@ -39,7 +39,10 @@ export default async function APIKeysSection() {
             The API key below is for live purposes
           </p>
 
-          <LiveApiKeysForm livePublic={data?.testApiKey} />
+          <LiveApiKeysForm
+            livePublic={data?.liveApiKey}
+            projectUrls={project}
+          />
         </section>
       )}
     </>

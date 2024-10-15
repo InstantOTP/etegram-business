@@ -242,7 +242,7 @@ export const DashboardHeader = ({
             >
               <Avatar className='h-9 w-9 mr-1.5'>
                 <AvatarImage
-                  src='/default-profile.png'
+                  src={business?.logo ? business.logo : '/default-profile.png'}
                   alt={`@${user?.firstname}`}
                   className='object-cover'
                 />
