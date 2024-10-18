@@ -1,4 +1,5 @@
 import { getCustomers } from '@/app/apis/data/customers';
+import Customers from '@/app/components/customers';
 import CustomerTable from '@/app/components/customers';
 import Logout from '@/components/common/buttons/logout';
 import Image from 'next/image';
@@ -16,7 +17,7 @@ export default async function CustomersPage() {
       </div>
 
       <Suspense>
-        <CustomerTable />
+        <Customers />
       </Suspense>
     </main>
   );

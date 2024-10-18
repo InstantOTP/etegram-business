@@ -1,10 +1,18 @@
 import type { NextFetchEvent, NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { get } from '@vercel/edge-config';
 
 export async function middleware(request: NextRequest) {
   const expiresIn6hrs = new Date(new Date().getTime() + 6 * 60 * 60 * 1000);
   const isAuth = request.cookies.get('access_token')?.value;
   const refresh_token = request.cookies.get('refresh_token')?.value;
+  const isInMaintenanceMode = await get('maintenance');
+
+  if (isInMaintenanceMode) {
+    request.nextUrl.pathname = `/maintenance`;
+    return NextResponse.rewrite(request.nextUrl);
+  }
+
   // const provider_id = request.cookies.get('provider_id')?.value;
   const pathname = request.nextUrl.pathname;
   const isAuthPage =

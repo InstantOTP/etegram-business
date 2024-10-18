@@ -1,19 +1,9 @@
 import DataTable from '@/components/ui/table';
 import { getCustomers } from '../apis/data/customers';
+import CustomersTable from './customers-details';
 
-export default async function CustomerTable() {
+export default async function Customers() {
   const customers = await getCustomers();
 
-  return (
-    <div>
-      <DataTable
-        title='Total Customers'
-        headers={['Customer', 'Email', 'Phone Number', 'Date Added']}
-        dataKeys={['name', 'email', 'phone', 'createdAt']}
-        data={customers?.data || []}
-        totalPages={customers?.totalPages || 0}
-        hideViewAll
-      />
-    </div>
-  );
+  return <CustomersTable customers={customers} />;
 }
