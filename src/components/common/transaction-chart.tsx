@@ -7,21 +7,40 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '../ui/chart';
-import { Bar, BarChart, Rectangle, XAxis, YAxis } from 'recharts';
-import { formatDateNumeric, kConverter } from '@/lib/utils';
+import {
+  Bar,
+  BarChart,
+  Rectangle,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from 'recharts';
+import { dayOfDate, formatDateNumeric, kConverter } from '@/lib/utils';
 
+const fakeData = [
+  { _id: '2024-10-12', totalAmount: 10000 },
+  { _id: '2024-10-13', totalAmount: 57000 },
+  { _id: '2024-10-14', totalAmount: 100000 },
+  { _id: '2024-10-15', totalAmount: 20000 },
+  { _id: '2024-10-16', totalAmount: 1000 },
+  { _id: '2024-10-17', totalAmount: 20000 },
+  { _id: '2024-10-18', totalAmount: 25000 },
+  { _id: '2024-10-19', totalAmount: 50000 },
+];
 const chartConfig = {
   amount: {
     label: 'Amount',
-    color: '#ffffff',
+    color: '#67b7dc',
   },
 } satisfies ChartConfig;
 
 export function TransactionChart({ data }: { data: any[] }) {
+  // console.log(data);
+  // console.log(dayOfDate(fakeData[0]._id));
   return (
     <ChartContainer
       config={chartConfig}
-      className='min-h-[200px] w-full bg-primary-light rounded-2xl py-5'
+      className='h-[260px] w-full bg-primary-light rounded-2xl py-3 '
     >
       <BarChart
         accessibilityLayer
@@ -32,7 +51,7 @@ export function TransactionChart({ data }: { data: any[] }) {
           tickLine={false}
           tickMargin={10}
           axisLine={false}
-          tickFormatter={(value) => formatDateNumeric(value)}
+          tickFormatter={(value) => dayOfDate(value)}
         />
         <YAxis
           dataKey='totalAmount'
@@ -40,6 +59,11 @@ export function TransactionChart({ data }: { data: any[] }) {
           tickMargin={10}
           axisLine={false}
           tickFormatter={(value) => kConverter(value)}
+        />
+        <CartesianGrid
+          stroke='#eee'
+          strokeDasharray='5 5'
+          vertical={false}
         />
         <ChartTooltip
           content={

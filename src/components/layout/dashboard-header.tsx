@@ -201,6 +201,7 @@ export const DashboardHeader = ({
         <div className='flex items-center space-x-2 bg-[#f5f9ff] p-2 rounded-md'>
           <Switch
             className='data-[state=checked]:bg-green-500'
+            disabled={!business}
             checked={isLive === 'yes'}
             onCheckedChange={() => {
               if (business?.kycApprovalStatus === 'pending') {

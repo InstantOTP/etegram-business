@@ -18,6 +18,6 @@ export async function getUser() {
     if (error) {
       console.error(error);
     }
-    return null;
+    return { message: 'Server Error' };
   }
 }

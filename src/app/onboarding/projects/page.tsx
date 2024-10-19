@@ -1,8 +1,5 @@
 import { getBusinessProjects } from '@/app/apis/data/projects';
 import CreateProject from '@/components/modals/create-project';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { findUpper } from '@/lib/utils';
-import Link from 'next/link';
 import ProjectList from './components/project-list';
 
 export default async function SelectProject() {
@@ -14,7 +11,7 @@ export default async function SelectProject() {
         <div className='flex w-full justify-between items-center'>
           <p>Select Project</p>
 
-          <CreateProject />
+          <CreateProject projects={projects?.data} />
         </div>
         <ProjectList projects={projects} />
       </div>

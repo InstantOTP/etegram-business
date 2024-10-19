@@ -1,6 +1,6 @@
 'use server';
 
-import { redirect } from 'next/navigation';
+import { redirect, permanentRedirect } from 'next/navigation';
 import { revalidateTag, revalidatePath } from 'next/cache';
 import {
   CreateBusinessSchema,
@@ -83,6 +83,7 @@ export async function login(
 ) {
   const data = Object.fromEntries(formData.entries());
   const validatedFields = LoginSchema.safeParse(data);
+  let user;
 
   if (!validatedFields.success) {
     return {
@@ -123,6 +124,8 @@ export async function login(
       value: data?.refreshToken,
       expires: expiresIn1day,
     });
+
+    user = data?.account;
   } catch (error) {
     if (error) {
       return {
@@ -131,7 +134,15 @@ export async function login(
       };
     }
   }
-  redirect('/onboarding/select-business');
+  if (!user?.kyc?.isEmailVerified) {
+    await sendVerificationCode(user?.email);
+    redirect(`/auth/verify-email?email=${user?.email}&from=sign-in`);
+  } else if (!user?.business?.length) {
+    redirect(`/auth/create-business`);
+  } else {
+    redirect('/onboarding/select-business');
+  }
+
   // redirect(`/auth/verify-email?email=${dataToSubmit.email}&from=sign-in`);
 }
 
@@ -186,7 +197,7 @@ export async function signup(
       expires: expiresIn1day,
     });
 
-    await sendVerificationCode(dataToSubmit?.email);
+    // await sendVerificationCode(dataToSubmit?.email);
   } catch (error) {
     console.error(error);
     // If a database error occurs, return a more specific error.
@@ -196,7 +207,9 @@ export async function signup(
       status: 'failed',
     };
   }
-  redirect(`/auth/verify-email?email=${dataToSubmit.email}&from=sign-up`);
+  permanentRedirect(
+    `/auth/verify-email?email=${dataToSubmit.email}&from=sign-up`
+  );
 }
 
 // VERIFY EMAIL
@@ -224,16 +237,16 @@ export async function verifyEmail(
   };
   try {
     // console.log(dataToSend);
-    // const response = await fetchWithAuth('/auth/verify-account', {
-    //   method: 'PATCH',
-    //   body: JSON.stringify(dataToSend),
-    // });
+    const response = await fetchWithAuth('/auth/verify-account', {
+      method: 'PATCH',
+      body: JSON.stringify(dataToSend),
+    });
     // console.log(response);
-    // const data = await response.json();
-    // // console.log(data);
-    // if (!response.ok) {
-    //   return { ...prevState, message: data, status: 'failed' };
-    // }
+    const data = await response.json();
+    // console.log(data);
+    if (!response.ok) {
+      return { ...prevState, message: data, status: 'failed' };
+    }
   } catch (error) {
     console.error(error);
     // If a database error occurs, return a more specific error.

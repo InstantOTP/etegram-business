@@ -13,7 +13,7 @@ export async function getCustomers() {
         next: { tags: [`customer-${projectId}-${businessId}`] },
       }
     );
-    console.log(response);
+    // console.log(response);
     const data = await response.json();
     // console.log(data);
     if (!response.ok) {

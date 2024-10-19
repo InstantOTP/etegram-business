@@ -10,10 +10,16 @@ import {
 import { Plus } from 'lucide-react';
 import CreateProjectForm from '../forms/create-project';
 import { Button } from '../ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function CreateProject() {
+export default function CreateProject({ projects }: { projects: any[] }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (projects?.length === 0) {
+      setIsOpen(true);
+    }
+  }, [projects]);
   return (
     <Dialog
       open={isOpen}

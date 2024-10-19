@@ -118,6 +118,53 @@ export async function updateProjectUrl(formData: {
   }
 }
 
+export async function updateProject(
+  prevState: { message: string; status: string } | undefined,
+  formData: FormData
+) {
+  const businessID = cookies().get('businessId')?.value;
+  const projectID = cookies().get('projectId')?.value;
+
+  const chargeFeeFrom = formData.get('chargeFeeFrom');
+  const recieptReceipient = formData.getAll('recieptReceipient');
+
+  // console.log(data);
+
+  let dataToSend = {
+    chargeFeeFrom,
+    recieptReceipient:
+      recieptReceipient?.length > 1 ? 'both' : recieptReceipient[0],
+  };
+
+  // console.log(dataToSend);
+
+  try {
+    // console.log(dataToSend);
+    const response = await fetchWithAuth(
+      `/business-project/${businessID}/${projectID}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(dataToSend),
+      }
+    );
+    // console.log(response);
+    const data = await response.json();
+    // console.log(data);
+    if (!response.ok) {
+      return { message: data, status: 'failed' };
+    }
+    revalidateTag(`business-projects-${businessID}`);
+    return { message: 'Project Updated', status: 'success' };
+  } catch (error) {
+    if (error) {
+      return {
+        message: 'Login failed',
+        status: 'failed',
+      };
+    }
+  }
+}
+
 export async function selectProject(projectId: any) {
   cookies().set('projectId', projectId);
   redirect('/');

@@ -9,13 +9,15 @@ export async function generateAPIKey(type: string) {
   try {
     const response = await fetchWithAuth(
       `/business-project/api-key/${businessId}/${projectId}?type=${type}`,
+
       {
-        next: { tags: [`apikey-${businessId}-${projectId}`] },
+        method: 'POST',
+        // next: { tags: [`apikey-${businessId}-${projectId}`] },
       }
     );
     // console.log(response);
     const data = await response.json();
-    // console.log(data);
+    console.log(data);
     if (!response.ok) {
       return { message: data };
     }

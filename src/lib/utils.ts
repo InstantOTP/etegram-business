@@ -85,6 +85,12 @@ export function kConverter(num: number) {
   }
 }
 
+export const dayOfDate = (str: string) => {
+  const weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  let date = new Date(str);
+  return weekday[date.getDay()];
+};
+
 export const formatDate = (str: string) => {
   return new Date(str).toLocaleDateString('en-us', {
     year: 'numeric',

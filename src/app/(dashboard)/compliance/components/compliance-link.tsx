@@ -23,7 +23,7 @@ export default function ComplianceLinks({ user }: { user: User }) {
         verified: user?.kycApprovalStatus === 'pending',
       },
       {
-        title: 'Business Information',
+        title: 'Business Compliance',
         subtitle: 'Please provide legal documents based on business type',
         link: '/compliance/business-compliance',
         verified: user?.kycApprovalStatus === 'pending',

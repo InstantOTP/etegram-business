@@ -28,7 +28,7 @@ async function initialize(apiKey: string, transaction: InitializeProps) {
         // cache: 'no-store',
       }
     );
-    console.log(response);
+    // console.log(response);
     const data = await response.json();
     console.log(data);
     if (!response.ok) {
