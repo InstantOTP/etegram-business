@@ -162,7 +162,7 @@ export default function BusinessInfoForm({
                 )}
               </div>
 
-              {acceptedFiles.length === 0 && uploadedLogo ? (
+              {acceptedFiles.length === 0 || uploadedLogo ? (
                 <Button
                   type='button'
                   size={'sm'}
