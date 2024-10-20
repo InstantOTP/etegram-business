@@ -28,10 +28,7 @@ export async function uploadImageToImagekit(file: File, fileName: string) {
   if (!expire && !token && !signature) return null;
 
   let formData = new FormData();
-  formData.append(
-    'publicKey',
-    process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY as string
-  );
+  formData.append('publicKey', 'public_LqFGZTyOv6mLtrKNP4GvL/vGtVo=');
   formData.append('file', file);
   formData.append('fileName', fileName);
   formData.append('useUniqueFileName', 'true');
@@ -41,7 +38,7 @@ export async function uploadImageToImagekit(file: File, fileName: string) {
 
   try {
     const response = await fetch(
-      process.env.NEXT_PUBLIC_IMAGEKIT_URL as string,
+      'https://upload.imagekit.io/api/v1/files/upload',
       {
         method: 'POST',
         // headers: { "Content-Type": "multipart/form-data" },
