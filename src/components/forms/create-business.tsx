@@ -85,7 +85,7 @@ export default function CreateBusinessForm({
         action={dispatch}
         className='w-full max-w-md mx-auto space-y-5'
       >
-        <div className='flex justify-between items-center gap-5'>
+        <div className='flex flex-col md:flex-row justify-between items-center gap-3 lg:gap-5'>
           <div className='form-control'>
             <label htmlFor='businessName'>Business Name</label>
             <Input
@@ -128,7 +128,7 @@ export default function CreateBusinessForm({
         <div>
           <p className='text-sm text-foreground mb-1'>Business Type</p>
           <RadioGroup
-            className='flex justify-between items-center gap-5'
+            className='flex justify-between items-center gap-2.5 lg:gap-5'
             defaultValue='starter business'
             name='businessType'
           >
@@ -199,7 +199,7 @@ export default function CreateBusinessForm({
             <span className='text-primary/50'>(Select all that applies)</span>
           </p>
 
-          <div className='grid grid-cols-2 gap-5'>
+          <div className='grid grid-cols-2 gap-2.5 lg:gap-5'>
             {etegramUses.map((item, index) => (
               <div
                 key={index}

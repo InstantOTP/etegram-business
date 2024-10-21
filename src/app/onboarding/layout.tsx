@@ -14,11 +14,11 @@ export default async function OnBoardingLayout({
   children: React.ReactNode;
 }) {
   const user = await getUser();
-  console.log(user);
+  // console.log(user);
   return (
     <VerifiedLayout user={user}>
       <div className='min-h-svh auth-bg'>
-        <div className='container flex justify-end items-center  sticky top-0 left-0 pt-4'>
+        <div className='max-w-[93%] mx-auto flex justify-end items-center  sticky top-0 left-0 pt-4'>
           {/* <Logo white /> */}
           <LayoutButton />
         </div>

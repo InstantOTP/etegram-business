@@ -81,7 +81,7 @@ export default function SignUpForm() {
         action={dispatch}
         className='w-full max-w-md mx-auto space-y-5'
       >
-        <div className='flex justify-between items-center gap-5'>
+        <div className='flex flex-col md:flex-row justify-between items-center gap-3 lg:gap-5'>
           <div className='form-control'>
             <label htmlFor='firstName'>First Name</label>
             <Input
@@ -121,7 +121,7 @@ export default function SignUpForm() {
           </div>
         </div>
 
-        <div className='flex justify-between items-center gap-5'>
+        <div className='flex flex-col md:flex-row justify-between items-center gap-3 lg:gap-5'>
           <div className='form-control'>
             <label htmlFor='email'>Email Address</label>
             <Input
@@ -161,7 +161,7 @@ export default function SignUpForm() {
           </div>
         </div>
 
-        <div className='flex justify-between items-center gap-5'>
+        <div className='flex flex-col md:flex-row justify-between items-center gap-3 lg:gap-5'>
           <div className='form-control'>
             <label htmlFor='password'>Password</label>
             <PasswordInput

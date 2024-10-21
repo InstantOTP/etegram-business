@@ -66,7 +66,7 @@ export default function ServicesList({
         defaultValue='starter business'
         name='businessType'
         value={value}
-        onValueChange={setValue}
+        onValueChange={(e) => selectService(e)}
       >
         {services?.map((item) => (
           <div

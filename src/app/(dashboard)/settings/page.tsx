@@ -13,9 +13,9 @@ export default function SettingsPage() {
     <section className='flex items-center justify-center'>
       <Tabs
         defaultValue='personal'
-        className='w-full bg-background rounded-[30px] px-7'
+        className='w-full bg-background rounded-[30px] px-3 lg:px-7'
       >
-        <TabsList className='bg-transparent border-b border-border rounded-none w-full'>
+        <TabsList className='bg-transparent border-b border-border rounded-none w-full overflow-x-auto hide-scrollbar'>
           <TabsTrigger value='personal'>Personal Details</TabsTrigger>
           <TabsTrigger value='business'>Business Details</TabsTrigger>
           <TabsTrigger value='compliance'>Compliance</TabsTrigger>

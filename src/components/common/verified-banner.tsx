@@ -10,8 +10,8 @@ export default function VerifyBanner({ user }: { user: User }) {
 
   if (showBanner && user?.kycApprovalStatus === 'pending') {
     return (
-      <div className='bg-[#FFC00133] text-sm md:text-sm text-foreground flex flex-col md:flex-row md:items-center py-3 px-4 rounded-xl justify-between max-w-[62.5rem]'>
-        <div className='flex items-center'>
+      <div className='bg-[#FFC00133] text-sm md:text-sm text-foreground flex space-x-3 md:space-x-0  md:items-center py-3 px-4 rounded-xl justify-between max-w-[62.5rem]'>
+        <div className='flex flex-col md:flex-row md:items-center gap-y-2  md:gap-0'>
           <p className='md:pr-4 text-[#FFC001]'>
             You are currently in test mode. Verify your business to activate
             Live Mode

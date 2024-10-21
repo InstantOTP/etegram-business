@@ -139,7 +139,7 @@ export default function BusinessInfoForm({
           className='py-5 bg-accent rounded-lg px-3'
         >
           <div className='flex justify-between items-center  lg:max-w-[80%]'>
-            <div className='flex space-x-10 items-center'>
+            <div className='flex  space-x-10 items-center'>
               <div className='w-[60px] h-[60px] relative'>
                 {uploadedLogo && !acceptedFiles.length ? (
                   <Image
@@ -196,7 +196,7 @@ export default function BusinessInfoForm({
               <Button
                 type='button'
                 variant={'outline'}
-                className='!text-xs'
+                className='!text-xs hidden md:inline-block'
                 onClick={() => setUploadedLogo('')}
               >
                 Delete Logo
@@ -337,7 +337,7 @@ export default function BusinessInfoForm({
           </p>
         </div>
 
-        <div className='flex w-full justify-between gap-x-5'>
+        <div className='flex flex-col md:flex-row justify-between items-center gap-3 lg:gap-5'>
           <div className='form-control'>
             <label htmlFor='contactEmail'>Contact Email</label>
             <Input
@@ -496,7 +496,7 @@ export default function BusinessInfoForm({
           </div>
         </div>
 
-        <div className='flex w-full justify-between gap-x-5'>
+        <div className='flex flex-col md:flex-row justify-between items-center gap-3 lg:gap-5'>
           <div className='form-control'>
             <label htmlFor='address'>Business Website Link (Optional)</label>
             <Input

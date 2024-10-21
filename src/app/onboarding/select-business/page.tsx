@@ -10,8 +10,8 @@ export default async function SelectBusiness() {
   const businesses: any[] = await getUserBusinesses();
   // console.log(businesses);
   return (
-    <main className='flex justify-center items-center min-h-[60svh] w-full'>
-      <div className='space-y-5 w-full max-w-[30rem] mx-auto bg-background mt-12 rounded-3xl p-10'>
+    <main className='flex justify-center items-center min-h-[60svh] w-full max-w-[93%] mx-auto'>
+      <div className='space-y-5 w-full max-w-[30rem] mx-auto bg-background mt-12 rounded-3xl p-5 lg:p-10'>
         <div className='flex w-full justify-between items-center'>
           <p>Select a Business</p>
 
