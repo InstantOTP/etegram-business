@@ -67,7 +67,7 @@ export default function ServicesList({
         value={value}
         onValueChange={setValue}
       >
-        {moreServices?.map((item) => (
+        {services?.map((item) => (
           <div
             key={item.id}
             className='flex relative justify-between space-x-3 p-4 items-center  rounded-[0.625rem] border-[1.5px] border-border w-full  peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'
@@ -87,7 +87,7 @@ export default function ServicesList({
               {typeof item.icon === 'string' ? (
                 <div className='flex justify-center items-center bg-accent p-2 rounded-full w-[60px] h-[60px] flex-shrink-0'>
                   <Image
-                    src={item.icon}
+                    src={item.icon ?? '/assets/icons/QR Code Payments.svg'}
                     alt='Invoice'
                     width={30}
                     height={30}
