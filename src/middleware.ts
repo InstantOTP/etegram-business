@@ -20,25 +20,25 @@ export async function middleware(request: NextRequest) {
     !pathname.includes('/auth/verify-email') &&
     !pathname.includes('/auth/create-business');
 
-  // if (isAuthPage) {
-  //   if (isAuth) {
-  //     return Response.redirect(new URL('/', request.url));
-  //   }
-  //   return null;
-  // }
+  if (isAuthPage) {
+    if (isAuth) {
+      return Response.redirect(new URL('/', request.url));
+    }
+    return null;
+  }
 
-  // if (!isAuth && !refresh_token) {
-  //   let from = request.nextUrl.pathname;
-  //   if (request.nextUrl.search) {
-  //     from += request.nextUrl.search;
-  //   }
-  //   return Response.redirect(
-  //     new URL(
-  //       `/auth/sign-in?redirectUrl=${encodeURIComponent(from)}`,
-  //       request.url
-  //     )
-  //   );
-  // }
+  if (!isAuth && !refresh_token) {
+    let from = request.nextUrl.pathname;
+    if (request.nextUrl.search) {
+      from += request.nextUrl.search;
+    }
+    return Response.redirect(
+      new URL(
+        `/auth/sign-in?redirectUrl=${encodeURIComponent(from)}`,
+        request.url
+      )
+    );
+  }
   let token = null;
   if (!isAuth && refresh_token) {
     await fetch(

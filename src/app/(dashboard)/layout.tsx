@@ -38,7 +38,7 @@ export default async function MainLayout({
             businesses={businesses}
             projects={projects}
           />
-          <main className='w-full lg:h-[84.1svh] overflow-y-auto pt-28 px-5 pb-5 lg:p-5'>
+          <main className='w-full lg:h-[84.1svh] overflow-y-auto pt-28 px-5 pb-5 lg:py-5 lg:pl-12 lg:pr-[70px]'>
             {children}
           </main>
         </section>
