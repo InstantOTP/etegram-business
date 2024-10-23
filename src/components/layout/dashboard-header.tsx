@@ -34,7 +34,7 @@ export interface User {
   lastname: string;
   phone: string;
   email: string;
-  kycApprovalStatus: 'pending' | 'approved';
+  kycApprovalStatus: 'pending' | 'verified';
   status: 'pending' | 'active';
   business: any[];
   createdAt: string;
@@ -179,7 +179,7 @@ export const DashboardHeader = ({
                                             business?.kycApprovalStatus ===
                                               'verified' &&
                                             user?.kycApprovalStatus ===
-                                              'approved',
+                                              'verified',
                                         }
                                       )}
                                     >

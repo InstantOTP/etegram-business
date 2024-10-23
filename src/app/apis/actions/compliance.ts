@@ -80,6 +80,7 @@ export async function userCompliance(
       };
     }
   }
+  redirect('/compliance');
 }
 
 // BUSINESS COMPILANCE ACTION

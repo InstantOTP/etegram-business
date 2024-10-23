@@ -40,7 +40,7 @@ export function TransactionChart({ data }: { data: any[] }) {
   return (
     <ChartContainer
       config={chartConfig}
-      className='h-[260px] w-full bg-primary-light rounded-2xl py-3 '
+      className='h-[260px] w-full bg-primary-light rounded-2xl pb-3 pt-9 pr-6'
     >
       <BarChart
         accessibilityLayer
@@ -49,7 +49,7 @@ export function TransactionChart({ data }: { data: any[] }) {
         <XAxis
           dataKey='_id'
           tickLine={false}
-          tickMargin={10}
+          tickMargin={15}
           axisLine={false}
           tickFormatter={(value) => dayOfDate(value)}
         />
@@ -59,6 +59,7 @@ export function TransactionChart({ data }: { data: any[] }) {
           tickMargin={10}
           axisLine={false}
           tickFormatter={(value) => kConverter(value)}
+          tickCount={6}
         />
         <CartesianGrid
           stroke='#eee'
@@ -78,7 +79,7 @@ export function TransactionChart({ data }: { data: any[] }) {
         <Bar
           dataKey={'totalAmount'}
           fill='var(--color-amount)'
-          radius={4}
+          radius={[8, 8, 0, 0]}
           barSize={40}
           activeBar={<Rectangle fill='#FFC001' />}
         />

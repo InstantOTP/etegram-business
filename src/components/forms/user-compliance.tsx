@@ -37,7 +37,7 @@ function SubmitButton({ isImageUploaded }: { isImageUploaded: string }) {
   );
 }
 
-export default function UserComplianceForm() {
+export default function UserComplianceForm({ data }: { data: any }) {
   const { toast } = useToast();
   const { replace } = useRouter();
   const [uploadedImage, setUploadedImage] = useState('');
@@ -46,6 +46,7 @@ export default function UserComplianceForm() {
     errors: {},
     status: '',
   };
+  // console.log(data);
   const [state, dispatch] = useFormState(userCompliance, initalState);
 
   useEffect(() => {
@@ -77,6 +78,7 @@ export default function UserComplianceForm() {
             name='bvn'
             type='tel'
             placeholder='Enter your BVN'
+            defaultValue={data?.BVN}
           />
           {state?.errors?.bvn ? (
             <div
@@ -96,7 +98,10 @@ export default function UserComplianceForm() {
               (NIN, National Passport, Drivers License, Voter&apos;s card)
             </span>
           </label>
-          <Select name='documentType'>
+          <Select
+            name='documentType'
+            defaultValue={data?.type}
+          >
             <SelectTrigger className='w-full bg-[#F3F8FF]'>
               <SelectValue
                 placeholder='Select Document Type'
@@ -126,6 +131,7 @@ export default function UserComplianceForm() {
         <div className='form-control'>
           <label htmlFor='bvn'>Upload Documents</label>
           <CustomDropZone
+            defaultValue={data?.document}
             value={uploadedImage}
             setValue={setUploadedImage}
             name='documentUrl'
@@ -148,7 +154,7 @@ export default function UserComplianceForm() {
           >
             Back
           </Link>
-          <SubmitButton isImageUploaded={uploadedImage} />
+          <SubmitButton isImageUploaded={uploadedImage || data?.document} />
         </div>
       </form>
     </div>

@@ -496,7 +496,7 @@ export default function BusinessInfoForm({
           </div>
         </div>
 
-        <div className='flex flex-col md:flex-row justify-between items-center gap-3 lg:gap-5'>
+        <div className='flex flex-col md:flex-row justify-between items-center lg:items-start gap-3 lg:gap-5'>
           <div className='form-control'>
             <label htmlFor='address'>Business Website Link (Optional)</label>
             <Input

@@ -7,26 +7,32 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { useMemo } from 'react';
 
-export default function ComplianceLinks({ user }: { user: User }) {
+export default function ComplianceLinks({
+  user,
+  currentBusiness,
+}: {
+  user: User;
+  currentBusiness: any;
+}) {
   const availableLinks = useMemo(() => {
     return [
       {
         title: 'Personal Information',
         subtitle: 'Please Tell us more about yourself',
         link: '/compliance/user-compliance',
-        verified: user?.kycApprovalStatus === 'pending',
+        verified: user?.kycApprovalStatus === 'verified',
       },
       {
         title: 'Business Information',
         subtitle: 'Please Tell us more about your business',
         link: '/compliance/business-info',
-        verified: user?.kycApprovalStatus === 'pending',
+        verified: currentBusiness?.status === 'active',
       },
       {
         title: 'Business Compliance',
         subtitle: 'Please provide legal documents based on business type',
         link: '/compliance/business-compliance',
-        verified: user?.kycApprovalStatus === 'pending',
+        verified: currentBusiness?.kycApprovalStatus === 'verified',
       },
     ];
   }, [user]);

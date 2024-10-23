@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 interface detailsType {
   amount: number;
-  fee: number;
+  fees: number;
   createdAt: string;
   status: string;
   reference: string;
@@ -24,30 +24,14 @@ export default function TransactionsTable({
 }) {
   const [details, setDetails] = useState<detailsType | undefined>();
   const [showModal, setShowModal] = useState(false);
-  //   console.log(details);
+  // console.log(details);
 
   return (
     <div>
       <DataTable
         title='Recent Transactions'
-        headers={[
-          'Reference',
-          'Customer',
-          'Amount',
-          'Type',
-          'Channel',
-          'Date',
-          'Status',
-        ]}
-        dataKeys={[
-          'reference',
-          'email',
-          'amount',
-          'type',
-          'channel',
-          'createdAt',
-          'status',
-        ]}
+        headers={['Customer', 'Amount', 'Type', 'Channel', 'Date', 'Status']}
+        dataKeys={['email', 'amount', 'type', 'channel', 'createdAt', 'status']}
         data={creditTransactions?.data || []}
         totalPages={creditTransactions?.totalPages || 0}
         hideViewAll
@@ -96,7 +80,7 @@ export default function TransactionsTable({
                   <li className='flex justify-between py-1.5 w-full px-3 text-sm'>
                     <p>Fee:</p>
                     <p className='font-bold'>
-                      {formatter().format(details?.fee)}
+                      {formatter().format(details?.fees)}
                     </p>
                   </li>{' '}
                   <li className='flex justify-between py-1.5 w-full px-3 text-sm'>

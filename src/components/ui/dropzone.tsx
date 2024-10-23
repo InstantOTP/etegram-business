@@ -11,13 +11,15 @@ interface CustomDropZoneProps {
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
   name: string;
+  defaultValue?: string;
 }
 export default function CustomDropZone({
+  defaultValue,
   value,
   setValue,
   name,
 }: CustomDropZoneProps) {
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+  const { acceptedFiles, getRootProps, getInputProps, open } = useDropzone({
     maxFiles: 1,
     maxSize: 5242880,
     accept: {
@@ -45,14 +47,23 @@ export default function CustomDropZone({
     <div>
       <div {...getRootProps({ className: 'relative dashed-border' })}>
         <div className='bg-accent relative min-h-[150px] z-10 w-full h-full'>
-          {acceptedFiles?.length > 0 ? (
+          {acceptedFiles?.length > 0 || defaultValue ? (
             <div className='relative w-full h-[150px] rounded-lg'>
-              <Image
-                src={URL.createObjectURL(acceptedFiles[0])}
-                alt='selected image'
-                fill
-                className='object-cover rounded-lg'
-              />
+              {acceptedFiles?.length === 0 && defaultValue ? (
+                <Image
+                  src={defaultValue}
+                  alt='uploaded image'
+                  fill
+                  className='object-cover rounded-lg'
+                />
+              ) : (
+                <Image
+                  src={URL.createObjectURL(acceptedFiles[0])}
+                  alt='selected image'
+                  fill
+                  className='object-cover rounded-lg'
+                />
+              )}
               {/* This input sends the url of the image kit uploaded image to the backend */}
               <input
                 name={name}
@@ -80,7 +91,15 @@ export default function CustomDropZone({
         </div>
       </div>
 
-      {!value && (
+      {defaultValue && acceptedFiles?.length === 0 ? (
+        <button
+          type='button'
+          onClick={open}
+          className='bg-primary text-xs mt-2 p-2 rounded transition-all text-primary-foreground w-full flex justify-center items-center'
+        >
+          Change
+        </button>
+      ) : (
         <button
           type='button'
           onClick={uploadImage}

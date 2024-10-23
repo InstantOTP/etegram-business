@@ -1,16 +1,6 @@
 'use client';
 
-import Image from 'next/image';
-import { Input, PasswordInput } from '../ui/input';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { Checkbox } from '../ui/checkbox';
-import { useFormState, useFormStatus } from 'react-dom';
-import { Button, buttonVariants } from '../ui/button';
-import { LucideLoader2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { login } from '@/app/apis/actions/auth';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { businessCompliance } from '@/app/apis/actions/compliance';
 import {
   Select,
   SelectContent,
@@ -18,11 +8,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+import { LucideLoader2 } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
+import { Button, buttonVariants } from '../ui/button';
 import CustomDropZone from '../ui/dropzone';
-import {
-  businessCompliance,
-  userCompliance,
-} from '@/app/apis/actions/compliance';
+import { Input } from '../ui/input';
 import { useToast } from '../ui/use-toast';
 
 function SubmitButton({
@@ -49,9 +43,10 @@ function SubmitButton({
   );
 }
 
-export default function BusinessComplianceForm() {
+export default function BusinessComplianceForm({ data }: { data: any }) {
   const { toast } = useToast();
   const { replace } = useRouter();
+  // console.log(data);
   // const pathname = usePathname();
   // const isCompliance = pathname === '/compliance/business-compliance';
 
@@ -91,7 +86,10 @@ export default function BusinessComplianceForm() {
             Business Registration Type{' '}
             <span className='text-[#909090]'>(BN, RC, Nepza)</span>
           </label>
-          <Select name='businessRegistrationType'>
+          <Select
+            defaultValue={data?.registrationType}
+            name='businessRegistrationType'
+          >
             <SelectTrigger className='w-full bg-[#F3F8FF]'>
               <SelectValue
                 placeholder='Select Document Type'
@@ -123,6 +121,7 @@ export default function BusinessComplianceForm() {
             name='businessRegistrationNumber'
             type='tel'
             placeholder='eg RC36584123'
+            defaultValue={data?.registrationNumber}
           />
           {state?.errors?.businessRegistrationNumber ? (
             <div
@@ -138,6 +137,7 @@ export default function BusinessComplianceForm() {
         <div className='form-control'>
           <label htmlFor='cacUrl'>Business CAC Certificate</label>
           <CustomDropZone
+            defaultValue={data?.registrationCertificate}
             value={cacImage}
             setValue={setCacImage}
             name='cacUrl'
@@ -162,6 +162,7 @@ export default function BusinessComplianceForm() {
             name='directorBvn'
             type='tel'
             placeholder='Enter your BVN'
+            defaultValue={data?.BVN}
           />
           {state?.errors?.directorBvn ? (
             <div
@@ -211,6 +212,7 @@ export default function BusinessComplianceForm() {
         <div className='form-control'>
           <label htmlFor='bvn'>Upload Documents</label>
           <CustomDropZone
+            defaultValue={data?.directorIdentityDocument}
             value={uploadedImage}
             setValue={setUploadedImage}
             name='documentUrl'
@@ -234,8 +236,8 @@ export default function BusinessComplianceForm() {
             Back
           </Link>
           <SubmitButton
-            isImageUploaded={uploadedImage}
-            isCacUploaded={cacImage}
+            isImageUploaded={uploadedImage || data?.directorIdentityDocument}
+            isCacUploaded={cacImage || data?.registrationCertificate}
           />
         </div>
       </form>

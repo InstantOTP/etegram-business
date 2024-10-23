@@ -32,9 +32,9 @@ const DashboardSidebar = ({
 }) => {
   const pathname = usePathname();
   const [switchBusiness, setSwitchBusiness] = useState(false);
-  // console.log(projects);
+  // console.log(currentBusiness);
   return (
-    <aside className='relative hidden lg:flex flex-col justify-between w-full max-w-[15.625rem] h-svh shadow-md bg-background overflow-y-auto  border-r '>
+    <aside className='relative hidden lg:flex flex-col justify-between w-full max-w-[17.75rem] h-svh shadow-md bg-background overflow-y-auto  '>
       <div className='px-5 bg-white pt-3'>
         <Logo />
       </div>
@@ -94,7 +94,7 @@ const DashboardSidebar = ({
                                 'bg-green-100 text-green-400 inline-block':
                                   currentBusiness?.kycApprovalStatus ===
                                     'verified' &&
-                                  user?.kycApprovalStatus === 'approved',
+                                  user?.kycApprovalStatus === 'verified',
                               }
                             )}
                           >

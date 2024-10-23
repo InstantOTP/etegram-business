@@ -7,7 +7,7 @@ export default async function BusinessCompliancePage() {
   return (
     <section>
       <div className='max-w-2xl mx-auto rounded-3xl'>
-        <BusinessComplianceForm />
+        <BusinessComplianceForm data={data} />
       </div>
     </section>
   );

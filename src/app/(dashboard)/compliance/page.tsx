@@ -6,12 +6,17 @@ import { User } from '@/components/layout/dashboard-header';
 import { Suspense } from 'react';
 import Transactions from '@/app/components/transactions';
 import LoadingTransactions from '@/components/loading/transaction-table';
+import { getCurrentBusiness } from '@/app/apis/data/business';
 
 export default async function ComplianceHome() {
   const user: User = await getUser();
+  const business = await getCurrentBusiness();
   return (
     <section className='space-y-8'>
-      <ComplianceLinks user={user} />
+      <ComplianceLinks
+        user={user}
+        currentBusiness={business}
+      />
       <Suspense fallback={<LoadingTransactions />}>
         <Transactions />
       </Suspense>

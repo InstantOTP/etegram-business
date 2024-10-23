@@ -1,4 +1,4 @@
-import { getAPIKeys } from '@/app/apis/data/api-keys';
+import { getAPIKeys, viewAPIKeys } from '@/app/apis/data/api-keys';
 import { getCurrentBusiness } from '@/app/apis/data/business';
 import { getSingleBusinessProject } from '@/app/apis/data/projects';
 import GenerateKeyButton from '@/components/common/buttons/generate-apiKey';
@@ -6,10 +6,11 @@ import { TestApiKeysForm, LiveApiKeysForm } from '@/components/forms/api-keys';
 
 export default async function APIKeysSection() {
   const data = await getAPIKeys();
+  const dataApi = await viewAPIKeys();
   const project = await getSingleBusinessProject();
   const business = await getCurrentBusiness();
   // console.log(project);
-  // console.log(data);
+  // console.log(dataApi);
   return (
     <>
       <section className='border border-primary rounded-[30px] w-full max-w-2xl px-7 py-6 my-20 mx-auto'>
@@ -23,7 +24,7 @@ export default async function APIKeysSection() {
         </p>
 
         <TestApiKeysForm
-          testPublic={data?.testApiKey}
+          testPublic={dataApi?.testApiKey}
           projectUrls={project}
         />
       </section>
@@ -41,7 +42,7 @@ export default async function APIKeysSection() {
           </p>
 
           <LiveApiKeysForm
-            livePublic={data?.liveApiKey}
+            livePublic={dataApi?.liveApiKey}
             projectUrls={project}
           />
         </section>

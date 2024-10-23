@@ -62,7 +62,7 @@ export async function getBusinessKYC() {
     const response = await fetchWithAuth(`/business/kyc/${businessId}`, {
       next: { tags: [`business-kyc-${businessId}`] },
     });
-    console.log(response);
+    // console.log(response);
     const data = await response.json();
     // console.log(data);
     if (!response.ok) {

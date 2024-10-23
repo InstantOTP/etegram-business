@@ -9,15 +9,17 @@ export default function GenerateKeyButton({ type }: { type: string }) {
   const { refresh } = useRouter();
   async function getKeys() {
     const data = await generateAPIKey(type);
+    // console.log(data);
 
     if (data?.testApiKey) {
-      Cookies.set('apiKey', data?.testApiKey);
+      // Cookies.set('apiKey', data?.testApiKey);
       toast({ description: 'Test API key generated' });
     } else {
-      Cookies.set('liveKey', data?.liveApiKey);
+      // Cookies.set('liveKey', data?.liveApiKey);
       toast({ description: 'Live API key generated' });
     }
-    refresh();
+    // refresh();
+    return data;
   }
 
   return (
