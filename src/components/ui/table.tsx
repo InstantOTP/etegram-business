@@ -9,7 +9,7 @@ import {
 import { ChevronDown, CircleEllipsis, Ellipsis, Plus } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
-import { cn, formatDateWithTime, formatter } from '@/lib/utils';
+import { cn, formatDate, formatDateWithTime, formatter } from '@/lib/utils';
 import Pagination from './pagination';
 import Image from 'next/image';
 import React from 'react';
@@ -26,6 +26,8 @@ export default function DataTable({
   setDetails,
   hideViewAll,
   showPagination = false,
+  hideNumbering = false,
+  onlyDate = false,
 }: {
   title: string;
   description?: string;
@@ -37,6 +39,8 @@ export default function DataTable({
   showPagination?: boolean;
   setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   setDetails?: React.Dispatch<React.SetStateAction<any>>;
+  hideNumbering?: boolean;
+  onlyDate?: boolean;
   action?: React.ComponentType<{
     item: { item: any };
   }>;
@@ -75,13 +79,15 @@ export default function DataTable({
         </DropdownMenu>
       </div> */}
 
-      <div className='grid w-full grid-cols-1 overflow-auto whitespace-normal styled-scrollbar'>
+      <div className='relative grid w-full grid-cols-1 overflow-auto whitespace-normal styled-scrollbar'>
         <table className='w-full mt-1 text-left rtl:text-right'>
           <thead className='border-y border-gray-300'>
             <tr>
-              <th className='text-left font-semibold text-sm py-3 px-2.5'>
-                S/N
-              </th>
+              {!hideNumbering && (
+                <th className='text-left font-semibold text-sm py-3 px-2.5'>
+                  S/N
+                </th>
+              )}
               {headers.map((item, index) => (
                 <th
                   key={index}
@@ -99,7 +105,7 @@ export default function DataTable({
           </thead>
 
           {data?.length > 0 ? (
-            <tbody className='divide-y'>
+            <tbody className=''>
               {data.map((item, idx) => (
                 <tr
                   key={idx}
@@ -111,12 +117,14 @@ export default function DataTable({
                     }
                   }}
                 >
-                  <td
-                    key={idx}
-                    className='text-sm py-3 px-2.5'
-                  >
-                    {idx + 1}
-                  </td>
+                  {!hideNumbering && (
+                    <td
+                      key={idx}
+                      className='text-sm py-3 px-2.5'
+                    >
+                      {idx + 1}
+                    </td>
+                  )}
                   {dataKeys.map((key, idx) => {
                     if (key === 'amount') {
                       return (
@@ -150,7 +158,11 @@ export default function DataTable({
                           key={idx}
                           className='text-sm py-3 px-4 text-nowrap'
                         >
-                          <span>{formatDateWithTime(item?.createdAt)}</span>
+                          <span>
+                            {onlyDate
+                              ? formatDate(item?.createdAt)
+                              : formatDateWithTime(item?.createdAt)}
+                          </span>
                         </td>
                       );
                     }
@@ -196,11 +208,6 @@ export default function DataTable({
             </tbody>
           ) : null}
         </table>
-        {totalPages > 0 && !showPagination && (
-          <div className='flex justify-end w-full mt-5'>
-            <Pagination totalPages={totalPages} />
-          </div>
-        )}
       </div>
 
       {/* MOBILE Table */}
@@ -217,6 +224,11 @@ export default function DataTable({
           </div> */}
 
           <p className='opacity-65'>No data to show </p>
+        </div>
+      )}
+      {totalPages > 0 && !showPagination && (
+        <div className='flex justify-end w-full mt-5'>
+          <Pagination totalPages={totalPages} />
         </div>
       )}
     </div>

@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { PrevStateProps } from './auth';
 import { BusinessInfoSchema } from '@/lib/form-schema/business';
 import { fetchWithAuth } from '@/lib/http-config';
-import { revalidateTag } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 export interface BusinessInfoState extends PrevStateProps {
   errors?: {
@@ -138,4 +138,14 @@ export async function updateLogo(data: { url: string }) {
       };
     }
   }
+}
+
+export async function toggleLive() {
+  const isLive = cookies().get('isLive')?.value ?? '';
+  if (!isLive || isLive === 'no') {
+    cookies().set({ name: 'isLive', value: 'yes' });
+  } else {
+    cookies().set({ name: 'isLive', value: 'no' });
+  }
+  revalidatePath('/dashboard');
 }

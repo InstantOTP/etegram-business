@@ -59,7 +59,7 @@ export function TransactionChart({ data }: { data: any[] }) {
           tickMargin={10}
           axisLine={false}
           tickFormatter={(value) => kConverter(value)}
-          tickCount={6}
+          tickCount={7}
         />
         <CartesianGrid
           stroke='#eee'

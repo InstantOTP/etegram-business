@@ -7,6 +7,8 @@ import { RiFileCopyFill } from 'react-icons/ri';
 import Cookies from 'js-cookie';
 import { updateProjectUrl } from '@/app/apis/actions/project';
 import { useState } from 'react';
+import { LucideLoader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export function TestApiKeysForm({
   testPublic,
@@ -15,6 +17,7 @@ export function TestApiKeysForm({
   testPublic?: string;
   projectUrls: { webhookUrl: { test: string }; callbackUrl: { test: string } };
 }) {
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const projectId = Cookies.get('projectId');
   const [webhookUrl, setWebHookUrl] = useState(
@@ -32,17 +35,19 @@ export function TestApiKeysForm({
   }
 
   async function handleUpdate() {
+    setIsLoading(true);
     let formdata = {
       callbackUrl,
       webhookUrl,
       type: 'test',
     };
-    console.log(formdata);
+    // console.log(formdata);
     const data = await updateProjectUrl(formdata);
     toast({
       description: data?.message,
       variant: data?.status === 'success' ? 'default' : 'destructive',
     });
+    setIsLoading(false);
   }
   return (
     <div className='w-full'>
@@ -123,7 +128,13 @@ export function TestApiKeysForm({
         <Button
           type='button'
           onClick={handleUpdate}
+          disabled={isLoading}
         >
+          <LucideLoader2
+            className={cn('animate-spin mr-1 w-[22px] h-[22px] hidden', {
+              'inline-block': isLoading,
+            })}
+          />
           Update
         </Button>
       </form>
@@ -139,6 +150,7 @@ export function LiveApiKeysForm({
   projectUrls: { webhookUrl: { live: string }; callbackUrl: { live: string } };
 }) {
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const projectId = Cookies.get('projectId');
   const [webhookUrl, setWebHookUrl] = useState(
     projectUrls?.webhookUrl?.live || ''
@@ -155,6 +167,7 @@ export function LiveApiKeysForm({
   }
 
   async function handleUpdate() {
+    setIsLoading(true);
     let formdata = {
       callbackUrl,
       webhookUrl,
@@ -166,6 +179,7 @@ export function LiveApiKeysForm({
       description: data?.message,
       variant: data?.status === 'success' ? 'default' : 'destructive',
     });
+    setIsLoading(false);
   }
   return (
     <div className='w-full'>
@@ -247,6 +261,11 @@ export function LiveApiKeysForm({
           type='button'
           onClick={handleUpdate}
         >
+          <LucideLoader2
+            className={cn('animate-spin mr-1 w-[22px] h-[22px] hidden', {
+              'inline-block': isLoading,
+            })}
+          />
           Update
         </Button>
       </form>

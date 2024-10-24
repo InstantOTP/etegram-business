@@ -4,6 +4,7 @@ import { getUser } from '../apis/data/user';
 import { getCurrentBusiness, getUserBusinesses } from '../apis/data/business';
 import { getBusinessProjects } from '../apis/data/projects';
 import VerifiedLayout from './verified-layout';
+import { cookies } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,6 +19,8 @@ export default async function MainLayout({
     getUserBusinesses(),
     getBusinessProjects(),
   ]);
+
+  const isLive = cookies().get('isLive')?.value ?? 'no';
 
   // console.log(user);
 
@@ -37,6 +40,7 @@ export default async function MainLayout({
             business={business}
             businesses={businesses}
             projects={projects}
+            isLive={isLive}
           />
           <main className='w-full lg:h-[84.1svh] overflow-y-auto pt-28 px-5 pb-5 lg:py-5 lg:pl-12 lg:pr-[70px]'>
             {children}

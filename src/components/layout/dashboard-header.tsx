@@ -28,6 +28,8 @@ import { Switch } from '../ui/switch';
 import { useToast } from '../ui/use-toast';
 import { ChevronRight } from 'lucide-react';
 import { selectProject } from '@/app/apis/actions/project';
+import Cookies from 'js-cookie';
+import { toggleLive } from '@/app/apis/actions/business';
 
 export interface User {
   firstname: string;
@@ -46,21 +48,24 @@ export const DashboardHeader = ({
   business,
   businesses,
   projects,
+  isLive,
 }: {
   user: User;
   business: any;
   businesses: { business: bussinessType }[];
   projects: any;
+  isLive: string;
 }) => {
   const pathname = usePathname();
   const { push } = useRouter();
   const { toast } = useToast();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [isLive, setIsLive] = useState<'yes' | 'no'>('no');
+  // const [isLive, setIsLive] = useState<'yes' | 'no'>('no');
   const [switchBusiness, setSwitchBusiness] = useState(false);
+  // const isLive = Cookies.get('isLive') ?? 'no';
 
-  // console.log(business);
+  // console.log(isLive);
   // const Check = business?.kycApprovalStatus === 'pending' ? Link : div;
 
   return (
@@ -303,11 +308,8 @@ export const DashboardHeader = ({
                 push('/compliance/business-compliance');
                 return;
               } else {
-                if (isLive === 'no') {
-                  setIsLive('yes');
-                } else {
-                  setIsLive('no');
-                }
+                // console.log('it ran');
+                toggleLive();
               }
             }}
           />

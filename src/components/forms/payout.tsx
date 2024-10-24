@@ -9,6 +9,7 @@ import Select from 'react-select';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
 import { LucideLoader2 } from 'lucide-react';
+import DeleteBank from '../common/buttons/delete-bank';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -56,7 +57,7 @@ export default function PayoutForm({
       return [];
     }
   }, [banks]);
-  console.log(projectBank);
+  // console.log(projectBank);
 
   useEffect(() => {
     if (state?.message && state.status) {
@@ -159,7 +160,7 @@ export default function PayoutForm({
             />
             {state?.errors?.accountName ? (
               <div
-                id='bankName-error'
+                id='accountName-error'
                 aria-live='polite'
                 className='error'
               >
@@ -172,6 +173,9 @@ export default function PayoutForm({
         </div>
 
         {projectBank?.length === 0 ? <SubmitButton /> : null}
+        {/* (
+          <DeleteBank bankId={projectBank[0]?.id} />
+        ) */}
       </form>
     </div>
   );

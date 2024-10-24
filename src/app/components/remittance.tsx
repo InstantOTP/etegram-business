@@ -15,6 +15,7 @@ export default async function RemittancesTable() {
         data={remittance?.data || []}
         totalPages={remittance?.totalPages || 0}
         hideViewAll
+        hideNumbering
       />
     </div>
   );

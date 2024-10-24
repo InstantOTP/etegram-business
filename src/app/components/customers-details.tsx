@@ -16,19 +16,21 @@ interface detailsType {
 export default function CustomersTable({ customers }: { customers: any }) {
   const [details, setDetails] = useState<detailsType | undefined>();
   const [showModal, setShowModal] = useState(false);
-  console.log(details);
+  // console.log(details);
 
   return (
     <div>
       <DataTable
         title='Total Customers'
-        headers={['Customer', 'Email', 'Phone Number', 'Date Added']}
-        dataKeys={['name', 'email', 'phone', 'createdAt']}
+        headers={['Customer', 'Phone Number', 'Full Name', 'Date Added']}
+        dataKeys={['email', 'phone', 'name', 'createdAt']}
         data={customers?.data || []}
         totalPages={customers?.totalPages || 0}
         hideViewAll
         setDetails={setDetails}
         setIsOpen={setShowModal}
+        hideNumbering
+        onlyDate
       />
       <Sheet
         open={showModal}
@@ -50,7 +52,7 @@ export default function CustomersTable({ customers }: { customers: any }) {
               Customer Details
             </SheetTitle>
             {details && (
-              <div className='bg-[#f1faff] rounded-t-3xl h-full w-full px-10 py-7'>
+              <div className='bg-[#f1faff] rounded-t-3xl h-full w-full px-4 lg:px-10 py-7'>
                 {/* <div className='bg-background p-2 rounded-md flex space-x-4 items-center mb-4'>
                   <div className='w-10 font-inter h-10 grid place-items-center bg-primary text-primary-foreground font-bold rounded-md'>
                     {details?.name ? `${findUpper('JesseOlisa')} ` : 'E'}

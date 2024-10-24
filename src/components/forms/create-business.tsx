@@ -195,7 +195,7 @@ export default function CreateBusinessForm({
 
         <div>
           <p className='text-sm text-foreground mb-1'>
-            How will be using Etegram?{' '}
+            How will you be using Etegram?{' '}
             <span className='text-primary/50'>(Select all that applies)</span>
           </p>
 
@@ -278,7 +278,7 @@ export default function CreateBusinessForm({
                 className='text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
               >
                 I consent to the collection and processing of my personal data
-                in line with data regulations as dscribed in out Privacy Policy
+                in line with data regulations as described in out Privacy Policy
               </label>
             </div>
           </div>

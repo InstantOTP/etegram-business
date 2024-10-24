@@ -14,13 +14,15 @@ export default async function RemittancesPage() {
   // console.log(credit_stats);
 
   return (
-    <main className='flex min-h-screen space-y-4 flex-col'>
-      <div className='section-grid gap-7'>
-        <div className='card card-xs bg-primary text-primary-foreground space-y-1'>
+    <main className='flex min-h-screen space-y-4 md:space-y-0 flex-col lg:flex-row-reverse gap-8 items-start w-full'>
+      <div className='section-grid lg:flex lg:flex-col w-full lg:max-w-[18.7rem] gap-6'>
+        <div className='card card-xs bg-primary-light text-primary-foreground space-y-1 py-8'>
           <p className='text-4xl font-bold'>{formatter().format(0)}</p>
-          <p className='text-sm font-medium'>Total Remittance</p>
+          <p className='text-sm lg:text-lg font-medium opacity-90'>
+            Total Remittance
+          </p>
         </div>
-        <div className='card-xs space-y-4 flex justify-center flex-col'>
+        <div className='card-xs space-y-4 flex justify-center flex-col py-8'>
           <p className='font-semibold text-lg'>Ledger Account</p>
           <div>
             <h2 className='text-xl font-inter'>{formatter().format(0)}</h2>
@@ -28,9 +30,11 @@ export default async function RemittancesPage() {
           </div>
         </div>
       </div>
-      <Suspense fallback={<LoadingTransactions />}>
-        <RemittancesTable />
-      </Suspense>
+      <div className='w-full'>
+        <Suspense fallback={<LoadingTransactions />}>
+          <RemittancesTable />
+        </Suspense>
+      </div>
     </main>
   );
 }

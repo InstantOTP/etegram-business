@@ -122,6 +122,9 @@ textarea {
     border-radius: 5px;
     background-color: #dedede;
   }
+  .debug {
+    @apply border border-red-500;
+  }
 }
 
 @layer components {
