@@ -13,11 +13,11 @@ export type selectServicesType = {
   name: string;
   description: string;
   id: string;
-  status: boolean;
+  active: boolean;
   icon: string;
 };
 
-const moreServices: selectServicesType[] = [
+const moreServices: any[] = [
   {
     icon: '/assets/icons/QR Code Payments.svg',
     id: '72678',
@@ -73,7 +73,7 @@ export default function ServicesList({
             key={item.id}
             className='flex relative justify-between space-x-3 p-4 items-center  rounded-[0.625rem] border-[1.5px] border-border w-full  peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'
           >
-            {item?.status && (
+            {item?.active && (
               <p className='text-destructive absolute right-4 top-3.5 text-xs'>
                 Coming Soon
               </p>
@@ -82,7 +82,7 @@ export default function ServicesList({
               htmlFor={item.name}
               className={cn(
                 'max-w-[25rem] flex space-x-6 items-center cursor-pointer',
-                { 'opacity-75 cursor-not-allowed': item?.status }
+                { 'opacity-75 cursor-not-allowed': item?.active }
               )}
             >
               {/* {typeof item.icon === 'string' ? (
@@ -119,7 +119,7 @@ export default function ServicesList({
               value={item.id}
               id={item.name}
               className='flex-shrink-0'
-              disabled={item?.status}
+              disabled={!item?.active}
             />
           </div>
         ))}
