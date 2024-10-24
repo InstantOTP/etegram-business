@@ -73,7 +73,7 @@ export default function ServicesList({
             key={item.id}
             className='flex relative justify-between space-x-3 p-4 items-center  rounded-[0.625rem] border-[1.5px] border-border w-full  peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'
           >
-            {item?.active && (
+            {!item?.active && (
               <p className='text-destructive absolute right-4 top-3.5 text-xs'>
                 Coming Soon
               </p>
@@ -82,7 +82,7 @@ export default function ServicesList({
               htmlFor={item.name}
               className={cn(
                 'max-w-[25rem] flex space-x-6 items-center cursor-pointer',
-                { 'opacity-75 cursor-not-allowed': item?.active }
+                { 'opacity-75 cursor-not-allowed': !item?.active }
               )}
             >
               {/* {typeof item.icon === 'string' ? (
